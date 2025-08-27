@@ -1,6 +1,6 @@
 {
   "theme": "mint",
-  "name": "Atoti Documentation",
+  "name": "Cirrus Sync Documentation",
   "colors": {
     "primary": "#291a40",
     "light": "#00ade6",
@@ -15,7 +15,7 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Atoti Platform",
+        "tab": "Platform",
         "groups": [
                     {
             "group": "Concepts",
@@ -41,11 +41,11 @@
           {
             "group": "Solutions",
             "pages": [
-              "Market Risk",
-              "FRTB",
-              "CVA-RC",
-              "Limits",
-              "Sign-Off"
+              "Solution 1",
+              "Solution 2",
+              "Solution 3",
+              "Solution 4",
+              "Solution 5"
             ]
           }
         ]
