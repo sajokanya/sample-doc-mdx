@@ -1,0 +1,106 @@
+{
+  "theme": "mint",
+  "name": "Atoti Documentation",
+  "colors": {
+    "primary": "#291a40",
+    "light": "#00ade6",
+    "dark": "#00ade6"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/activeviam-logo.png",
+    "dark": "/activeviam-logo.png",
+    "href": "https://activeviam.com"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Atoti Platform",
+        "groups": [
+                    {
+            "group": "Concepts",
+            "pages": [
+              "Concept 1",
+              "Concept 2"
+            ]
+          },
+          {
+            "group": "Server",
+            "pages": [
+              "Latest docs",
+              "Available versions"
+            ]
+          },
+          {
+            "group": "UI",
+            "pages": [
+              "Latest docs",
+              "Available versions"
+            ]
+          },
+          {
+            "group": "Solutions",
+            "pages": [
+              "Market Risk",
+              "FRTB",
+              "CVA-RC",
+              "Limits",
+              "Sign-Off"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API reference",
+        "groups": [
+          {
+            "group": "API documentation",
+            "pages": [
+              "api-reference/introduction"
+            ]
+          },
+          {
+            "group": "Endpoint examples",
+            "pages": [
+              "api-reference/endpoint/get",
+              "api-reference/endpoint/create",
+              "api-reference/endpoint/delete",
+              "api-reference/endpoint/webhook"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Docs Home",
+        "href": "https://docs.activeviam.com"
+      },
+      {
+        "label": "Platform Docs",
+        "href": "https://docs.activeviam.com"
+      },
+      {
+        "label": "Solutions Docs",
+        "href": "https://docs.activeviam.com"
+      },
+      {
+        "label": "News & blog",
+        "href": "https://www.activeviam.com/news-and-blog/"
+      },
+      {
+        "label": "Support",
+        "href": "mailto:hi@mintlify.com"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/mintlify",
+      "github": "https://github.com/mintlify",
+      "linkedin": "https://linkedin.com/company/mintlify"
+    }
+  }
+}

@@ -1,0 +1,324 @@
+
+Advanced configuration options for Cirrus Sync.
+
+## Configuration files
+
+Cirrus Sync stores configuration in the following locations:
+
+**Windows:**
+```
+%APPDATA%\CirrusSync\config.json
+```
+
+**macOS:**
+```
+~/Library/Application Support/CirrusSync/config.json
+```
+
+**Linux:**
+```
+~/.config/cirrussync/config.json
+```
+
+## General settings
+
+### Application behavior
+
+```json
+{
+  "general": {
+    "autoStart": true,
+    "minimizeToTray": true,
+    "showNotifications": true,
+    "checkUpdatesAutomatically": true,
+    "updateChannel": "stable"
+  }
+}
+```
+
+**Options:**
+
+### User interface
+
+```json
+{
+  "ui": {
+    "theme": "auto",
+    "language": "en",
+    "showAdvancedOptions": false,
+    "compactMode": false
+  }
+}
+```
+
+**Theme Options:**
+
+**Language Options:**
+
+## Sync configuration
+
+### Default sync settings
+
+```json
+{
+  "sync": {
+    "defaultSyncType": "bidirectional",
+    "conflictResolution": "manual",
+    "preserveTimestamps": true,
+    "followSymlinks": false,
+    "checksumValidation": true,
+    "retryAttempts": 3,
+    "retryDelay": 5000
+  }
+}
+```
+
+**Sync Types:**
+
+**Conflict Resolution:**
+
+### Performance tuning
+
+```json
+{
+  "performance": {
+    "maxConcurrentTransfers": 5,
+    "chunkSize": 8388608,
+    "connectionTimeout": 30000,
+    "readTimeout": 60000,
+    "maxRetries": 3,
+    "useCompression": true
+  }
+}
+```
+
+**Parameters:**
+
+## Network configuration
+
+### Bandwidth controls
+
+```json
+{
+  "network": {
+    "uploadLimit": 0,
+    "downloadLimit": 0,
+    "throttleOnCellular": true,
+    "pauseOnMeteredConnection": false,
+    "useProxy": false,
+    "proxySettings": {
+      "type": "http",
+      "host": "",
+      "port": 8080,
+      "username": "",
+      "password": "",
+      "authentication": false
+    }
+  }
+}
+```
+
+**Bandwidth Limits:**
+
+**Proxy Types:**
+
+### SSL/TLS configuration
+
+```json
+{
+  "ssl": {
+    "verifySSLCertificates": true,
+    "allowSelfSignedCertificates": false,
+    "customCertificatePath": "",
+    "tlsVersion": "1.3",
+    "cipherSuites": "default"
+  }
+}
+```
+
+## Security settings
+
+### Encryption configuration
+
+```json
+{
+  "security": {
+    "enableClientSideEncryption": false,
+    "encryptionAlgorithm": "AES-256-GCM",
+    "keyDerivationIterations": 100000,
+    "encryptFilenames": false,
+    "localCacheEncryption": true
+  }
+}
+```
+
+**Encryption Algorithms:**
+
+### Authentication settings
+
+```json
+{
+  "auth": {
+    "sessionTimeout": 3600,
+    "requireReauthentication": false,
+    "twoFactorAuthentication": {
+      "enabled": false,
+      "method": "totp",
+      "backupCodes": []
+    }
+  }
+}
+```
+
+## Logging configuration
+
+### Log levels and output
+
+```json
+{
+  "logging": {
+    "level": "info",
+    "enableFileLogging": true,
+    "logRotation": true,
+    "maxLogSize": 10485760,
+    "maxLogFiles": 5,
+    "logPath": "default",
+    "components": {
+      "sync": "info",
+      "network": "warn",
+      "auth": "info",
+      "api": "debug"
+    }
+  }
+}
+```
+
+**Log Levels:**
+
+### Advanced logging
+
+```json
+{
+  "advancedLogging": {
+    "enableNetworkTracing": false,
+    "enableSQLTracing": false,
+    "enablePerformanceMetrics": false,
+    "logFormat": "json",
+    "includeStackTrace": true
+  }
+}
+```
+
+## Provider-specific settings
+
+### Google Drive configuration
+
+```json
+{
+  "providers": {
+    "googleDrive": {
+      "useServiceAccount": false,
+      "serviceAccountKeyPath": "",
+      "apiQuotaManagement": true,
+      "maxRequestsPerSecond": 10,
+      "enableTeamDriveSupport": true
+    }
+  }
+}
+```
+
+### Dropbox configuration
+
+```json
+{
+  "providers": {
+    "dropbox": {
+      "useBusinessAccount": false,
+      "enableDeltaSync": true,
+      "maxFileSize": 157286400,
+      "enableSmartSync": true
+    }
+  }
+}
+```
+
+### OneDrive configuration
+
+```json
+{
+  "providers": {
+    "oneDrive": {
+      "usePersonalAccount": true,
+      "enableBusinessFeatures": false,
+      "maxChunkSize": 62914560,
+      "enableVersioning": true
+    }
+  }
+}
+```
+
+## Backup and recovery
+
+### Configuration Backup
+
+```json
+{
+  "backup": {
+    "autoBackupConfig": true,
+    "backupLocation": "cloud",
+    "backupFrequency": "daily",
+    "keepBackupHistory": 30,
+    "encryptBackups": true
+  }
+}
+```
+
+### Database Settings
+
+```json
+{
+  "database": {
+    "type": "sqlite",
+    "connectionPoolSize": 10,
+    "queryTimeout": 30000,
+    "enableWALMode": true,
+    "autoVacuum": "incremental"
+  }
+}
+```
+
+## Environment Variables
+
+Cirrus Sync also supports configuration via environment variables:
+
+```bash
+# API Configuration
+CIRRUS_API_KEY=your_api_key
+CIRRUS_API_ENDPOINT=https://api.cirrus-sync.com
+
+# Network Settings
+CIRRUS_PROXY_URL=http://proxy.company.com:8080
+CIRRUS_UPLOAD_LIMIT=5242880
+CIRRUS_DOWNLOAD_LIMIT=10485760
+
+# Security Settings
+CIRRUS_ENCRYPTION_KEY=your_encryption_key
+CIRRUS_SSL_VERIFY=true
+
+# Logging
+CIRRUS_LOG_LEVEL=info
+CIRRUS_LOG_PATH=/var/log/cirrus
+```
+
+## Command Line Arguments
+
+Override configuration options via command line:
+
+```bash
+cirrus-sync --config-file /path/to/config.json \
+            --log-level debug \
+            --no-auto-start \
+            --proxy http://proxy:8080
+```
+
+**Available Arguments:**
