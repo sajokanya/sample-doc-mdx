@@ -6,10 +6,6 @@
     "light": "#00ade6",
     "dark": "#00ade6"
   },
-  "fonts": {
-    "family": "Poppins",
-    "format": "woff"
-  },
   "favicon": "/favicon.svg",
   "logo": {
     "light": "/logo/activeviam-logo.png",
