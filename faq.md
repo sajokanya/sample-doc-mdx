@@ -13,8 +13,8 @@ Cirrus Sync is a cross-platform file synchronization application that keeps your
 Cirrus Sync offers three pricing tiers:
 
 - **Free** - Up to 5 GB sync, 2 cloud providers, basic support
-- **Premium** - $9.99/month - Unlimited sync, all providers, priority support
-- **Enterprise** - $24.99/user/month - Advanced features, SSO, dedicated support
+- **Premium** - \$9.99/month - Unlimited sync, all providers, priority support
+- **Enterprise** - \$24.99/user/month - Advanced features, SSO, dedicated support
 
 ### Is Cirrus Sync secure?
 
@@ -29,6 +29,7 @@ Yes, Cirrus Sync implements multiple security layers:
 ### Which cloud providers are supported?
 
 Cirrus Sync supports:
+
 - Google Drive (including Google Workspace)
 - Dropbox (Personal and Business)
 - Microsoft OneDrive (Personal and Business)
@@ -43,12 +44,14 @@ Cirrus Sync supports:
 ### What are the system requirements?
 
 **Minimum Requirements:**
-- Windows 10, macOS 10.15, or Linux (Ubuntu 18.04+)
+
+- Windows 10, macOS 10.15, or Linux (Ubuntu 18.04\+)
 - 4 GB RAM
 - 500 MB disk space
 - Internet connection
 
 **Recommended:**
+
 - 8 GB RAM or more
 - SSD storage
 - Stable broadband connection
@@ -59,9 +62,9 @@ Yes, your Cirrus Sync account can be used on up to 10 devices with a Premium sub
 
 ### How do I transfer my settings to a new computer?
 
-1. Export settings from the old computer: Settings > Advanced > Export Configuration
+1. Export settings from the old computer: Settings \> Advanced \> Export Configuration
 2. Install Cirrus Sync on the new computer
-3. Import settings: Settings > Advanced > Import Configuration
+3. Import settings: Settings \> Advanced \> Import Configuration
 4. Re-authenticate cloud providers if needed
 
 ## Synchronization
@@ -99,7 +102,7 @@ Check the sync status panel for specific error messages.
 
 Configure sync filters in each sync folder's settings:
 
-1. Right-click sync folder > Settings > Filters
+1. Right-click sync folder \> Settings \> Filters
 2. Add patterns to exclude:
    - `*.tmp` - Exclude temporary files
    - `node_modules/` - Exclude specific folders
@@ -112,12 +115,13 @@ Configure sync filters in each sync folder's settings:
 ### How much bandwidth does Cirrus Sync use?
 
 Bandwidth usage depends on:
+
 - Number and size of files being synced
 - Sync frequency settings
 - Whether compression is enabled
 - Network connection quality
 
-You can limit bandwidth usage in Settings > Network > Bandwidth Controls.
+You can limit bandwidth usage in Settings \> Network \> Bandwidth Controls.
 
 ### Does Cirrus Sync work offline?
 
@@ -131,6 +135,7 @@ Cirrus Sync requires an internet connection for synchronization. However, it off
 ### How much local storage does Cirrus Sync use?
 
 Storage usage includes:
+
 - **Application files** - ~200 MB
 - **Local cache** - Configurable (default 5 GB)
 - **Sync folders** - Size of synchronized files
@@ -144,7 +149,7 @@ Use Smart Sync to reduce local storage by keeping files in the cloud only.
 
 Try these solutions:
 
-1. **Windows**: Run as Administrator, install Visual C++ Redistributable
+1. **Windows**: Run as Administrator, install Visual C\+\+ Redistributable
 2. **macOS**: Grant Full Disk Access in Security & Privacy settings
 3. **Linux**: Install required dependencies (see installation guide)
 4. Check antivirus software isn't blocking the application
@@ -176,6 +181,7 @@ Resolve authentication issues:
 ### What is Smart Sync?
 
 Smart Sync automatically manages local storage by:
+
 - Keeping frequently accessed files local
 - Moving old files to cloud-only storage
 - Downloading files on-demand when accessed
@@ -184,6 +190,7 @@ Smart Sync automatically manages local storage by:
 ### Can I use Cirrus Sync for backup?
 
 While Cirrus Sync is primarily a sync tool, it can serve as a backup solution:
+
 - **Version history** - Keeps multiple file versions
 - **One-way sync** - Upload-only mode for backup
 - **Scheduled sync** - Automatic backup at set times
@@ -194,6 +201,7 @@ For critical data, consider dedicated backup solutions alongside Cirrus Sync.
 ### Does Cirrus Sync support team collaboration?
 
 Yes, Cirrus Sync offers collaboration features:
+
 - **Shared folders** - Team access to common files
 - **Permission management** - Control who can edit/view
 - **Activity tracking** - See who changed what
@@ -205,6 +213,7 @@ Yes, Cirrus Sync offers collaboration features:
 ### Where is my data stored?
 
 Your data is stored in:
+
 1. **Your chosen cloud providers** - According to their data policies
 2. **Local devices** - Encrypted cache and sync folders
 3. **Cirrus Sync servers** - Only metadata and sync states (encrypted)
@@ -214,6 +223,7 @@ Cirrus Sync never stores your actual file content on our servers.
 ### Can Cirrus Sync employees access my files?
 
 No, Cirrus Sync employees cannot access your files because:
+
 - Files are stored on your chosen cloud providers
 - Local encryption protects cached data
 - Only encrypted metadata passes through our servers
@@ -222,6 +232,7 @@ No, Cirrus Sync employees cannot access your files because:
 ### What happens if I cancel my subscription?
 
 If you cancel your subscription:
+
 - **Sync stops** after the billing period ends
 - **Local files remain** on your devices
 - **Cloud files remain** in your provider accounts
@@ -233,7 +244,7 @@ If you cancel your subscription:
 ### How do I upgrade or downgrade my plan?
 
 1. Log in to your Cirrus Sync account
-2. Go to Settings > Subscription
+2. Go to Settings \> Subscription
 3. Choose new plan and confirm
 4. Billing changes take effect immediately
 5. Prorated charges/credits applied automatically
@@ -245,6 +256,7 @@ Cirrus Sync offers a 30-day money-back guarantee for new subscribers. Contact su
 ### How do I delete my account?
 
 To permanently delete your account:
+
 1. Cancel active subscriptions
 2. Export any data you want to keep
 3. Contact support to request account deletion
@@ -257,16 +269,19 @@ To permanently delete your account:
 Support options based on your plan:
 
 **Free Users:**
+
 - Documentation and FAQ
 - Community forum
 - Email support (48-72 hour response)
 
 **Premium Users:**
+
 - All free options
 - Priority email support (24 hour response)
 - Live chat during business hours
 
 **Enterprise Users:**
+
 - All premium options
 - Phone support
 - Dedicated account manager
@@ -275,6 +290,7 @@ Support options based on your plan:
 ### What information should I include in support requests?
 
 For faster resolution, include:
+
 - Cirrus Sync version number
 - Operating system and version
 - Detailed description of the issue
