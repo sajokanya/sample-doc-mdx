@@ -6,35 +6,48 @@
     "light": "#00ade6",
     "dark": "#00ade6"
   },
+  "fonts": {
+    "family": "Poppins",
+    "format": "woff"
+  },
   "favicon": "/favicon.svg",
   "logo": {
-    "light": "/activeviam-logo.png",
-    "dark": "/activeviam-logo.png",
-    "href": "https://activeviam.com"
+    "light": "/logo/activeviam-logo.png",
+    "dark": "/logo/activeviam-logo.png",
+    "href": "https://www.activeviam.com/"
   },
   "navigation": {
     "tabs": [
+      {
+        "tab": "Home",
+        "icon": "house",
+        "groups": "",
+        "pages": [
+          "index"
+        ]
+      },
       {
         "tab": "Guides",
         "groups": [
                     {
             "group": "General",
             "pages": [
-              "Changelog",
-              "Getting started"
+              "changelog",
+              "getting-started"
             ]
           },
           {
             "group": "Users",
             "pages": [
-              "User guide"
+              "user-guide/user-guide"
             ]
           },
           {
             "group": "Developers",
             "pages": [
-              "API reference",
-              "Configuration"
+              "dev-guide/api-reference",
+              "dev-guide/configuration",
+              "dev-guide/troubleshooting"
             ]
           }
         ]
