@@ -1,0 +1,128 @@
+---
+title: API Overview
+description: Learn how to integrate with the Sample API using our comprehensive REST API and interactive playground
+---
+
+import AuthExample from '/snippets/auth-example.mdx';
+
+## Getting Started
+
+Our API provides a comprehensive set of endpoints for managing users, authentication, and webhooks. All endpoints are documented using OpenAPI 3.1 specification and include **interactive API playground** functionality.
+
+<Info>
+**🎮 API Playground Available!** 
+Each endpoint page includes an interactive playground where you can test API calls directly from the documentation.
+</Info>
+
+## Interactive API Playground
+
+The API playground allows you to:
+
+- **Test endpoints in real-time** - Make actual API calls from the documentation
+- **Try different parameters** - Experiment with query parameters, request bodies, and headers
+- **See live responses** - View actual API responses with proper formatting
+- **Authentication testing** - Test with different authentication methods
+- **Multiple environments** - Switch between production, staging, and development servers
+
+### How to Use the Playground
+
+1. **Navigate to any endpoint** - Click on any API endpoint in the navigation
+2. **Configure parameters** - Fill in required and optional parameters
+3. **Set authentication** - Add your API key or JWT token
+4. **Select server** - Choose between production, staging, or development
+5. **Send request** - Click the "Send" button to make the API call
+6. **Review response** - Examine the response data, headers, and status codes
+
+<Warning>
+**Using Production Server**: Be careful when testing with the production server. Use test data and avoid making destructive operations.
+</Warning>
+
+## Base URL
+
+All API requests should be made to:
+
+```
+https://api.example.com/v1
+```
+
+## Authentication
+
+Our API uses Bearer token authentication. Include your JWT token in the Authorization header:
+
+```http
+Authorization: Bearer your_jwt_token_here
+```
+
+### Getting a Token
+
+Use the `/auth/login` endpoint to obtain a JWT token:
+
+<AuthExample />
+
+## Rate Limiting
+
+API requests are rate limited to ensure fair usage:
+
+- **Authenticated requests**: 1000 requests per hour
+- **Unauthenticated requests**: 100 requests per hour
+
+Rate limit headers are included in all responses:
+
+- `X-RateLimit-Limit`: Request limit per hour
+- `X-RateLimit-Remaining`: Remaining requests in current window
+- `X-RateLimit-Reset`: Time when the rate limit resets
+
+## Response Format
+
+All API responses use JSON format and follow a consistent structure:
+
+### Success Response
+```json
+{
+  "data": {...},
+  "status": "success"
+}
+```
+
+### Error Response
+```json
+{
+  "error": "ERROR_CODE",
+  "message": "Human readable error message",
+  "details": {...}
+}
+```
+
+## Webhooks
+
+The API supports webhooks for real-time event notifications. Configure webhook endpoints to receive notifications when:
+
+- Users are created or deleted
+- Authentication events occur
+- System events happen
+
+## SDKs and Libraries
+
+We provide official SDKs for popular programming languages:
+
+- **JavaScript/TypeScript**: `npm install sample-api-sdk`
+- **Python**: `pip install sample-api`
+- **Go**: `go get github.com/sample-org/api-go`
+
+## Postman Collection
+
+Import our Postman collection for easy API testing:
+
+[Download Postman Collection](https://api.example.com/postman/collection.json)
+
+## Support
+
+Need help with the API? Reach out to our support team:
+
+- **Email**: api-support@example.com
+- **Documentation**: Check the endpoint-specific documentation below
+- **Status Page**: [status.example.com](https://status.example.com)
+
+---
+
+Explore the endpoints below to get started with our API.

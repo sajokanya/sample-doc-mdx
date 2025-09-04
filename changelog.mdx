@@ -253,3 +253,457 @@ For questions about specific versions or upgrade procedures:
 - **Legacy Versions (3.0.x and earlier)**: No longer supported
 
 Keep Cirrus Sync updated to the latest version for optimal performance, security, and access to new features.
+
+---
+
+## Version 3.2.0 (December 8, 2024)
+
+### New features
+- **Smart Sync 2.0** - Intelligent local storage management
+- **Bulk Operations** - Select and sync multiple folders at once
+- **Advanced Filters** - Regex support in include/exclude patterns
+- **Team Dashboards** - Centralized view for team administrators
+- **API Rate Limiting** - Better handling of provider API limits
+
+### Enhancements
+- Redesigned main interface with improved navigation
+- Added support for ARM64 processors on Windows
+- Enhanced conflict resolution with three-way merge support
+- Improved backup and restore functionality
+- Added dark mode support for all platforms
+
+### Cloud provider updates
+- Google Drive: Added support for shared team drives.
+- Dropbox: Implemented Dropbox Business advanced features.
+- OneDrive: Added SharePoint Online integration.
+- iCloud: Improved reliability and sync speed.
+- Amazon S3: Added support for S3 Intelligent Tiering.
+
+### Performance
+- 40% faster initial sync for large folder structures.
+- Reduced memory usage by 25% during active sync operations.
+- Improved startup time by optimizing database queries.
+- Enhanced network efficiency with better compression algorithms.
+
+---
+
+## Version 3.1.3 (November 2, 2024)
+
+### Bug fixes
+- Fixed issue where paused syncs would resume unexpectedly.
+- Resolved database corruption on unexpected application shutdown.
+- Fixed proxy authentication with special characters in passwords.
+- Corrected file permission preservation on Linux systems.
+- Fixed notification display on Windows 11.
+
+### Cloud provider fixes
+- OneDrive: Fixed sync issues with files in recycle bin.
+- Google Drive: Resolved shared folder permission problems.
+- Dropbox: Fixed handling of case-sensitive file names.
+- iCloud: Improved reliability for macOS Monterey and later.
+
+---
+
+## Version 3.1.2 (October 15, 2024)
+
+### Security updates
+- Patched potential security vulnerability in file transfer protocol.
+- Updated encryption libraries to latest versions.
+- Enhanced input validation for configuration files.
+- Improved secure deletion of temporary files.
+
+### Bug fixes
+- Fixed crash when importing large configuration files.
+- Resolved issue with special characters in folder paths.
+- Fixed bandwidth throttling not working correctly.
+- Corrected timezone handling in file timestamps.
+
+---
+
+## Version 3.1.1 (September 28, 2024)
+
+### Bug fixes
+- Fixed installation issues on macOS Ventura
+- Resolved sync conflicts not showing in notifications
+- Fixed memory usage growth during long sync sessions
+- Corrected file size calculation for compressed files
+- Fixed UI freezing when selecting large numbers of files
+
+### Improvements
+- Enhanced error reporting with more detailed messages
+- Improved sync reliability for unstable network connections
+- Better handling of files locked by other applications
+- Updated help documentation with latest features
+
+---
+
+## Version 3.1.0 (September 1, 2024)
+
+<Card title="🎉 Feature Release" icon="party-horn" color="#10b981">
+  Major update introducing collaborative workspaces, version history, and mobile companion apps.
+</Card>
+
+### 🎯 Major Features
+
+<CardGroup cols={2}>
+  <Card title="Collaborative Workspaces" icon="users" href="#collaborative-workspaces">
+    Share and collaborate on project folders with team members in real-time.
+  </Card>
+  <Card title="Version History" icon="clock-rotate-left" href="#version-history">
+    Access and restore previous file versions with comprehensive change tracking.
+  </Card>
+  <Card title="Advanced Scheduling" icon="calendar-clock" href="#advanced-scheduling">
+    Granular control over sync timing with custom schedules and rules.
+  </Card>
+  <Card title="Mobile Companion Apps" icon="mobile" href="#mobile-apps">
+    iOS and Android apps for seamless file access on the go.
+  </Card>
+</CardGroup>
+
+### 🏢 Enterprise Features
+
+<Tabs>
+  <Tab title="Authentication">
+    - Single Sign-On (SSO) integration with SAML 2.0
+    - Multi-factor authentication support
+    - Active Directory integration
+    - Custom authentication providers
+  </Tab>
+  
+  <Tab title="Compliance">
+    - Advanced audit logging and compliance reporting
+    - Data retention policies
+    - GDPR and HIPAA compliance tools
+    - Legal hold capabilities
+  </Tab>
+  
+  <Tab title="Management">
+    - Group policy support for Windows domains
+    - Centralized license management
+    - Usage analytics and reporting
+    - Priority technical support with SLA
+  </Tab>
+</Tabs>
+
+### 🔌 API Enhancements
+
+```json
+{
+  "version": "2.0",
+  "features": [
+    "RESTful API with improved endpoints",
+    "Webhook support for real-time notifications", 
+    "SDK libraries for popular programming languages",
+    "GraphQL interface for advanced queries",
+    "Rate limiting and usage analytics"
+  ]
+}
+```
+
+### 🎨 User Interface
+
+<Steps>
+  <Step title="Modern Design">
+    Completely redesigned interface with contemporary aesthetics and improved usability.
+  </Step>
+  <Step title="Customizable Dashboard">
+    Drag-and-drop widgets to create personalized workspace views.
+  </Step>
+  <Step title="Advanced Search">
+    Enhanced search capabilities with filters, tags, and content indexing.
+  </Step>
+  <Step title="Accessibility">
+    Improved screen reader support and keyboard navigation.
+  </Step>
+</Steps>
+
+---
+
+## Version 3.0.2 (July 20, 2024)
+
+### 🚨 Critical Fixes
+
+<Tip>
+This release addresses several critical issues. Upgrade immediately if you're experiencing sync failures or data integrity issues.
+</Tip>
+
+- Fixed data loss issue when syncing very large files (>10 GB)
+- Resolved authentication token expiration causing sync failures  
+- Fixed potential race condition in concurrent file operations
+- Corrected file checksum verification for interrupted transfers
+
+### 📈 Stability Improvements
+
+| Component | Improvement | Impact |
+|-----------|-------------|---------|
+| Error Recovery | Enhanced mechanisms | 45% fewer sync failures |
+| Network Handling | Better timeout management | 30% more reliable connections |
+| Temp Files | Improved cleanup | 50% less disk space usage |
+| Crash Prevention | Better exception handling | 60% fewer application crashes |
+
+---
+
+## Beta Releases
+
+### Version 3.4.0-beta.2 (March 15, 2025)
+
+<Warning>
+**Beta Software**: This is pre-release software. Use with caution in production environments.
+</Warning>
+
+#### 🧪 Experimental Features
+
+<AccordionGroup>
+  <Accordion title="🤖 AI-Powered Conflict Resolution">
+    **Status**: 85% complete
+    
+    - Automatic resolution of common file conflicts using machine learning
+    - Smart merge suggestions for document conflicts
+    - Learning from user resolution patterns
+    
+    **Known Issues**:
+    - May not handle complex spreadsheet conflicts correctly
+    - Performance impact on systems with limited RAM
+  </Accordion>
+
+  <Accordion title="🌐 Distributed Sync Network">
+    **Status**: 60% complete
+    
+    - Peer-to-peer file sharing between team members
+    - Reduced bandwidth usage through intelligent routing
+    - Offline collaboration capabilities
+    
+    **Known Issues**:
+    - NAT traversal may fail in some network configurations
+    - Security model still being refined
+  </Accordion>
+
+  <Accordion title="📊 Real-Time Collaboration">
+    **Status**: 40% complete
+    
+    - Live editing indicators and cursors
+    - Real-time document merging
+    - Integrated chat and commenting
+    
+    **Known Issues**:
+    - Limited to text files only
+    - May cause conflicts with some third-party editors
+  </Accordion>
+</AccordionGroup>
+
+#### 🔍 Testing Instructions
+
+<CodeGroup>
+```bash Terminal
+# Download beta version
+curl -L https://beta.cirrus-sync.com/v3.4.0-beta.2 -o cirrus-sync-beta.zip
+
+# Install (backup your data first!)
+./install-beta.sh --version=3.4.0-beta.2
+```
+
+```powershell PowerShell
+# Download beta version (Windows)
+Invoke-WebRequest -Uri "https://beta.cirrus-sync.com/v3.4.0-beta.2-win.exe" -OutFile "cirrus-sync-beta.exe"
+
+# Install (backup your data first!)
+.\cirrus-sync-beta.exe /S /BETA
+```
+</CodeGroup>
+
+#### 📝 Feedback
+
+Help us improve! Send feedback to:
+- **Bug Reports**: [beta-bugs@cirrus-sync.com](mailto:beta-bugs@cirrus-sync.com)
+- **Feature Requests**: [beta-feedback@cirrus-sync.com](mailto:beta-feedback@cirrus-sync.com)  
+- **Beta Forum**: [community.cirrus-sync.com/beta](https://community.cirrus-sync.com/beta)
+
+---
+
+### Version 3.4.0-beta.1 (March 1, 2025)
+
+#### 🎯 Focus Areas
+
+This beta introduces the foundation for our next-generation sync engine:
+
+<Tabs>
+  <Tab title="Performance">
+    - New multi-threaded sync engine
+    - Reduced memory usage by 40%
+    - Faster initial sync for large folders
+  </Tab>
+  
+  <Tab title="Reliability">
+    - Enhanced error recovery
+    - Better handling of network interruptions
+    - Improved conflict detection algorithms
+  </Tab>
+  
+  <Tab title="Security">
+    - Post-quantum cryptography preparation
+    - Enhanced audit logging
+    - Improved access controls
+  </Tab>
+</Tabs>
+
+#### ⚠️ Breaking Changes
+
+<Warning>
+**Configuration Migration Required**: Beta versions use a new configuration format. Your settings will be automatically migrated, but we recommend backing up your configuration first.
+</Warning>
+
+1. **API Changes**: Some REST API endpoints have changed
+2. **Plugin Interface**: Custom plugins need to be updated
+3. **Database Schema**: Local database will be upgraded (irreversible)
+
+---
+
+## Version Support Matrix
+
+<Info>
+We maintain multiple versions to ensure enterprise customers have stable, supported options.
+</Info>
+
+| Version | Status | Support Level | End of Life |
+|---------|--------|---------------|-------------|
+| 3.3.x | 🟢 Current | Full support + new features | TBD |
+| 3.2.x | 🟡 Maintenance | Security updates only | June 2025 |
+| 3.1.x | 🟠 Limited | Critical fixes only | March 2025 |
+| 3.0.x | 🔴 End of Life | No support | January 2025 |
+| 2.x.x | 🔴 End of Life | No support | June 2024 |
+
+### Upgrade Paths
+
+<Steps>
+  <Step title="Assessment">
+    Check your current version and review breaking changes in the target version.
+  </Step>
+  <Step title="Backup">
+    Create a full backup of your configuration and critical sync folders.
+  </Step>
+  <Step title="Testing">
+    Test the new version in a non-production environment first.
+  </Step>
+  <Step title="Migration">
+    Follow our detailed migration guides for major version upgrades.
+  </Step>
+</Steps>
+
+---
+
+## Version 3.0.2 (July 20, 2024)
+
+### Critical fixes
+- Fixed data loss issue when syncing very large files (>10 GB)
+- Resolved authentication token expiration causing sync failures
+- Fixed potential race condition in concurrent file operations
+- Corrected file checksum verification for interrupted transfers
+
+### Stability improvements
+- Enhanced error recovery mechanisms
+- Improved handling of network timeouts
+- Better management of temporary files
+- Reduced application crashes during heavy usage
+
+---
+
+## Version 3.0.1 (June 15, 2024)
+
+### Bug fixes
+- Fixed compatibility issues with Windows 11 22H2
+- Resolved sync failures for files with long paths
+- Fixed UI rendering issues on high-DPI displays
+- Corrected time zone handling in sync logs
+- Fixed installer issues on systems with limited permissions
+
+### Performance
+- Optimized database queries for better responsiveness
+- Improved memory management during sync operations
+- Enhanced startup time for users with many sync folders
+- Better handling of large directory structures
+
+---
+
+## Version 3.0.0 (May 1, 2024)
+
+### Revolutionary features
+- **Real-Time Collaboration** - Multiple users can edit files simultaneously
+- **AI-Powered Conflict Resolution** - Automatic resolution of common conflicts
+- **Cross-Platform Sync** - Seamless synchronization across Windows, macOS, and Linux
+- **Advanced Security** - End-to-end encryption with zero-knowledge architecture
+- **Smart Bandwidth Management** - Adaptive throttling based on network conditions
+
+### Breaking changes
+- Configuration file format updated (automatic migration provided)
+- Minimum system requirements increased
+- API v1 deprecated (will be removed in version 4.0)
+- Legacy sync protocols no longer supported
+
+### Cloud provider support
+- Added support for Box, pCloud, and MEGA
+- Enhanced Google Workspace integration
+- Improved Microsoft 365 compatibility
+- Added Amazon S3 support for enterprise users
+
+### Developer tools
+- Comprehensive REST API for third-party integrations
+- Plugin architecture for custom extensions
+- Command-line interface for automation
+- Detailed logging and debugging tools
+
+---
+
+## Earlier versions
+
+### Version 2.5.x series (2023)
+- Introduced Smart Sync technology
+- Added support for Apple Silicon Macs
+- Enhanced security with two-factor authentication
+- Improved conflict resolution algorithms
+
+### Version 2.0.x series (2022)
+- Major UI overhaul with modern design
+- Added support for OneDrive and iCloud
+- Introduced team collaboration features
+- Enhanced performance and reliability
+
+### Version 1.x series (2021)
+- Initial release with Google Drive and Dropbox support
+- Basic file synchronization functionality
+- Cross-platform compatibility
+- Foundation for future development
+
+---
+
+## Upcoming features
+
+### Version 3.3.0 (planned Q2 2025)
+- **AI File Organization** - Automatic file categorization and organization
+- **Advanced Analytics** - Detailed sync statistics and insights
+- **Enhanced Mobile Apps** - Offline editing and improved performance
+- **Backup Integration** - Direct integration with popular backup services
+
+### Version 4.0.0 (planned Q4 2025)
+- **Next-Generation Sync Engine** - Complete rewrite for maximum performance
+- **Quantum-Safe Encryption** - Future-proof security implementation
+- **Unified Cloud Storage** - Combine multiple providers into single virtual drive
+- **Advanced AI Features** - Content analysis and smart recommendations
+
+---
+
+## Support information
+
+For questions about specific versions or upgrade procedures:
+
+- **Documentation**: [docs.cloudsync-pro.com](https://docs.cloudsync-pro.com)
+- **Support Portal**: [support.cloudsync-pro.com](https://support.cloudsync-pro.com)
+- **Community Forum**: [community.cloudsync-pro.com](https://community.cloudsync-pro.com)
+- **Email Support**: support@cloudsync-pro.com
+
+### Version support policy
+
+- **Current Version (3.2.x)**: Full support with regular updates
+- **Previous Major (3.1.x)**: Security updates only
+- **Legacy Versions (3.0.x and earlier)**: No longer supported
+
+Keep Cirrus Sync updated to the latest version for optimal performance, security, and access to new features.

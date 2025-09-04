@@ -12,6 +12,11 @@
     "dark": "/logo/activeviam-logo.png",
     "href": "https://www.activeviam.com/"
   },
+  "api": {
+    "playground": {
+      "display": "interactive"
+    }
+  },
   "navigation": {
     "tabs": [
       {
@@ -29,7 +34,9 @@
             "group": "General",
             "pages": [
               "changelog",
-              "getting-started"
+              "release-notes",
+              "getting-started",
+              "quick-setup"
             ]
           },
           {
@@ -41,11 +48,17 @@
           {
             "group": "Developers",
             "pages": [
-              "dev-guide/api-reference",
               "dev-guide/configuration",
               "dev-guide/troubleshooting"
             ]
           }
+        ]
+      },
+      {
+        "tab": "API Reference",
+        "openapi": "/openapi.yaml",
+        "pages": [
+          "api-overview"
         ]
       }
     ]
