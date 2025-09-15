@@ -1,5 +1,5 @@
 {
-  "theme": "mint",
+  "theme": "maple",
   "name": "Cirrus Sync Documentation",
   "colors": {
     "primary": "#291a40",
@@ -45,6 +45,10 @@
               "dev-guide/configuration",
               "dev-guide/troubleshooting"
             ]
+          },
+          {
+            "group": "Limits API Reference",
+            "openapi": "/limits-openapi.json"
           }
         ]
       }
