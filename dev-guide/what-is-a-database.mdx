@@ -232,28 +232,60 @@ Reduce storage requirements and transfer times:
 Cirrus Sync provides comprehensive security customization options to meet enterprise and compliance requirements:
 
 ### Access control
-- **Role-based permissions** - Define user roles with specific sync capabilities
-- **Directory-level access** - Control which folders users can sync
-- **File-level restrictions** - Prevent syncing of sensitive file types
-- **Time-based access** - Limit sync operations to specific time windows
+
+Define granular permissions for users and groups:
+
+- **Role-based permissions** - Define user roles with specific sync capabilities (admin, editor, viewer)
+- **Directory-level access** - Control which folders users can sync (e.g., HR folder restricted to HR team)
+- **File-level restrictions** - Prevent syncing of sensitive file types (.key, .pem, .p12 files)
+- **Time-based access** - Limit sync operations to business hours (9 AM - 6 PM)
+
+**Example access control configuration:**
+```json
+{
+  "accessControl": {
+    "roles": {
+      "editor": {
+        "permissions": ["read", "write", "sync"],
+        "directories": ["/shared", "/projects"],
+        "excludeFileTypes": [".key", ".pem", ".p12"]
+      },
+      "viewer": {
+        "permissions": ["read"],
+        "directories": ["/shared"],
+        "timeRestrictions": "09:00-18:00"
+      }
+    }
+  }
+}
+```
 
 ### Encryption options
-- **Client-side encryption** - Encrypt files before uploading to cloud storage
+
+Protect data with enterprise-grade encryption:
+
+- **Client-side encryption** - Encrypt files before uploading (AES-256 encryption)
 - **Custom encryption keys** - Use your own encryption keys for maximum security
-- **Key rotation policies** - Automatically rotate encryption keys on schedule
+- **Key rotation policies** - Automatically rotate encryption keys every 90 days
 - **Zero-knowledge architecture** - Ensure service providers cannot access your data
 
 ### Audit and compliance
-- **Activity logging** - Comprehensive logs of all sync operations and user actions
-- **Compliance reporting** - Generate reports for regulatory requirements
-- **Data retention policies** - Automatically manage file lifecycle and deletion
-- **Forensic capabilities** - Detailed tracking for security investigations
+
+Meet regulatory requirements with comprehensive tracking:
+
+- **Activity logging** - Log all sync operations, user actions, and system events
+- **Compliance reporting** - Generate GDPR, HIPAA, SOX compliance reports
+- **Data retention policies** - Automatically delete files after specified periods (e.g., 7 years)
+- **Forensic capabilities** - Detailed tracking for security investigations and incident response
 
 ### Network security
+
+Secure network communications and access:
+
 - **VPN integration** - Require VPN connection for sync operations
-- **IP whitelisting** - Restrict sync access to specific IP addresses or ranges
-- **Certificate pinning** - Prevent man-in-the-middle attacks
-- **Custom SSL certificates** - Use your organization's SSL certificates
+- **IP whitelisting** - Restrict sync access to specific IP addresses (e.g., office networks only)
+- **Certificate pinning** - Prevent man-in-the-middle attacks with SSL certificate validation
+- **Custom SSL certificates** - Use your organization's SSL certificates for enhanced trust
 
 ## What are the best practices for customization?
 
