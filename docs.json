@@ -25,7 +25,7 @@
       {
         "tab": "Guides",
         "groups": [
-                    {
+          {
             "group": "General",
             "pages": [
               "changelog",
@@ -42,9 +42,11 @@
             "group": "Developers",
             "pages": [
               "dev-guide/introduction",
+              "dev-guide/what-is-a-database",
               "dev-guide/api-reference",
               "dev-guide/configuration",
-              "dev-guide/troubleshooting"
+              "dev-guide/troubleshooting",
+              "dev-guide/conclusion"
             ]
           }
         ]

@@ -77,9 +77,23 @@ import { productName } from '/snippets/custom-variables.mdx';
 }
 ```
 
+### Multithreading
+
+Cirrus sync uses multithreading to improve performance and efficiency. This is a technique where tasks are split into multiple threads that can be executed concurrently.
+
+The sync client uses these multiple threads to:
+- Scan the local file for changes or for deleted files
+- Upload or download updates  
+- Compute differences
+
 **Sync Types:**
+- `bidirectional` - Synchronizes changes in both directions
+- `updoots only` - Only uploads local changes to remote
+- `downdoots when felt like` - Downloads remote changes when conditions are met
 
 **Conflict Resolution:**
+- `manual` - Requires user intervention to resolve conflicts
+- `last write is best write` - Automatically uses the most recently modified version
 
 ### Performance tuning
 
