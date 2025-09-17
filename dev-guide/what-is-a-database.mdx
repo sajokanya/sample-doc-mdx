@@ -1,288 +1,318 @@
 ---
-title: What is a database
-description: Complete guide to database fundamentals including schemas, normalization, table relationships, field types, and database design patterns for developers.
+title: Customization guide
+description: Customize Cirrus Sync with advanced configuration, sync rules, integrations, performance optimizations, and security policies. Complete developer guide with examples.
 ---
 
-# What is a database
+# Customization guide
 
-A database is a structured collection of data that is organized, stored, and managed in a way that allows for efficient retrieval, updating, and manipulation. Databases serve as the foundation for most modern applications, providing persistent storage and data management capabilities.
+Cirrus Sync offers extensive customization options to tailor synchronization behavior to your specific requirements. This comprehensive guide covers advanced configuration techniques, custom integrations, and extensibility patterns for developers.
 
-## What is a database schema
+## How do I customize sync behavior?
 
-A database schema is the structural blueprint that defines how data is organized within a database. It specifies the logical configuration of all or part of a relational database, including:
+Cirrus Sync offers multiple levels of customization to adapt to your specific workflow requirements:
 
-- **Tables and their relationships** - How different data entities connect to each other
-- **Column definitions** - What type of data each field can contain
-- **Constraints and rules** - Data validation and integrity requirements
-- **Indexes** - Performance optimization structures
-- **Views and procedures** - Reusable query logic
+### Sync patterns
 
-The schema acts as a contract between the database and applications, ensuring data consistency and providing a clear understanding of the data structure for developers and database administrators.
+Choose the synchronization pattern that best fits your workflow:
 
-## Rules for data normalization
+- **Bidirectional sync** - Changes flow in both directions between local and remote locations
+- **Upload-only sync** - Local changes push to remote, but remote changes are ignored
+- **Download-only sync** - Remote changes pull locally, but local changes don't upload
+- **Mirror sync** - Local directory becomes an exact copy of the remote directory
 
-Data normalization is the process of organizing data in a database to reduce redundancy and improve data integrity. The normalization process follows specific rules called normal forms:
-
-### First Normal Form (1NF)
-- Each table cell contains only atomic (indivisible) values
-- Each column contains values of a single type
-- Each column has a unique name
-- The order of rows and columns doesn't matter
-
-### Second Normal Form (2NF)
-- Must satisfy 1NF requirements
-- All non-key attributes must be fully functionally dependent on the primary key
-- Eliminates partial dependencies on composite primary keys
-
-### Third Normal Form (3NF)
-- Must satisfy 2NF requirements
-- No transitive dependencies - non-key attributes should not depend on other non-key attributes
-- Each non-key attribute must depend directly on the primary key
-
-### Benefits of normalization
-- Reduces data redundancy
-- Improves data consistency
-- Minimizes storage space
-- Simplifies data maintenance
-- Prevents update anomalies
-
-## Database table types and relationships
-
-### Base tables and reference tables
-
-**Base tables** contain the primary business data and represent core entities in your application:
-- Customer information
-- Product catalogs
-- Order records
-- User accounts
-- Transaction logs
-
-**Reference tables** (also called lookup tables) store standardized values that other tables reference:
-- Country codes
-- Status types
-- Category classifications
-- Configuration settings
-- Enumerated values
-
-Reference tables help maintain data consistency and reduce storage by avoiding repeated text values throughout the database.
-
-### Mapping
-
-Database mapping refers to the process of defining relationships between different data entities. This includes:
-
-- **Entity-relationship mapping** - How real-world objects translate to database tables
-- **Object-relational mapping (ORM)** - How application objects correspond to database records
-- **Data type mapping** - How different systems represent the same data types
-- **Schema mapping** - How data structures translate between different database systems
-
-### Table joins
-
-Table joins combine data from multiple tables based on related columns. Common join types include:
-
-**Inner Join**
-```sql
-SELECT customers.name, orders.total
-FROM customers
-INNER JOIN orders ON customers.id = orders.customer_id;
+**Configuration example:**
+```json
+{
+  "syncPattern": "bidirectional",
+  "conflictResolution": "manual"
+}
 ```
 
-**Left Join**
-```sql
-SELECT customers.name, orders.total
-FROM customers
-LEFT JOIN orders ON customers.id = orders.customer_id;
+### File filtering
+
+Control which files participate in synchronization:
+
+- **Include/exclude patterns** - Use glob patterns to specify which files to sync
+- **File size limits** - Set maximum file sizes for synchronization (e.g., 100MB limit)
+- **File type restrictions** - Limit sync to specific file extensions (.pdf, .docx, .jpg)
+- **Hidden file handling** - Choose whether to sync hidden files and system files
+
+**Example filter configuration:**
+```json
+{
+  "filters": {
+    "include": ["*.pdf", "*.docx", "documents/**"],
+    "exclude": ["*.tmp", "node_modules/**", ".git/**"],
+    "maxFileSize": "100MB",
+    "syncHiddenFiles": false
+  }
+}
 ```
 
-**Right Join**
-```sql
-SELECT customers.name, orders.total
-FROM customers
-RIGHT JOIN orders ON customers.id = orders.customer_id;
+### Conflict resolution strategies
+
+Define how to handle file conflicts automatically:
+
+- **Manual resolution** - Prompt user to choose which version to keep
+- **Latest wins** - Automatically use the most recently modified version
+- **Local wins** - Always prefer the local version during conflicts
+- **Remote wins** - Always prefer the remote version during conflicts
+
+## What are custom sync rules?
+
+Custom sync rules allow you to define sophisticated logic for how files are synchronized based on various criteria:
+
+### File-based rules
+
+Target specific files using these criteria:
+
+- **Path matching** - Apply rules based on file paths using wildcards and regex patterns
+- **Extension filtering** - Target specific file types for different sync behaviors
+- **Size thresholds** - Handle large files differently than small files (e.g., >50MB files upload during off-hours)
+- **Date-based rules** - Sync files based on creation or modification dates
+
+**Example rule configuration:**
+```json
+{
+  "rules": [
+    {
+      "name": "Large file handling",
+      "condition": "fileSize > 50MB",
+      "action": "scheduleOffHours",
+      "priority": 1
+    },
+    {
+      "name": "Image optimization",
+      "condition": "extension in ['.jpg', '.png', '.gif']",
+      "action": "compress",
+      "settings": {"quality": 85}
+    }
+  ]
+}
 ```
 
-**Full Outer Join**
-```sql
-SELECT customers.name, orders.total
-FROM customers
-FULL OUTER JOIN orders ON customers.id = orders.customer_id;
+### Content-based rules
+
+Apply rules based on file content and metadata:
+
+- **Metadata filtering** - Use file metadata to determine sync behavior
+- **Content scanning** - Apply rules based on file content analysis
+- **Checksum validation** - Ensure file integrity during synchronization
+- **Version detection** - Handle versioned files with custom logic
+
+### Advanced rule conditions
+
+Create complex rule logic:
+
+- **Conditional logic** - Combine multiple criteria with AND/OR operators
+- **Time-based triggers** - Execute rules at specific times or intervals
+- **User context** - Apply different rules based on the current user
+- **System state** - Modify behavior based on network conditions or system resources
+
+### Rule priority and inheritance
+
+Manage rule execution order:
+
+- **Rule ordering** - Define execution priority for overlapping rules (1 = highest priority)
+- **Inheritance patterns** - Apply parent directory rules to subdirectories
+- **Override mechanisms** - Allow specific rules to override general ones
+- **Conflict resolution** - Handle situations where multiple rules apply
+
+## How can I create custom integrations?
+
+Cirrus Sync provides multiple integration points to extend functionality and connect with external systems:
+
+### API integrations
+- **REST API endpoints** - Full programmatic access to sync operations and configuration
+- **Webhook notifications** - Real-time events for sync status changes and file operations
+- **GraphQL interface** - Flexible querying for complex data relationships
+- **Batch operations** - Efficient handling of bulk sync operations
+
+### Plugin architecture
+- **Pre-sync hooks** - Execute custom logic before synchronization begins
+- **Post-sync hooks** - Perform actions after sync completion
+- **File processors** - Transform files during the sync process
+- **Custom providers** - Add support for additional cloud storage services
+
+### Event-driven customization
+- **File change events** - React to specific file modifications or additions
+- **Sync lifecycle events** - Hook into different phases of the synchronization process
+- **Error handling events** - Custom logic for handling sync failures and retries
+- **User interaction events** - Respond to user actions and preferences
+
+### Configuration examples
+
+**Custom webhook integration:**
+```json
+{
+  "webhooks": {
+    "syncComplete": "https://your-app.com/api/sync-complete",
+    "syncError": "https://your-app.com/api/sync-error",
+    "fileConflict": "https://your-app.com/api/file-conflict"
+  }
+}
 ```
 
-### Key fields
+**Plugin configuration:**
+```json
+{
+  "plugins": {
+    "imageProcessor": {
+      "enabled": true,
+      "resizeImages": true,
+      "maxWidth": 1920,
+      "quality": 85
+    },
+    "documentConverter": {
+      "enabled": true,
+      "convertToPDF": ["docx", "odt"],
+      "preserveOriginal": true
+    }
+  }
+}
+```
 
-Key fields are columns that uniquely identify records or establish relationships between tables:
+## What performance optimizations are available?
 
-**Primary Key**
-- Uniquely identifies each record in a table
-- Cannot contain NULL values
-- Must be unique across all records
-- Typically auto-incrementing integers or UUIDs
+Cirrus Sync offers several performance optimization options to ensure efficient synchronization:
 
-**Foreign Key**
-- References the primary key of another table
-- Establishes relationships between tables
-- Enforces referential integrity
-- Can contain NULL values (unless specified otherwise)
+### Bandwidth management
 
-**Composite Key**
-- Combination of multiple columns that together form a unique identifier
-- Used when no single column can uniquely identify records
+Control network usage to optimize sync performance:
 
-**Candidate Key**
-- Any column or combination of columns that could serve as a primary key
-- Must be unique and not null
+- **Upload/download limits** - Set maximum bandwidth usage (e.g., 10 Mbps during business hours)
+- **Adaptive throttling** - Automatically adjust sync speed based on network conditions
+- **Priority queuing** - Prioritize critical files over less important ones
+- **Scheduled syncing** - Perform large file transfers during off-peak hours (e.g., 2-6 AM)
 
-### Star schema
+**Example bandwidth configuration:**
+```json
+{
+  "bandwidth": {
+    "maxUpload": "10Mbps",
+    "maxDownload": "20Mbps",
+    "adaptiveThrottling": true,
+    "schedule": {
+      "offPeakHours": "02:00-06:00",
+      "offPeakBandwidth": "unlimited"
+    }
+  }
+}
+```
 
-A star schema is a database design pattern commonly used in data warehousing and business intelligence applications. It consists of:
+### Caching strategies
 
-**Fact Table (Center)**
-- Contains quantitative data (metrics, measurements)
-- Stores foreign keys to dimension tables
-- Typically contains large volumes of data
-- Examples: sales transactions, website clicks, sensor readings
+Improve sync efficiency with intelligent caching:
 
-**Dimension Tables (Points of the Star)**
-- Contain descriptive attributes
-- Provide context for fact table data
-- Typically smaller than fact tables
-- Examples: customer details, product information, time periods
+- **Local metadata cache** - Store file information locally to reduce API calls by 80%
+- **Content-based deduplication** - Avoid uploading identical files multiple times
+- **Delta synchronization** - Only sync changed portions of files (saves 60-90% bandwidth)
+- **Predictive prefetching** - Pre-download files likely to be accessed soon
 
-**Benefits of Star Schema:**
-- Simple and intuitive design
-- Optimized for read-heavy operations
-- Excellent query performance
-- Easy to understand and maintain
-- Supports efficient data aggregation
+### Parallel processing
 
-### Isolated tables
+Maximize throughput with concurrent operations:
 
-Isolated tables are database tables that have no foreign key relationships with other tables in the schema. These tables:
+- **Concurrent transfers** - Upload/download multiple files simultaneously (default: 5 concurrent)
+- **Thread pool optimization** - Efficiently manage system resources
+- **Batch operations** - Group small operations for better efficiency
+- **Asynchronous processing** - Non-blocking operations for better responsiveness
 
-- Stand alone without dependencies
-- Often used for configuration data
-- May contain temporary or staging data
-- Can be system tables for application metadata
-- Useful for audit logs or historical data
+### Storage optimization
 
-While isolated tables can be appropriate in certain scenarios, excessive use may indicate poor database design or missed relationship opportunities.
+Reduce storage requirements and transfer times:
 
-## Database fields and data types
+- **Compression algorithms** - Reduce file sizes during transfer (up to 70% reduction)
+- **Smart chunking** - Break large files into optimal-sized pieces (default: 8MB chunks)
+- **Temporary file management** - Efficiently handle intermediate files
+- **Cleanup automation** - Remove unnecessary temporary and cache files daily
 
-Database fields (columns) store different types of data, each with specific characteristics and use cases:
+## How do I implement custom security policies?
 
-### Numeric types
+Cirrus Sync provides comprehensive security customization options to meet enterprise and compliance requirements:
 
-**Integer Types**
-- `TINYINT` - Small integers (-128 to 127)
-- `SMALLINT` - Small integers (-32,768 to 32,767)
-- `INT` - Standard integers (-2,147,483,648 to 2,147,483,647)
-- `BIGINT` - Large integers (very large range)
+### Access control
 
-**Decimal Types**
-- `DECIMAL(p,s)` - Fixed-point numbers with precision and scale
-- `NUMERIC(p,s)` - Similar to DECIMAL, exact numeric values
-- `FLOAT` - Floating-point numbers (approximate)
-- `DOUBLE` - Double-precision floating-point numbers
+Define granular permissions for users and groups:
 
-### String types
+- **Role-based permissions** - Define user roles with specific sync capabilities (admin, editor, viewer)
+- **Directory-level access** - Control which folders users can sync (e.g., HR folder restricted to HR team)
+- **File-level restrictions** - Prevent syncing of sensitive file types (.key, .pem, .p12 files)
+- **Time-based access** - Limit sync operations to business hours (9 AM - 6 PM)
 
-**Fixed-Length Strings**
-- `CHAR(n)` - Fixed-length character strings
-- Always uses the specified number of characters
-- Padded with spaces if shorter than defined length
+**Example access control configuration:**
+```json
+{
+  "accessControl": {
+    "roles": {
+      "editor": {
+        "permissions": ["read", "write", "sync"],
+        "directories": ["/shared", "/projects"],
+        "excludeFileTypes": [".key", ".pem", ".p12"]
+      },
+      "viewer": {
+        "permissions": ["read"],
+        "directories": ["/shared"],
+        "timeRestrictions": "09:00-18:00"
+      }
+    }
+  }
+}
+```
 
-**Variable-Length Strings**
-- `VARCHAR(n)` - Variable-length character strings
-- Uses only the space needed for actual content
-- Maximum length specified by n
+### Encryption options
 
-**Text Types**
-- `TEXT` - Large amounts of text data
-- `LONGTEXT` - Very large text fields
-- `CLOB` - Character Large Objects
+Protect data with enterprise-grade encryption:
 
-### Date and time types
+- **Client-side encryption** - Encrypt files before uploading (AES-256 encryption)
+- **Custom encryption keys** - Use your own encryption keys for maximum security
+- **Key rotation policies** - Automatically rotate encryption keys every 90 days
+- **Zero-knowledge architecture** - Ensure service providers cannot access your data
 
-- `DATE` - Date values (YYYY-MM-DD)
-- `TIME` - Time values (HH:MM:SS)
-- `DATETIME` - Combined date and time
-- `TIMESTAMP` - Date and time with timezone information
-- `YEAR` - Year values (2-digit or 4-digit)
+### Audit and compliance
 
-### Boolean types
+Meet regulatory requirements with comprehensive tracking:
 
-- `BOOLEAN` - True/false values
-- `BIT` - Single bit values (0 or 1)
-- Often implemented as TINYINT(1) in some databases
+- **Activity logging** - Log all sync operations, user actions, and system events
+- **Compliance reporting** - Generate GDPR, HIPAA, SOX compliance reports
+- **Data retention policies** - Automatically delete files after specified periods (e.g., 7 years)
+- **Forensic capabilities** - Detailed tracking for security investigations and incident response
 
-### Binary types
+### Network security
 
-- `BINARY(n)` - Fixed-length binary data
-- `VARBINARY(n)` - Variable-length binary data
-- `BLOB` - Binary Large Objects for files, images, etc.
+Secure network communications and access:
 
-### JSON and XML types
+- **VPN integration** - Require VPN connection for sync operations
+- **IP whitelisting** - Restrict sync access to specific IP addresses (e.g., office networks only)
+- **Certificate pinning** - Prevent man-in-the-middle attacks with SSL certificate validation
+- **Custom SSL certificates** - Use your organization's SSL certificates for enhanced trust
 
-- `JSON` - JavaScript Object Notation data
-- `XML` - Extensible Markup Language data
-- Support for structured document storage and querying
+## What are the best practices for customization?
 
-### Specialized types
+Follow these guidelines to ensure successful Cirrus Sync customization:
 
-**UUID/GUID**
-- Universally Unique Identifiers
-- 128-bit values for unique record identification
+### Configuration management
+- **Version control** - Track configuration changes using version control systems
+- **Environment separation** - Use different configurations for development, staging, and production
+- **Backup strategies** - Regularly backup configuration files and custom rules
+- **Documentation** - Document all customizations and their business rationale
 
-**Enum**
-- Predefined list of allowed values
-- Ensures data consistency for categorical data
+### Performance considerations
+- **Resource monitoring** - Monitor system resources during sync operations
+- **Gradual rollouts** - Test customizations with small user groups first
+- **Fallback mechanisms** - Implement fallback options for critical customizations
+- **Regular optimization** - Periodically review and optimize custom rules and integrations
 
-**Array Types**
-- Store multiple values in a single field
-- Supported by some modern databases like PostgreSQL
+### Security best practices
+- **Principle of least privilege** - Grant minimum necessary permissions
+- **Regular security reviews** - Audit customizations for security vulnerabilities
+- **Secure credential storage** - Use secure methods to store API keys and passwords
+- **Update management** - Keep custom integrations updated with security patches
 
-### Field constraints
+### Maintenance and support
+- **Monitoring and alerting** - Set up monitoring for custom integrations and rules
+- **Error handling** - Implement robust error handling and recovery mechanisms
+- **User training** - Provide training for users on customized features
+- **Support documentation** - Create internal documentation for troubleshooting custom features
 
-**NOT NULL**
-- Prevents empty values in the field
-- Ensures data completeness
-
-**UNIQUE**
-- Ensures all values in the field are different
-- Prevents duplicate entries
-
-**DEFAULT**
-- Provides automatic value when none is specified
-- Simplifies data insertion
-
-**CHECK**
-- Validates data against custom conditions
-- Enforces business rules at the database level
-
-## Best practices for database design
-
-### Choose appropriate data types
-- Use the smallest data type that can accommodate your data
-- Consider future growth when sizing fields
-- Use appropriate precision for numeric data
-- Choose between fixed and variable-length strings based on usage patterns
-
-### Implement proper indexing
-- Create indexes on frequently queried columns
-- Use composite indexes for multi-column queries
-- Monitor and maintain index performance
-- Avoid over-indexing which can slow down write operations
-
-### Maintain referential integrity
-- Use foreign key constraints to enforce relationships
-- Implement cascade rules for related data updates
-- Design clear primary key strategies
-- Consider using UUIDs for distributed systems
-
-### Plan for scalability
-- Design schemas that can grow with your application
-- Consider partitioning strategies for large tables
-- Plan for read replicas and load distribution
-- Design with caching strategies in mind
-
-Understanding these database fundamentals provides the foundation for building robust, scalable applications with efficient data management and retrieval capabilities.
+Understanding these customization options and best practices enables you to tailor Cirrus Sync to your specific requirements while maintaining security, performance, and reliability.
