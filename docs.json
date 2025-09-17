@@ -41,6 +41,7 @@
           {
             "group": "Developers",
             "pages": [
+              "dev-guide/introduction",
               "dev-guide/api-reference",
               "dev-guide/configuration",
               "dev-guide/troubleshooting"
