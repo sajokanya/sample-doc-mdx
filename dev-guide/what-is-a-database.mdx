@@ -29,32 +29,33 @@ Cirrus Sync offers multiple levels of customization to adapt to your specific wo
 - **Local wins** - Always prefer the local version during conflicts
 - **Remote wins** - Always prefer the remote version during conflicts
 
-## Rules for data normalization
+## What are custom sync rules?
 
-Data normalization is the process of organizing data in a database to reduce redundancy and improve data integrity. The normalization process follows specific rules called normal forms:
+Custom sync rules allow you to define sophisticated logic for how files are synchronized based on various criteria:
 
-### First Normal Form (1NF)
-- Each table cell contains only atomic (indivisible) values
-- Each column contains values of a single type
-- Each column has a unique name
-- The order of rows and columns doesn't matter
+### File-based rules
+- **Path matching** - Apply rules based on file paths using wildcards and regex patterns
+- **Extension filtering** - Target specific file types for different sync behaviors
+- **Size thresholds** - Handle large files differently than small files
+- **Date-based rules** - Sync files based on creation or modification dates
 
-### Second Normal Form (2NF)
-- Must satisfy 1NF requirements
-- All non-key attributes must be fully functionally dependent on the primary key
-- Eliminates partial dependencies on composite primary keys
+### Content-based rules
+- **Metadata filtering** - Use file metadata to determine sync behavior
+- **Content scanning** - Apply rules based on file content analysis
+- **Checksum validation** - Ensure file integrity during synchronization
+- **Version detection** - Handle versioned files with custom logic
 
-### Third Normal Form (3NF)
-- Must satisfy 2NF requirements
-- No transitive dependencies - non-key attributes should not depend on other non-key attributes
-- Each non-key attribute must depend directly on the primary key
+### Advanced rule conditions
+- **Conditional logic** - Combine multiple criteria with AND/OR operators
+- **Time-based triggers** - Execute rules at specific times or intervals
+- **User context** - Apply different rules based on the current user
+- **System state** - Modify behavior based on network conditions or system resources
 
-### Benefits of normalization
-- Reduces data redundancy
-- Improves data consistency
-- Minimizes storage space
-- Simplifies data maintenance
-- Prevents update anomalies
+### Rule priority and inheritance
+- **Rule ordering** - Define execution priority for overlapping rules
+- **Inheritance patterns** - Apply parent directory rules to subdirectories
+- **Override mechanisms** - Allow specific rules to override general ones
+- **Conflict resolution** - Handle situations where multiple rules apply
 
 ## Database table types and relationships
 
