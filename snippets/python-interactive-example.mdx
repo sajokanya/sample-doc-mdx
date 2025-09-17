@@ -4,6 +4,12 @@ description: "Description of your new file."
 ---
 
 ```python example.py
->>> {"foo": "bar", "baz": [42]}
-{"foo": "bar", "baz": [42]}
+>>> session.security.individual_roles["Rose"] |= {"ROLE_GERMANY"}
+>>> cube.restrictions
+{'ROLE_FRANCE': l['Restrictions example', 'Geography', 'Country'] == 'France', 'ROLE_GERMANY': l['Restrictions example', 'Geography', 'Country'] == 'Germany'}
+>>> rose_cube.query(m["contributors.COUNT"], levels=[l["Country"]])
+                  contributors.COUNT
+Continent Country
+Europe    France                   1
+          Germany                  1
 ```
