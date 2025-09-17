@@ -57,65 +57,58 @@ Custom sync rules allow you to define sophisticated logic for how files are sync
 - **Override mechanisms** - Allow specific rules to override general ones
 - **Conflict resolution** - Handle situations where multiple rules apply
 
-## Database table types and relationships
+## How can I create custom integrations?
 
-### Base tables and reference tables
+Cirrus Sync provides multiple integration points to extend functionality and connect with external systems:
 
-**Base tables** contain the primary business data and represent core entities in your application:
-- Customer information
-- Product catalogs
-- Order records
-- User accounts
-- Transaction logs
+### API integrations
+- **REST API endpoints** - Full programmatic access to sync operations and configuration
+- **Webhook notifications** - Real-time events for sync status changes and file operations
+- **GraphQL interface** - Flexible querying for complex data relationships
+- **Batch operations** - Efficient handling of bulk sync operations
 
-**Reference tables** (also called lookup tables) store standardized values that other tables reference:
-- Country codes
-- Status types
-- Category classifications
-- Configuration settings
-- Enumerated values
+### Plugin architecture
+- **Pre-sync hooks** - Execute custom logic before synchronization begins
+- **Post-sync hooks** - Perform actions after sync completion
+- **File processors** - Transform files during the sync process
+- **Custom providers** - Add support for additional cloud storage services
 
-Reference tables help maintain data consistency and reduce storage by avoiding repeated text values throughout the database.
+### Event-driven customization
+- **File change events** - React to specific file modifications or additions
+- **Sync lifecycle events** - Hook into different phases of the synchronization process
+- **Error handling events** - Custom logic for handling sync failures and retries
+- **User interaction events** - Respond to user actions and preferences
 
-### Mapping
+### Configuration examples
 
-Database mapping refers to the process of defining relationships between different data entities. This includes:
-
-- **Entity-relationship mapping** - How real-world objects translate to database tables
-- **Object-relational mapping (ORM)** - How application objects correspond to database records
-- **Data type mapping** - How different systems represent the same data types
-- **Schema mapping** - How data structures translate between different database systems
-
-### Table joins
-
-Table joins combine data from multiple tables based on related columns. Common join types include:
-
-**Inner Join**
-```sql
-SELECT customers.name, orders.total
-FROM customers
-INNER JOIN orders ON customers.id = orders.customer_id;
+**Custom webhook integration:**
+```json
+{
+  "webhooks": {
+    "syncComplete": "https://your-app.com/api/sync-complete",
+    "syncError": "https://your-app.com/api/sync-error",
+    "fileConflict": "https://your-app.com/api/file-conflict"
+  }
+}
 ```
 
-**Left Join**
-```sql
-SELECT customers.name, orders.total
-FROM customers
-LEFT JOIN orders ON customers.id = orders.customer_id;
-```
-
-**Right Join**
-```sql
-SELECT customers.name, orders.total
-FROM customers
-RIGHT JOIN orders ON customers.id = orders.customer_id;
-```
-
-**Full Outer Join**
-```sql
-SELECT customers.name, orders.total
-FROM customers
-FULL OUTER JOIN orders ON customers.id = orders.customer_id;
+**Plugin configuration:**
+```json
+{
+  "plugins": {
+    "imageProcessor": {
+      "enabled": true,
+      "resizeImages": true,
+      "maxWidth": 1920,
+      "quality": 85
+    },
+    "documentConverter": {
+      "enabled": true,
+      "convertToPDF": ["docx", "odt"],
+      "preserveOriginal": true
+    }
+  }
+}
 ```
 
 ### Key fields
