@@ -1,0 +1,188 @@
+---
+title: Customize Cirrus Sync
+description: Configure error messages and AI file transformations to customize your Cirrus Sync experience.
+---
+
+# Customize Cirrus Sync
+
+Cirrus Sync provides customization options to tailor the synchronization experience to your specific needs. You can customize error messages and configure AI-powered file transformations.
+
+## Prerequisites
+
+Before customizing Cirrus Sync, ensure you have:
+
+- Administrative access to your Cirrus Sync installation
+- A text editor for configuration files
+- Basic understanding of JSON file format
+
+## Customize error messages
+
+You can modify error messages to match your organization's tone or provide more specific guidance to users.
+
+### Locate the configuration file
+
+1. Navigate to your Cirrus Sync installation directory
+2. Open the `config` folder
+3. Find the `error_messages.json` file
+
+### Modify error messages
+
+1. Open `error_messages.json` in a text editor
+2. Update the message text for specific error codes
+3. Save the file
+4. Restart Cirrus Sync to apply changes
+
+#### Example configuration
+
+```json
+{
+  "E001": "Authentication failed. Please verify your credentials and try again.",
+  "E002": "Connection lost. Check your network connection and retry.",
+  "E003": "File access denied. Ensure you have proper permissions for this file."
+}
+```
+
+### Common error codes
+
+| Code | Default message | When it occurs |
+|------|----------------|----------------|
+| E001 | Authentication Failed | Invalid login credentials |
+| E002 | Connection Error | Network connectivity issues |
+| E003 | Permission Denied | Insufficient file permissions |
+
+## Configure AI file transformations
+
+AI file morphing allows you to automatically transform files during synchronization using machine learning models.
+
+### Enable AI transformations
+
+1. Open Cirrus Sync settings
+2. Navigate to **AI Enhancements** > **File Morphing**
+3. Enable one or both options:
+   - **Morph on Upload**: Transform files when uploading to cloud storage
+   - **Morph on Download**: Transform files when downloading from cloud storage
+
+### Select AI models
+
+Choose from available AI models based on your transformation needs:
+
+- **Standard**: General-purpose transformations
+- **Creative**: Artistic and stylistic modifications
+- **Productivity**: Document optimization and summarization
+
+### Configure transformation rules
+
+Create rules to specify which files to transform and how to transform them.
+
+#### Rule structure
+
+```json
+{
+  "rules": [
+    {
+      "extension": "file_extension",
+      "action": "transformation_type",
+      "parameters": {
+        "setting": "value"
+      },
+      "direction": "upload_or_download"
+    }
+  ]
+}
+```
+
+#### Example transformation rules
+
+```json
+{
+  "rules": [
+    {
+      "extension": "jpg",
+      "action": "transform_style",
+      "parameters": {
+        "style": "oil_painting",
+        "intensity": 0.8
+      },
+      "direction": "upload"
+    },
+    {
+      "extension": "txt",
+      "action": "summarize_text",
+      "parameters": {
+        "max_length": 500,
+        "preserve_key_points": true
+      },
+      "direction": "download"
+    }
+  ]
+}
+```
+
+### Available transformation actions
+
+| Action | Description | Supported file types |
+|--------|-------------|---------------------|
+| `transform_style` | Apply artistic styles to images | jpg, png, gif |
+| `summarize_text` | Create text summaries | txt, md, docx |
+| `optimize_image` | Compress and optimize images | jpg, png, webp |
+| `convert_format` | Convert between file formats | Various |
+
+## Performance considerations
+
+AI transformations require significant computational resources:
+
+- **CPU usage**: High during transformation processes
+- **Memory requirements**: 4GB RAM minimum, 8GB recommended
+- **Processing time**: Varies by file size and transformation complexity
+
+## Best practices
+
+Follow these recommendations when using customization features:
+
+### Testing
+
+- Test customizations on non-critical files first
+- Create backups before applying transformations
+- Monitor system performance during AI processing
+
+### Error message guidelines
+
+- Use clear, actionable language
+- Provide specific next steps when possible
+- Maintain consistent tone across all messages
+- Include relevant error codes for troubleshooting
+
+### AI transformation guidelines
+
+- Start with low-intensity settings
+- Review transformed files before relying on them
+- Consider bandwidth implications for large files
+- Document your transformation rules for team members
+
+## Troubleshooting
+
+### Common issues
+
+**Error messages not updating**
+- Verify the JSON syntax is correct
+- Ensure Cirrus Sync was restarted after changes
+- Check file permissions on the configuration file
+
+**AI transformations not working**
+- Confirm your system meets minimum requirements
+- Verify the AI model is properly installed
+- Check transformation rule syntax
+
+**Performance issues**
+- Reduce transformation intensity settings
+- Limit concurrent transformations
+- Monitor system resources during processing
+
+## Next steps
+
+After customizing Cirrus Sync:
+
+- Monitor system performance and user feedback
+- Regularly review and update error messages
+- Experiment with different AI transformation settings
+- Document your customizations for team reference
