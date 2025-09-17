@@ -7,17 +7,27 @@ description: Complete guide to customizing Cirrus Sync behavior, including advan
 
 Cirrus Sync provides extensive customization options to tailor the synchronization experience to your specific needs. This guide covers advanced configuration techniques, custom integrations, and extensibility patterns for developers.
 
-## What is a database schema
+## How do I customize sync behavior?
 
-A database schema is the structural blueprint that defines how data is organized within a database. It specifies the logical configuration of all or part of a relational database, including:
+Cirrus Sync offers multiple levels of customization to adapt to your specific workflow requirements:
 
-- **Tables and their relationships** - How different data entities connect to each other
-- **Column definitions** - What type of data each field can contain
-- **Constraints and rules** - Data validation and integrity requirements
-- **Indexes** - Performance optimization structures
-- **Views and procedures** - Reusable query logic
+### Sync patterns
+- **Bidirectional sync** - Changes flow in both directions between local and remote
+- **Upload-only sync** - Local changes are pushed to remote, but remote changes are ignored
+- **Download-only sync** - Remote changes are pulled locally, but local changes are not uploaded
+- **Mirror sync** - Local directory becomes an exact copy of the remote directory
 
-The schema acts as a contract between the database and applications, ensuring data consistency and providing a clear understanding of the data structure for developers and database administrators.
+### File filtering
+- **Include/exclude patterns** - Use glob patterns to specify which files to sync
+- **File size limits** - Set maximum file sizes for synchronization
+- **File type restrictions** - Limit sync to specific file extensions
+- **Hidden file handling** - Choose whether to sync hidden files and system files
+
+### Conflict resolution strategies
+- **Manual resolution** - Prompt user to choose which version to keep
+- **Latest wins** - Automatically use the most recently modified version
+- **Local wins** - Always prefer the local version during conflicts
+- **Remote wins** - Always prefer the remote version during conflicts
 
 ## Rules for data normalization
 
