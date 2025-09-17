@@ -1,1 +1,85 @@
-{\n  \"theme\": \"mint\",\n  \"name\": \"Cirrus Sync Documentation\",\n  \"colors\": {\n    \"primary\": \"#291a40\",\n    \"light\": \"#00ade6\",\n    \"dark\": \"#00ade6\"\n  },\n  \"favicon\": \"/favicon.svg\",\n  \"logo\": {\n    \"light\": \"/logo/activeviam-logo.png\",\n    \"dark\": \"/logo/activeviam-logo.png\",\n    \"href\": \"https://www.activeviam.com/\"\n  },\n  \"navigation\": {\n    \"tabs\": [\n      {\n        \"tab\": \"Home\",\n        \"icon\": \"house\",\n        \"groups\": \"\",\n        \"pages\": [\n          \"index\"\n        ]\n      },\n      {\n        \"tab\": \"Guides\",\n        \"groups\": [\n          {\n            \"group\": \"General\",\n            \"pages\": [\n              \"changelog\",\n              \"getting-started\"\n            ]\n          },\n          {\n            \"group\": \"Users\",\n            \"pages\": [\n              \"user-guide/user-guide\"\n            ]\n          },\n          {\n            \"group\": \"Developers\",\n            \"pages\": [\n              \"dev-guide/what-is-a-database\",\n              \"dev-guide/api-reference\",\n              \"dev-guide/configuration\",\n              \"dev-guide/troubleshooting\"\n            ]\n          }\n        ]\n      }\n    ]\n  },\n  \"navbar\": {\n    \"links\": [\n      {\n        \"label\": \"Docs Home\",\n        \"href\": \"https://docs.activeviam.com\"\n      },\n      {\n        \"label\": \"Platform Docs\",\n        \"href\": \"https://docs.activeviam.com\"\n      },\n      {\n        \"label\": \"Solutions Docs\",\n        \"href\": \"https://docs.activeviam.com\"\n      },\n      {\n        \"label\": \"News & blog\",\n        \"href\": \"https://www.activeviam.com/news-and-blog/\"\n      },\n      {\n        \"label\": \"Support\",\n        \"href\": \"mailto:hi@mintlify.com\"\n      }\n    ]\n  },\n  \"footer\": {\n    \"socials\": {\n      \"x\": \"https://x.com/mintlify\",\n      \"github\": \"https://github.com/mintlify\",\n      \"linkedin\": \"https://linkedin.com/company/mintlify\"\n    }\n  }\n}\n
+{
+  "theme": "mint",
+  "name": "Cirrus Sync Documentation",
+  "colors": {
+    "primary": "#291a40",
+    "light": "#00ade6",
+    "dark": "#00ade6"
+  },
+  "favicon": "/favicon.svg",
+  "logo": {
+    "light": "/logo/activeviam-logo.png",
+    "dark": "/logo/activeviam-logo.png",
+    "href": "https://www.activeviam.com/"
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Home",
+        "icon": "house",
+        "groups": "",
+        "pages": [
+          "index"
+        ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "General",
+            "pages": [
+              "changelog",
+              "getting-started"
+            ]
+          },
+          {
+            "group": "Users",
+            "pages": [
+              "user-guide/user-guide"
+            ]
+          },
+          {
+            "group": "Developers",
+            "pages": [
+              "dev-guide/what-is-a-database",
+              "dev-guide/api-reference",
+              "dev-guide/configuration",
+              "dev-guide/troubleshooting"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Docs Home",
+        "href": "https://docs.activeviam.com"
+      },
+      {
+        "label": "Platform Docs",
+        "href": "https://docs.activeviam.com"
+      },
+      {
+        "label": "Solutions Docs",
+        "href": "https://docs.activeviam.com"
+      },
+      {
+        "label": "News & blog",
+        "href": "https://www.activeviam.com/news-and-blog/"
+      },
+      {
+        "label": "Support",
+        "href": "mailto:hi@mintlify.com"
+      }
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/mintlify",
+      "github": "https://github.com/mintlify",
+      "linkedin": "https://linkedin.com/company/mintlify"
+    }
+  }
+}
