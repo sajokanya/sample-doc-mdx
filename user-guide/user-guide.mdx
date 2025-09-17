@@ -1,25 +1,32 @@
 ---
-title: User guide
-description: Complete guide to using Cirrus Sync effectively.
+title: "User guide"
+description: "Complete guide to using Cirrus Sync effectively."
 ---
 
 import { productName } from '/snippets/custom-variables.mdx';
+import MyPythonInteractiveExample from '/snippets/python-interactive-example.mdx';
 
 ## Dashboard overview
 
-The {productName} dashboard provides a centralized view of all your sync operations:
+The productName dashboard provides a centralized view of all your sync operations:
 
 - **Active Syncs** - Currently running synchronization tasks
 - **Recent Activity** - Latest file changes and sync events
 - **Storage Usage** - Cloud storage consumption across providers
 - **Sync Status** - Health and performance metrics
 
-We need a latex equation here. 
+Here's a snippet:
+
+<MyPythonInteractiveExample />
+
+We need a latex equation here.
+
 $$
 \zeta(s) = \sum_{n=1}^{\infty} \frac{1}{n^s}
 $$
 
-and another equation here  
+and another equation here
+
 $$
 \prod_{p\,\text{prime}} \frac{1}{1 - p^{-s}}
 $$
@@ -38,16 +45,19 @@ $$
 ### Sync types
 
 **Real-time Sync**
+
 - Instantly syncs changes as they occur
 - Best for active working directories
 - Higher battery usage on mobile devices
 
 **Scheduled Sync**
+
 - Syncs at specified intervals
 - Efficient for large file collections
 - Customizable timing options
 
 **Manual Sync**
+
 - Sync only when manually triggered
 - Complete control over sync timing
 - Ideal for sensitive data
@@ -57,17 +67,20 @@ $$
 Configure which files to include or exclude:
 
 **File Type Filters**
+
 ```
 Include: *.docx, *.pdf, *.jpg
 Exclude: *.tmp, *.cache, *.log
 ```
 
 **Size Filters**
+
 - Minimum file size: 1 KB
 - Maximum file size: 100 MB
 - Skip empty files option
 
 **Date Filters**
+
 - Modified after: specific date
 - Created before: specific date
 - Age-based rules
@@ -88,11 +101,13 @@ Cirrus Sync maintains version history for all synced files:
 When file conflicts occur, Cirrus Sync offers several resolution strategies:
 
 **Automatic Resolution**
+
 - Newest file wins
 - Largest file wins
 - Source priority (local vs. cloud)
 
 **Manual Resolution**
+
 - Review conflicts in dedicated interface
 - Compare file contents side-by-side
 - Choose resolution for each conflict
@@ -112,11 +127,13 @@ Configure offline availability for important files:
 ### Encryption
 
 **In-Transit Encryption**
+
 - TLS 1.3 for all data transfers
 - End-to-end encryption support
 - Certificate pinning for enhanced security
 
 **At-Rest Encryption**
+
 - AES-256 encryption for local cache
 - Optional client-side encryption
 - Key management integration
@@ -124,11 +141,13 @@ Configure offline availability for important files:
 ### Access controls
 
 **Two-Factor Authentication**
+
 - TOTP support (Google Authenticator, Authy)
 - SMS backup options
 - Recovery codes generation
 
 **Device Management**
+
 - View all connected devices
 - Remote device deauthorization
 - Device-specific access controls
@@ -165,11 +184,13 @@ Collaborate with team members using shared folders:
 Control how Cirrus Sync uses your internet connection:
 
 **Upload Limits**
+
 - Maximum upload speed: 1 Mbps
 - Upload schedule: Business hours only
 - Pause uploads when on cellular
 
 **Download Limits**
+
 - Maximum download speed: 5 Mbps
 - Priority downloads for recently accessed files
 - Background download throttling
@@ -177,11 +198,13 @@ Control how Cirrus Sync uses your internet connection:
 ### Storage optimization
 
 **Smart Sync**
+
 - Keep frequently accessed files local
 - Move old files to cloud-only storage
 - Automatic cleanup of temporary files
 
 **Cache Management**
+
 - Local cache size limit: 10 GB
 - Cache cleanup policies
 - Manual cache clearing options
@@ -191,12 +214,14 @@ Control how Cirrus Sync uses your internet connection:
 Cirrus Sync offers native mobile applications:
 
 ### iOS app features
+
 - Full file access and editing
 - Camera upload automation
 - Touch ID/Face ID authentication
 - Offline file access
 
 ### Android app features
+
 - Intent integration with other apps
 - Fingerprint authentication
 - Background sync optimization
@@ -214,12 +239,14 @@ The Cirrus Sync browser extension provides:
 ## Keyboard shortcuts
 
 **Windows/Linux**
+
 - `Ctrl + N` - New sync folder
 - `Ctrl + R` - Refresh all syncs
 - `Ctrl + P` - Pause all syncs
 - `Ctrl + ,` - Open preferences
 
 **macOS**
+
 - `Cmd + N` - New sync folder
 - `Cmd + R` - Refresh all syncs
 - `Cmd + P` - Pause all syncs
