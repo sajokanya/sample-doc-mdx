@@ -1,0 +1,50 @@
+---
+title: Overview
+description: Get started with Cirrus Sync's developer tools and APIs to integrate cloud synchronization into your applications.
+---
+
+Welcome to the Cirrus Sync developer guide. This section provides comprehensive resources for developers looking to integrate Cirrus Sync's cloud synchronization capabilities into their applications.
+
+## What you'll find here
+
+### API reference
+Complete documentation of Cirrus Sync's REST API, including authentication, endpoints, and code examples in multiple programming languages.
+
+### Configuration
+Advanced configuration options for customizing Cirrus Sync behavior, performance tuning, and provider-specific settings.
+
+### Troubleshooting
+Common issues and solutions to help you resolve problems quickly and keep your integrations running smoothly.
+
+## Getting started
+
+Before diving into the technical details, make sure you have:
+
+1. **A Cirrus Sync account** - Sign up at [cirrus-sync.com](https://cirrus-sync.com) if you haven't already
+2. **API credentials** - Generate your API key from Settings > Developer in your account dashboard
+3. **Development environment** - Set up your preferred development tools and testing environment
+
+## Quick start
+
+Here's a simple example to get you started with the Cirrus Sync API:
+
+```javascript
+const CirrusSync = require('cirrus-sync-sdk');
+
+const client = new CirrusSync({
+  apiKey: 'your-api-key'
+});
+
+// List all syncs
+const syncs = await client.syncs.list();
+console.log(syncs);
+```
+
+## Need help?
+
+- Check the [troubleshooting guide](troubleshooting) for common issues
+- Review the [API reference](api-reference) for detailed endpoint documentation
+- Visit our community forum for additional support
+- Contact our support team for enterprise assistance
+
+Ready to get started? Begin with the [API reference](api-reference) to explore all available endpoints and capabilities.
