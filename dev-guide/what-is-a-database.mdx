@@ -139,123 +139,60 @@ Cirrus Sync offers several performance optimization options to ensure efficient 
 - **Temporary file management** - Efficiently handle intermediate files
 - **Cleanup automation** - Remove unnecessary temporary and cache files
 
-## Database fields and data types
+## How do I implement custom security policies?
 
-Database fields (columns) store different types of data, each with specific characteristics and use cases:
+Cirrus Sync provides comprehensive security customization options to meet enterprise and compliance requirements:
 
-### Numeric types
+### Access control
+- **Role-based permissions** - Define user roles with specific sync capabilities
+- **Directory-level access** - Control which folders users can sync
+- **File-level restrictions** - Prevent syncing of sensitive file types
+- **Time-based access** - Limit sync operations to specific time windows
 
-**Integer Types**
-- `TINYINT` - Small integers (-128 to 127)
-- `SMALLINT` - Small integers (-32,768 to 32,767)
-- `INT` - Standard integers (-2,147,483,648 to 2,147,483,647)
-- `BIGINT` - Large integers (very large range)
+### Encryption options
+- **Client-side encryption** - Encrypt files before uploading to cloud storage
+- **Custom encryption keys** - Use your own encryption keys for maximum security
+- **Key rotation policies** - Automatically rotate encryption keys on schedule
+- **Zero-knowledge architecture** - Ensure service providers cannot access your data
 
-**Decimal Types**
-- `DECIMAL(p,s)` - Fixed-point numbers with precision and scale
-- `NUMERIC(p,s)` - Similar to DECIMAL, exact numeric values
-- `FLOAT` - Floating-point numbers (approximate)
-- `DOUBLE` - Double-precision floating-point numbers
+### Audit and compliance
+- **Activity logging** - Comprehensive logs of all sync operations and user actions
+- **Compliance reporting** - Generate reports for regulatory requirements
+- **Data retention policies** - Automatically manage file lifecycle and deletion
+- **Forensic capabilities** - Detailed tracking for security investigations
 
-### String types
+### Network security
+- **VPN integration** - Require VPN connection for sync operations
+- **IP whitelisting** - Restrict sync access to specific IP addresses or ranges
+- **Certificate pinning** - Prevent man-in-the-middle attacks
+- **Custom SSL certificates** - Use your organization's SSL certificates
 
-**Fixed-Length Strings**
-- `CHAR(n)` - Fixed-length character strings
-- Always uses the specified number of characters
-- Padded with spaces if shorter than defined length
+## What are the best practices for customization?
 
-**Variable-Length Strings**
-- `VARCHAR(n)` - Variable-length character strings
-- Uses only the space needed for actual content
-- Maximum length specified by n
+Follow these guidelines to ensure successful Cirrus Sync customization:
 
-**Text Types**
-- `TEXT` - Large amounts of text data
-- `LONGTEXT` - Very large text fields
-- `CLOB` - Character Large Objects
+### Configuration management
+- **Version control** - Track configuration changes using version control systems
+- **Environment separation** - Use different configurations for development, staging, and production
+- **Backup strategies** - Regularly backup configuration files and custom rules
+- **Documentation** - Document all customizations and their business rationale
 
-### Date and time types
+### Performance considerations
+- **Resource monitoring** - Monitor system resources during sync operations
+- **Gradual rollouts** - Test customizations with small user groups first
+- **Fallback mechanisms** - Implement fallback options for critical customizations
+- **Regular optimization** - Periodically review and optimize custom rules and integrations
 
-- `DATE` - Date values (YYYY-MM-DD)
-- `TIME` - Time values (HH:MM:SS)
-- `DATETIME` - Combined date and time
-- `TIMESTAMP` - Date and time with timezone information
-- `YEAR` - Year values (2-digit or 4-digit)
+### Security best practices
+- **Principle of least privilege** - Grant minimum necessary permissions
+- **Regular security reviews** - Audit customizations for security vulnerabilities
+- **Secure credential storage** - Use secure methods to store API keys and passwords
+- **Update management** - Keep custom integrations updated with security patches
 
-### Boolean types
+### Maintenance and support
+- **Monitoring and alerting** - Set up monitoring for custom integrations and rules
+- **Error handling** - Implement robust error handling and recovery mechanisms
+- **User training** - Provide training for users on customized features
+- **Support documentation** - Create internal documentation for troubleshooting custom features
 
-- `BOOLEAN` - True/false values
-- `BIT` - Single bit values (0 or 1)
-- Often implemented as TINYINT(1) in some databases
-
-### Binary types
-
-- `BINARY(n)` - Fixed-length binary data
-- `VARBINARY(n)` - Variable-length binary data
-- `BLOB` - Binary Large Objects for files, images, etc.
-
-### JSON and XML types
-
-- `JSON` - JavaScript Object Notation data
-- `XML` - Extensible Markup Language data
-- Support for structured document storage and querying
-
-### Specialized types
-
-**UUID/GUID**
-- Universally Unique Identifiers
-- 128-bit values for unique record identification
-
-**Enum**
-- Predefined list of allowed values
-- Ensures data consistency for categorical data
-
-**Array Types**
-- Store multiple values in a single field
-- Supported by some modern databases like PostgreSQL
-
-### Field constraints
-
-**NOT NULL**
-- Prevents empty values in the field
-- Ensures data completeness
-
-**UNIQUE**
-- Ensures all values in the field are different
-- Prevents duplicate entries
-
-**DEFAULT**
-- Provides automatic value when none is specified
-- Simplifies data insertion
-
-**CHECK**
-- Validates data against custom conditions
-- Enforces business rules at the database level
-
-## Best practices for database design
-
-### Choose appropriate data types
-- Use the smallest data type that can accommodate your data
-- Consider future growth when sizing fields
-- Use appropriate precision for numeric data
-- Choose between fixed and variable-length strings based on usage patterns
-
-### Implement proper indexing
-- Create indexes on frequently queried columns
-- Use composite indexes for multi-column queries
-- Monitor and maintain index performance
-- Avoid over-indexing which can slow down write operations
-
-### Maintain referential integrity
-- Use foreign key constraints to enforce relationships
-- Implement cascade rules for related data updates
-- Design clear primary key strategies
-- Consider using UUIDs for distributed systems
-
-### Plan for scalability
-- Design schemas that can grow with your application
-- Consider partitioning strategies for large tables
-- Plan for read replicas and load distribution
-- Design with caching strategies in mind
-
-Understanding these database fundamentals provides the foundation for building robust, scalable applications with efficient data management and retrieval capabilities.
+Understanding these customization options and best practices enables you to tailor Cirrus Sync to your specific requirements while maintaining security, performance, and reliability.
