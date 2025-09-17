@@ -177,28 +177,55 @@ Cirrus Sync provides multiple integration points to extend functionality and con
 Cirrus Sync offers several performance optimization options to ensure efficient synchronization:
 
 ### Bandwidth management
-- **Upload/download limits** - Set maximum bandwidth usage for sync operations
+
+Control network usage to optimize sync performance:
+
+- **Upload/download limits** - Set maximum bandwidth usage (e.g., 10 Mbps during business hours)
 - **Adaptive throttling** - Automatically adjust sync speed based on network conditions
-- **Priority queuing** - Prioritize certain files or operations over others
-- **Scheduled syncing** - Perform intensive sync operations during off-peak hours
+- **Priority queuing** - Prioritize critical files over less important ones
+- **Scheduled syncing** - Perform large file transfers during off-peak hours (e.g., 2-6 AM)
+
+**Example bandwidth configuration:**
+```json
+{
+  "bandwidth": {
+    "maxUpload": "10Mbps",
+    "maxDownload": "20Mbps",
+    "adaptiveThrottling": true,
+    "schedule": {
+      "offPeakHours": "02:00-06:00",
+      "offPeakBandwidth": "unlimited"
+    }
+  }
+}
+```
 
 ### Caching strategies
-- **Local metadata cache** - Store file information locally to reduce API calls
+
+Improve sync efficiency with intelligent caching:
+
+- **Local metadata cache** - Store file information locally to reduce API calls by 80%
 - **Content-based deduplication** - Avoid uploading identical files multiple times
-- **Delta synchronization** - Only sync changed portions of files when possible
+- **Delta synchronization** - Only sync changed portions of files (saves 60-90% bandwidth)
 - **Predictive prefetching** - Pre-download files likely to be accessed soon
 
 ### Parallel processing
-- **Concurrent transfers** - Upload/download multiple files simultaneously
+
+Maximize throughput with concurrent operations:
+
+- **Concurrent transfers** - Upload/download multiple files simultaneously (default: 5 concurrent)
 - **Thread pool optimization** - Efficiently manage system resources
 - **Batch operations** - Group small operations for better efficiency
 - **Asynchronous processing** - Non-blocking operations for better responsiveness
 
 ### Storage optimization
-- **Compression algorithms** - Reduce file sizes during transfer
-- **Smart chunking** - Break large files into optimal-sized pieces
+
+Reduce storage requirements and transfer times:
+
+- **Compression algorithms** - Reduce file sizes during transfer (up to 70% reduction)
+- **Smart chunking** - Break large files into optimal-sized pieces (default: 8MB chunks)
 - **Temporary file management** - Efficiently handle intermediate files
-- **Cleanup automation** - Remove unnecessary temporary and cache files
+- **Cleanup automation** - Remove unnecessary temporary and cache files daily
 
 ## How do I implement custom security policies?
 
