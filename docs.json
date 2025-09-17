@@ -48,6 +48,12 @@
               "dev-guide/troubleshooting",
               "dev-guide/conclusion"
             ]
+          },
+          {
+            "group": "Related Cirrus Concepts",
+            "pages": [
+              "concepts/what-is-a-database"
+            ]
           }
         ]
       }
