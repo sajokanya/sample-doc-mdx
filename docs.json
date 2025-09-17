@@ -43,7 +43,8 @@
             "pages": [
               "dev-guide/api-reference",
               "dev-guide/configuration",
-              "dev-guide/troubleshooting"
+              "dev-guide/troubleshooting",
+              "dev-guide/dg-test"
             ]
           }
         ]
