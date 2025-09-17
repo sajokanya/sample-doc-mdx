@@ -45,6 +45,7 @@
               "dev-guide/what-is-a-database",
               "dev-guide/api-reference",
               "dev-guide/configuration",
+              "dev-guide/customization",
               "dev-guide/troubleshooting",
               "dev-guide/conclusion"
             ]
