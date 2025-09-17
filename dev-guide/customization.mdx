@@ -1,0 +1,93 @@
+---
+title: "Customizing Sync Fun"
+description: "How to make Cirrus Sync your own ! for devz."
+---
+
+Make Sync Your Own
+
+This here section tells ya how to make Cirrus Sync do what *you* want. It's like ! a painting ! but with files and stuff.Error Messages ! Making Them Yourz
+
+Sometimes stuff goes wrong, ! right ? And when it does, Cirrus Sync tells ya ! but what if you wanna tell it in your own words ! ? Here's how.
+
+**Problem:** Standard error messages too boring, ! no fun !
+
+**Solution:**
+
+1. Find the 
+   ```
+   error_messages.json
+   ```
+   file. It's probably somewhere in the 
+   ```
+   config
+   ```
+   folder. ! If you can't find it ? You're not lookin' hard enough.
+2. Open it up ! with a text editor, duh.
+3. Change the messages to whatever your heart desires. Like, for 
+   ```
+   E001 - Authentication Failed
+   ```
+   you could write: ! "Whoopsie ! You typed that in wrong ! Try again, sleepyhead. !"
+4. Save the file. ! And then restart Cirrus Sync for the changes to take effect ! Duh.
+
+**Example !!**
+
+```json
+{
+  "E001": "Whoopsie ! You typed that in wrong ! Try again, sleepyhead. !",
+  "E002": "Lost connection to the cloud ! Maybe check your Wi-Fi, genius. !"
+}
+```
+
+AI Magic !! Morphing Files !!
+
+This is the super cool part !! You can make Cirrus Sync use ! AI ! to change your files while they sync. It's like !! magic !!
+
+**Problem:** Files are boring !! Need more pizzazz !!
+
+**Solution:**
+
+1. Go to 
+   ```
+   Settings > AI Enhancements > File Morphing
+   ```
+   . ! It's there ! If it's not ! you need a newer version.
+2. Enable "Morph on Upload" or "Morph on Download". Or both !! Go wild.
+3. Choose your "AI Model" ! Like, "Groot" for plant-based transformations, or "Optimus Prime" for making your documents into vehicles. ! ( ! Not really ! )
+4. Configure "Morphing Rules". This is where you tell the AI what to do. ! It's a bit complicated, so pay attention.
+
+**Morphing Rules Example !!**
+
+Let's say you wanna make all your `jpg` files look like paintings when you upload them.
+
+```json
+{
+  "rules": [
+    {
+      "extension": "jpg",
+      "action": "transform_style",
+      "parameters": {
+        "style": "oil_painting",
+        "intensity": 0.8
+      },
+      "direction": "upload"
+    },
+    {
+      "extension": "txt",
+      "action": "summarize_long_text",
+      "parameters": {
+        "length": "short"
+      },
+      "direction": "download"
+    }
+  ]
+}
+```
+
+**Important Notes !!**
+
+- AI morphing uses lots of !! CPU and RAM !! So if your computer sounds like a jet engine ? That's why.
+- Don't blame us if the AI makes your cat pictures look like !! aliens !! It's experimental, ya know ?
+- Always test this stuff on unimportant files first !! You don't want your super important documents to turn into !! unreadable gibberish !! Do ya ?
+
+This is just the start of your sync customization journey !! Go forth and be awesome !!
