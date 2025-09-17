@@ -63,25 +63,57 @@ Define how to handle file conflicts automatically:
 Custom sync rules allow you to define sophisticated logic for how files are synchronized based on various criteria:
 
 ### File-based rules
+
+Target specific files using these criteria:
+
 - **Path matching** - Apply rules based on file paths using wildcards and regex patterns
 - **Extension filtering** - Target specific file types for different sync behaviors
-- **Size thresholds** - Handle large files differently than small files
+- **Size thresholds** - Handle large files differently than small files (e.g., >50MB files upload during off-hours)
 - **Date-based rules** - Sync files based on creation or modification dates
 
+**Example rule configuration:**
+```json
+{
+  "rules": [
+    {
+      "name": "Large file handling",
+      "condition": "fileSize > 50MB",
+      "action": "scheduleOffHours",
+      "priority": 1
+    },
+    {
+      "name": "Image optimization",
+      "condition": "extension in ['.jpg', '.png', '.gif']",
+      "action": "compress",
+      "settings": {"quality": 85}
+    }
+  ]
+}
+```
+
 ### Content-based rules
+
+Apply rules based on file content and metadata:
+
 - **Metadata filtering** - Use file metadata to determine sync behavior
 - **Content scanning** - Apply rules based on file content analysis
 - **Checksum validation** - Ensure file integrity during synchronization
 - **Version detection** - Handle versioned files with custom logic
 
 ### Advanced rule conditions
+
+Create complex rule logic:
+
 - **Conditional logic** - Combine multiple criteria with AND/OR operators
 - **Time-based triggers** - Execute rules at specific times or intervals
 - **User context** - Apply different rules based on the current user
 - **System state** - Modify behavior based on network conditions or system resources
 
 ### Rule priority and inheritance
-- **Rule ordering** - Define execution priority for overlapping rules
+
+Manage rule execution order:
+
+- **Rule ordering** - Define execution priority for overlapping rules (1 = highest priority)
 - **Inheritance patterns** - Apply parent directory rules to subdirectories
 - **Override mechanisms** - Allow specific rules to override general ones
 - **Conflict resolution** - Handle situations where multiple rules apply
