@@ -1,0 +1,14 @@
+```python
+import atoti as tt
+
+# Create basic session
+session = tt.Session()
+print(f"Session started at: {session.url}")
+
+# Always close when done
+try:
+    # Your Atoti operations here
+    pass
+finally:
+    session.close()
+```
