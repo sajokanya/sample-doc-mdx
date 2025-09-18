@@ -1,0 +1,255 @@
+---
+title: Installation
+description: Complete guide to installing Atoti Python SDK with system requirements, setup instructions, and verification steps.
+---
+
+# Installation
+
+This guide walks you through installing Atoti Python SDK on your system. Atoti requires Python 3.10 or higher and optionally Java 21 for advanced features.
+
+## System Requirements
+
+### Python Version
+Atoti Python SDK supports the following Python versions:
+- Python 3.10
+- Python 3.11
+- Python 3.12
+- Python 3.13
+
+### Java (Optional)
+- **Java 21** if you want to use your own JDK
+- If you don't have Java installed, Atoti includes [jdk4py](https://github.com/activeviam/jdk4py) bundled with the installation
+
+### Operating Systems
+- Windows 10/11
+- macOS 10.15+
+- Linux (Ubuntu 18.04+, CentOS 7+, or equivalent)
+
+## Installation Methods
+
+### Method 1: Using uv (Recommended)
+
+[uv](https://github.com/astral-sh/uv) provides better virtual environment and dependency management. We strongly recommend using `uv` over `conda`.
+
+<Steps>
+  <Step title="Install uv">
+    ```bash
+    pip install uv
+    ```
+  </Step>
+  
+  <Step title="Create and sync environment">
+    ```bash
+    uv sync --python 3.10.11
+    ```
+  </Step>
+  
+  <Step title="Install Atoti">
+    ```bash
+    uv add atoti
+    ```
+  </Step>
+</Steps>
+
+### Method 2: Using pip
+
+<Steps>
+  <Step title="Create virtual environment">
+    ```bash
+    python -m venv atoti-env
+    source atoti-env/bin/activate  # On Windows: atoti-env\Scripts\activate
+    ```
+  </Step>
+  
+  <Step title="Install Atoti">
+    ```bash
+    pip install atoti
+    ```
+  </Step>
+</Steps>
+
+### Method 3: Using conda
+
+<Warning>
+We strongly recommend against mixing `uv` and `conda` as this can lead to dependency conflicts.
+</Warning>
+
+```bash
+conda create -n atoti-env python=3.10
+conda activate atoti-env
+pip install atoti
+```
+
+## Jupyter Lab Setup
+
+Atoti works best with Jupyter Lab for interactive development and visualization.
+
+### Install Jupyter Lab
+
+```bash
+# With uv
+uv add jupyterlab
+
+# With pip
+pip install jupyterlab
+```
+
+### Start Jupyter Lab
+
+```bash
+# With uv
+uv run jupyter-lab
+
+# With pip
+jupyter-lab
+```
+
+<Note>
+Start `jupyter-lab` at the root of your project directory to ensure proper file access.
+</Note>
+
+## Verification
+
+Verify your installation by creating a simple Atoti session:
+
+```python
+import atoti as tt
+
+# Create a session
+session = tt.Session()
+
+# Print session information
+print(f"Atoti version: {tt.__version__}")
+print(f"Session URL: {session.url}")
+
+# Close the session
+session.close()
+```
+
+If the installation is successful, you should see output similar to:
+```
+Atoti version: 0.9.8
+Session URL: http://localhost:9090
+```
+
+## Docker Installation
+
+For containerized deployments, you can use Docker:
+
+```dockerfile
+FROM python:3.10-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Atoti
+RUN pip install atoti jupyterlab
+
+# Set working directory
+WORKDIR /workspace
+
+# Expose Jupyter and Atoti ports
+EXPOSE 8888 9090
+
+# Start Jupyter Lab
+CMD ["jupyter-lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"]
+```
+
+Build and run the container:
+
+```bash
+docker build -t atoti-env .
+docker run -p 8888:8888 -p 9090:9090 -v $(pwd):/workspace atoti-env
+```
+
+## Troubleshooting
+
+### Common Issues
+
+#### Java-related Errors
+If you encounter Java-related errors:
+
+1. **Install Java 21** manually:
+   ```bash
+   # Ubuntu/Debian
+   sudo apt install openjdk-21-jdk
+   
+   # macOS with Homebrew
+   brew install openjdk@21
+   
+   # Windows - Download from Oracle or use Chocolatey
+   choco install openjdk21
+   ```
+
+2. **Set JAVA_HOME** environment variable:
+   ```bash
+   export JAVA_HOME=/path/to/java21
+   ```
+
+#### Memory Issues
+For large datasets, increase JVM memory:
+
+```python
+import atoti as tt
+
+session = tt.Session(
+    java_options=["-Xmx8g"]  # Allocate 8GB of memory
+)
+```
+
+#### Port Conflicts
+If port 9090 is already in use:
+
+```python
+import atoti as tt
+
+session = tt.Session(port=9091)  # Use a different port
+```
+
+#### Permission Errors
+On Linux/macOS, ensure proper permissions:
+
+```bash
+chmod +x /path/to/atoti/installation
+```
+
+### Getting Help
+
+If you encounter issues:
+
+1. Check the [GitHub Issues](https://github.com/atoti/atoti/issues) for known problems
+2. Start a [Discussion](https://github.com/atoti/atoti/discussions) for questions
+3. Review the [official documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)
+
+## Next Steps
+
+Once Atoti is installed:
+
+1. **[Quickstart Tutorial](/quickstart)** - Build your first OLAP cube
+2. **[Examples](/examples)** - Explore practical use cases
+3. **[API Reference](/api-reference)** - Learn about available functions and methods
+
+## Version Management
+
+### Checking Your Version
+
+```python
+import atoti as tt
+print(tt.__version__)
+```
+
+### Upgrading Atoti
+
+```bash
+# With uv
+uv add atoti --upgrade
+
+# With pip
+pip install --upgrade atoti
+```
+
+### Version History
+
+Check the [GitHub Releases](https://github.com/atoti/atoti/releases) for version history and changelog information.
