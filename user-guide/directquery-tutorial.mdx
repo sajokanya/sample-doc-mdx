@@ -21,182 +21,223 @@ Before starting this tutorial, ensure you have:
 - Database connection credentials
 - Basic knowledge of SQL and Python
 
-## Basic DirectQuery setup
+## DirectQuery concepts
 
-### Step 1: Import Atoti and create a session
+### How DirectQuery works
+
+Instead of loading data into Atoti's memory, DirectQuery:
+
+1. **Maintains connections** to your external databases
+2. **Translates queries** from Atoti's interface into SQL
+3. **Executes queries** directly against the source database
+4. **Returns results** without storing the full dataset
+
+### Supported databases
+
+Atoti typically supports major database systems including:
+- PostgreSQL
+- Microsoft SQL Server
+- Oracle Database
+- MySQL
+- Other JDBC-compatible databases
+
+*Consult the official Atoti documentation for the complete list of supported databases and versions.*
+
+## Setting up DirectQuery
+
+### Step 1: Prepare your database
+
+Ensure your database is:
+- **Accessible** from your Atoti environment
+- **Properly indexed** for the queries you'll run
+- **Configured** with appropriate user permissions
+- **Optimized** for the expected query patterns
+
+### Step 2: Connection configuration
+
+You'll need to configure database connections with:
+- **Host and port** information
+- **Database name** and schema details
+- **Authentication credentials** (username/password or other methods)
+- **Connection parameters** (timeouts, SSL settings, etc.)
+
+### Step 3: Define your data sources
+
+When setting up DirectQuery tables, consider:
+- **Which tables** or views to expose
+- **What columns** are needed for analysis
+- **How to filter** data at the source
+- **What joins** might be required
+
+## Code implementation
+
+**⚠️ Important**: The following sections describe the conceptual approach. For actual code examples, you must refer to the official Atoti documentation as API methods and syntax may vary.
+
+### Basic connection pattern
 
 ```python
 import atoti as tt
 
-# Create a standard Atoti session
+# Create session
 session = tt.create_session()
+
+# Connection setup (exact syntax varies - check Atoti docs)
+# connection_config = {
+#     "type": "database_type",
+#     "host": "your_host",
+#     "port": your_port,
+#     "database": "your_database",
+#     "username": "your_username",
+#     "password": "your_password"
+# }
+
+# Create external table reference (verify method name in docs)
+# external_table = session.connect_to_database(connection_config, "table_name")
 ```
 
-### Step 2: Connect to your database
-
-Based on the Atoti documentation, you can connect to external databases using connection strings. The exact method depends on your database type:
+### Working with external data
 
 ```python
-# Example connection pattern (verify exact syntax in Atoti docs)
-# Note: This is illustrative - check official documentation for precise API
+# Conceptual workflow - verify exact API in documentation
 
-# For PostgreSQL
-connection_string = "postgresql://username:password@host:port/database"
+# 1. Define your external data source
+# external_data = session.[connection_method](...)
 
-# For SQL Server  
-connection_string = "mssql://username:password@host:port/database"
+# 2. Create cube from external source  
+# cube = session.[cube_creation_method](external_data)
 
-# For Oracle
-connection_string = "oracle://username:password@host:port/service"
+# 3. Define measures and hierarchies
+# measures = cube.measures
+# measures["measure_name"] = [aggregation_function](external_data["column"])
+
+# 4. Query your data
+# result = cube.query(...)
 ```
 
-### Step 3: Create tables from external sources
+## Performance optimization
 
-```python
-# Create a table that references external data
-# Note: Verify exact method names in official Atoti documentation
+### Database-level optimization
 
-# This is a conceptual example - actual API may differ
-external_table = session.read_sql(
-    "SELECT * FROM sales_data WHERE date >= '2023-01-01'",
-    connection_string
-)
-```
+1. **Indexing strategy**
+   - Create indexes on columns used in WHERE clauses
+   - Index columns used for JOINs
+   - Consider composite indexes for multi-column filters
 
-## Working with external data
+2. **Query optimization**
+   - Use selective WHERE clauses
+   - Limit result sets with appropriate filters
+   - Avoid SELECT * when possible
 
-### Creating cubes from external tables
+3. **Connection management**
+   - Configure connection pooling
+   - Set appropriate timeout values
+   - Monitor connection usage
 
-```python
-# Create a cube from your external data
-cube = session.create_cube(external_table)
+### Atoti-level optimization
 
-# Access measures for aggregations
-m = cube.measures
+1. **Data modeling**
+   - Design efficient hierarchies
+   - Use appropriate data types
+   - Consider partitioning strategies
 
-# Define basic measures using Atoti's aggregation functions
-m["Total Sales"] = tt.agg.sum(external_table["amount"])
-m["Transaction Count"] = tt.agg.count()
-m["Average Sale"] = tt.agg.mean(external_table["amount"])
-```
+2. **Query patterns**
+   - Cache frequently accessed results
+   - Use incremental refresh when possible
+   - Monitor query performance
 
-### Filtering and querying
-
-```python
-# Apply filters to your data
-filtered_data = external_table[
-    (external_table["region"] == "North America") &
-    (external_table["amount"] > 1000)
-]
-
-# Create hierarchies for analysis
-cube.hierarchies["Time"] = [external_table["date"]]
-cube.hierarchies["Geography"] = [external_table["region"]]
-```
-
-## Performance considerations
-
-### Database optimization
-
-1. **Use selective queries**: Filter data at the database level
-2. **Index appropriately**: Ensure your database tables are properly indexed
-3. **Limit result sets**: Use LIMIT clauses for large datasets
-4. **Monitor connections**: Be mindful of database connection limits
-
-### Query best practices
-
-```python
-# Good: Filter at the source
-efficient_query = """
-SELECT product_id, region, amount, date 
-FROM sales_data 
-WHERE date >= '2023-01-01' 
-  AND region IN ('US', 'Canada')
-  AND amount > 0
-"""
-
-# Better than pulling all data and filtering in Atoti
-```
-
-## Error handling and troubleshooting
-
-### Common connection issues
-
-```python
-try:
-    # Test your database connection
-    test_query = "SELECT 1"
-    result = session.read_sql(test_query, connection_string)
-    print("Database connection successful")
-except Exception as e:
-    print(f"Connection failed: {e}")
-    # Check connection string, credentials, network access
-```
-
-### Performance troubleshooting
-
-1. **Slow queries**: Review your SQL query performance in the database
-2. **Memory issues**: Monitor both Atoti and database memory usage
-3. **Network latency**: Consider database location and connection quality
-4. **Connection timeouts**: Adjust timeout settings if needed
-
-## Security considerations
+## Security best practices
 
 ### Connection security
 
-- Use SSL/TLS connections when available
-- Store credentials securely (environment variables, key vaults)
-- Use read-only database accounts when possible
-- Implement proper network security (VPNs, firewalls)
+- **Use encrypted connections** (SSL/TLS) when available
+- **Store credentials securely** using environment variables or key management systems
+- **Use read-only accounts** for DirectQuery connections when possible
+- **Implement network security** (VPNs, firewalls, IP restrictions)
 
-```python
-# Example of using environment variables for credentials
-import os
+### Access control
 
-connection_string = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
-```
+- **Limit database permissions** to only required tables and operations
+- **Implement row-level security** in the database if needed
+- **Monitor access patterns** and audit database connections
+- **Use service accounts** rather than personal credentials
+
+## Troubleshooting common issues
+
+### Connection problems
+
+1. **Network connectivity**
+   - Verify host and port accessibility
+   - Check firewall rules
+   - Test basic network connectivity
+
+2. **Authentication failures**
+   - Verify credentials
+   - Check account permissions
+   - Ensure account is not locked
+
+3. **Database-specific issues**
+   - Check database server status
+   - Verify database and schema names
+   - Review database logs for errors
+
+### Performance issues
+
+1. **Slow queries**
+   - Analyze query execution plans
+   - Check for missing indexes
+   - Review database statistics
+
+2. **Connection timeouts**
+   - Adjust timeout settings
+   - Check network latency
+   - Consider connection pooling
+
+3. **Memory issues**
+   - Monitor database server resources
+   - Review query complexity
+   - Consider result set size limits
 
 ## Integration patterns
 
-### Combining external and in-memory data
+### Hybrid architectures
 
-```python
-# Load some data into memory
-in_memory_table = session.read_csv("local_data.csv")
+You can combine DirectQuery with in-memory data:
 
-# Connect to external data
-external_table = session.read_sql(
-    "SELECT * FROM remote_data", 
-    connection_string
-)
+- **Hot data** in memory for fast access
+- **Cold data** via DirectQuery for completeness
+- **Reference data** cached locally
+- **Transactional data** queried directly
 
-# Join them for analysis (verify exact join syntax in docs)
-combined_cube = session.create_cube(
-    # Join logic here - check Atoti documentation for exact syntax
-)
-```
+### Real-time scenarios
 
-## Important notes
+DirectQuery enables real-time analytics by:
 
-**⚠️ API Verification Required**: The code examples in this tutorial are illustrative and based on common patterns. Always verify the exact API methods and parameters in the official Atoti documentation, as:
-
-- Method names may differ (`read_sql` vs other connection methods)
-- Configuration parameters may have different names or structures  
-- Connection string formats may vary by database type
-- Some features may require specific Atoti versions or licenses
-
-**📚 Official Documentation**: For the most accurate and up-to-date information, consult:
-- [Atoti Python SDK Documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)
-- Database-specific connection guides
-- Performance tuning recommendations
+- **Connecting to operational databases** for live data
+- **Querying data warehouses** for historical context
+- **Combining streaming data** with batch-processed data
+- **Providing up-to-date dashboards** without data movement
 
 ## Next steps
 
-After mastering basic DirectQuery concepts:
+To implement DirectQuery successfully:
 
-1. **Explore advanced SQL**: Use complex queries with joins and aggregations
-2. **Optimize performance**: Implement caching and connection pooling strategies  
-3. **Scale your solution**: Consider distributed database architectures
-4. **Monitor and maintain**: Set up logging and performance monitoring
+1. **Review the official documentation** for exact API syntax and methods
+2. **Test with small datasets** before scaling to production
+3. **Monitor performance** and optimize as needed
+4. **Implement proper security** measures from the start
+5. **Plan for maintenance** and monitoring
 
-Remember to always test your specific use case with your actual data and database configuration.
+## Important reminders
+
+**🚨 No Code Guarantees**: This tutorial provides conceptual guidance only. All code examples are illustrative and must be verified against the official Atoti documentation.
+
+**📖 Official Resources**: 
+- [Atoti Python SDK Documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)
+- Database vendor documentation for connection specifics
+- Atoti community forums and support channels
+
+**✅ Verification Required**: Before implementing:
+- Check exact method names and parameters
+- Verify supported database versions
+- Test connection strings and authentication methods
+- Validate performance with your specific use case
