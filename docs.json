@@ -13,55 +13,57 @@
     "href": "https://www.activeviam.com/"
   },
   "api": {
-    "baseUrl": "https://api.example.com/v1",
-    "auth": {
-      "method": "bearer"
-    },
     "playground": {
-      "mode": "show"
+      "display": "interactive"
+    },
+    "examples": {
+      "languages": ["curl", "python", "javascript"],
+      "defaults": "required"
     }
   },
   "navigation": {
-    "tabs": [
+    "groups": [
       {
-        "tab": "Home",
-        "icon": "house",
-        "groups": "",
+        "group": "Home",
         "pages": [
           "index"
         ]
       },
       {
-        "tab": "Guides",
-        "groups": [
-                    {
-            "group": "General",
-            "pages": [
-              "api-overview",
-              "changelog",
-              "release-notes",
-              "getting-started",
-              "quick-setup"
-            ]
-          },
-          {
-            "group": "Users",
-            "pages": [
-              "user-guide/user-guide"
-            ]
-          },
-          {
-            "group": "Developers",
-            "pages": [
-              "dev-guide/configuration",
-              "dev-guide/troubleshooting"
-            ]
-          }
+        "group": "General",
+        "pages": [
+          "changelog",
+          "release-notes",
+          "getting-started",
+          "quick-setup"
         ]
       },
       {
-        "tab": "API Reference",
+        "group": "Users",
+        "pages": [
+          "user-guide/user-guide"
+        ]
+      },
+      {
+        "group": "Developers",
+        "pages": [
+          "dev-guide/configuration",
+          "dev-guide/troubleshooting"
+        ]
+      },
+      {
+        "group": "API Reference",
+        "pages": [
+          "api-overview"
+        ],
         "openapi": "/openapi.yaml"
+      },
+      {
+        "group": "Limits API",
+        "pages": [
+          "limits-api-overview"
+        ],
+        "openapi": "/limits-openapi.json"
       }
     ]
   },

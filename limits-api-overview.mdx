@@ -1,0 +1,73 @@
+---
+title: Limits API Overview
+description: Comprehensive API for managing limits workflow processes and entities
+---
+
+## Introduction
+
+The Limits API provides comprehensive endpoints for managing limits workflow processes, process records, and related entities. This API is built with Spring Data REST and follows RESTful conventions.
+
+<Info>
+**🎮 Interactive Playground Available!** 
+Each endpoint includes an interactive playground where you can test API calls directly from the documentation.
+</Info>
+
+## Base URL
+
+All Limits API requests should be made to:
+
+```
+https://uat-cluster.uksouth.cloudapp.azure.com/modules/limits-module
+```
+
+## Key Features
+
+### Workflow Process Management
+- **Limits Workflow Process Instance Entities**: Manage workflow process instances
+- **Process Record Entities**: Handle process records and their lifecycle
+- **Full CRUD Operations**: Create, read, update, and delete operations for all entities
+
+### Pagination Support
+All collection endpoints support pagination with the following parameters:
+- `page`: Zero-based page index (default: 0)
+- `size`: Page size (default: 20, minimum: 1)
+- `sort`: Sorting criteria in format `property,(asc|desc)`
+
+## Main Entity Types
+
+### Limits Workflow Process Instance Entities
+Endpoints for managing workflow process instances:
+- `GET /limits/rest/v2/spring/jpa/limitsWorkflowProcessInstanceEntities` - List all instances
+- `POST /limits/rest/v2/spring/jpa/limitsWorkflowProcessInstanceEntities` - Create new instance
+- `GET /limits/rest/v2/spring/jpa/limitsWorkflowProcessInstanceEntities/{id}` - Get specific instance
+- `PUT /limits/rest/v2/spring/jpa/limitsWorkflowProcessInstanceEntities/{id}` - Update instance
+- `PATCH /limits/rest/v2/spring/jpa/limitsWorkflowProcessInstanceEntities/{id}` - Partial update
+- `DELETE /limits/rest/v2/spring/jpa/limitsWorkflowProcessInstanceEntities/{id}` - Delete instance
+
+### Process Record Entities
+Endpoints for managing process records:
+- `GET /limits/rest/v2/spring/jpa/processRecordEntities` - List all records
+- `POST /limits/rest/v2/spring/jpa/processRecordEntities` - Create new record
+- `GET /limits/rest/v2/spring/jpa/processRecordEntities/{id}` - Get specific record
+- `PUT /limits/rest/v2/spring/jpa/processRecordEntities/{id}` - Update record
+- `PATCH /limits/rest/v2/spring/jpa/processRecordEntities/{id}` - Partial update
+- `DELETE /limits/rest/v2/spring/jpa/processRecordEntities/{id}` - Delete record
+
+## Response Format
+
+All responses follow standard Spring Data REST conventions with JSON format and hypermedia links for navigation.
+
+## Getting Started
+
+1. **Choose an endpoint** from the navigation below
+2. **Configure parameters** using the interactive playground
+3. **Test the API** directly from the documentation
+4. **Review responses** to understand the data structure
+
+<Note>
+This API uses Spring Data REST conventions, so responses include `_links` for hypermedia navigation and `_embedded` for related resources.
+</Note>
+
+---
+
+Explore the specific endpoints below to interact with the Limits API.
