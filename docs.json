@@ -38,6 +38,7 @@
             "pages": [
               "api-reference",
               "examples",
+              "importable-snippets",
               "snippets",
               "snippet-guide",
               "advanced"
