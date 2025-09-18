@@ -1,0 +1,273 @@
+---
+title: Importable Code Snippets
+description: Reusable, importable code snippets for Atoti development. DRY principle applied to documentation.
+---
+
+import SessionBasic from '/snippets/session-basic.mdx';
+import SessionConfig from '/snippets/session-config.mdx';
+import LoadPandas from '/snippets/load-pandas.mdx';
+import LoadCsv from '/snippets/load-csv.mdx';
+import CubeBasic from '/snippets/cube-basic.mdx';
+import QueryBasic from '/snippets/query-basic.mdx';
+import QueryFiltered from '/snippets/query-filtered.mdx';
+import MeasuresCalculated from '/snippets/measures-calculated.mdx';
+import ErrorHandling from '/snippets/error-handling.mdx';
+import SessionContext from '/snippets/session-context.mdx';
+import VisualizationCharts from '/snippets/visualization-charts.mdx';
+import { VerificationWarning } from '/snippets/verification-warning.jsx';
+import { defaultPort, memoryConfigs, commonDataTypes, sampleData } from '/snippets/common-config.mdx';
+
+# Importable Code Snippets
+
+This page demonstrates how to use importable, reusable code snippets for Atoti development. These snippets follow the DRY (Don't Repeat Yourself) principle and can be customized with variables.
+
+<VerificationWarning />
+
+## Session Management
+
+### Basic Session
+
+<SessionBasic />
+
+### Configurable Session
+
+<SessionConfig port="9091" memory="8g" name="MyAnalytics" />
+
+You can customize the session configuration by passing different props:
+
+<SessionConfig port="8080" memory="16g" name="ProductionAnalytics" />
+
+### Context Manager Session (Recommended)
+
+<SessionContext port="9091" memory="8g" file_path="sales_data.csv" table_name="sales" measure="revenue" dimension="product" />
+
+## Data Loading
+
+### Load from Pandas DataFrame
+
+<LoadPandas 
+  start_date="2024-01-01" 
+  periods="365" 
+  product_a="Laptop" 
+  product_b="Mouse" 
+  product_c="Keyboard"
+  sales_a="1200"
+  sales_b="25"
+  sales_c="75"
+  repeat="122"
+  table_name="electronics_sales"
+/>
+
+### Load from CSV
+
+<LoadCsv file_path="quarterly_sales.csv" table_name="q_sales" />
+
+## Cube Operations
+
+### Basic Cube Creation
+
+<CubeBasic />
+
+## Querying
+
+### Basic Queries
+
+<QueryBasic measure="revenue" measure2="profit" row_dim="product_category" col_dim="quarter" />
+
+### Filtered Queries
+
+<QueryFiltered 
+  measure="revenue" 
+  dimension="product" 
+  filter_dim="region" 
+  filter_value="Europe"
+  filter_dim1="category"
+  value1="Electronics"
+  value2="Software"
+  filter_dim2="year"
+  year="2024"
+  filter_dim3="revenue"
+  threshold="1000"
+/>
+
+## Custom Measures
+
+### Calculated Measures
+
+<MeasuresCalculated 
+  profit_measure="net_profit"
+  revenue="gross_revenue"
+  cost="total_cost"
+  margin_measure="net_margin"
+  profit="net_profit"
+  avg_measure="avg_transaction"
+  total="total_revenue"
+  count="transaction_count"
+/>
+
+## Error Handling
+
+### Robust Error Handling
+
+<ErrorHandling file_path="sales_data.csv" table_name="sales" measure="revenue" dimension="product" />
+
+## Visualizations
+
+### Chart Widgets
+
+<VisualizationCharts 
+  measure="quarterly_revenue"
+  dimension="product_line"
+  time_dim="quarter"
+  title="Quarterly Revenue by Product Line"
+/>
+
+## Using Configuration Variables
+
+You can also import and use common configuration variables:
+
+```javascript
+// Available configurations:
+// Default port: {defaultPort}
+// Memory configs: {JSON.stringify(memoryConfigs, null, 2)}
+// Common data types: {JSON.stringify(commonDataTypes, null, 2)}
+// Sample data: {JSON.stringify(sampleData, null, 2)}
+```
+
+### Example with Configuration Variables
+
+```python
+import atoti as tt
+from your_config import memoryConfigs, commonDataTypes
+
+# Use predefined memory configuration
+session = tt.Session(
+    port=9090,
+    java_options=memoryConfigs["production"],
+    name="production_analytics"
+)
+
+# Use predefined data types
+table = session.read_csv(
+    "sales_data.csv",
+    table_name="sales",
+    dtypes=commonDataTypes
+)
+```
+
+## Creating Your Own Snippets
+
+To create your own importable snippets:
+
+### 1. Create a Snippet File
+
+Create a new file in the `snippets/` directory:
+
+```mdx title="snippets/my-custom-snippet.mdx"
+```python
+# My custom Atoti operation
+def custom_analysis(cube, dimension="{dimension or "product"}"):
+    return cube.query(
+        measures=["{measure or "sales_amount"}"],
+        rows=[dimension],
+        filter={{"{filter_key or "status"}": "{filter_value or "active"}"}}
+    )
+
+result = custom_analysis(cube)
+print(result)
+```
+
+### 2. Import and Use the Snippet
+
+```mdx title="your-documentation-page.mdx"
+---
+title: My Analysis Page
+---
+
+import MyCustomSnippet from '/snippets/my-custom-snippet.mdx';
+
+# My Analysis
+
+<MyCustomSnippet dimension="region" measure="revenue" filter_key="category" filter_value="premium" />
+```
+
+### 3. Create JSX Components for Complex Logic
+
+```jsx title="snippets/analysis-widget.jsx"
+export const AnalysisWidget = ({ 
+  title = "Analysis Results", 
+  measures = ["sales_amount"], 
+  dimensions = ["product"] 
+}) => {
+  return (
+    <div style={{ border: '1px solid #ccc', padding: '16px', margin: '16px 0' }}>
+      <h3>{title}</h3>
+      <pre>
+{`# Analysis Configuration
+measures = ${JSON.stringify(measures)}
+dimensions = ${JSON.stringify(dimensions)}
+
+result = cube.query(
+    measures=measures,
+    rows=dimensions
+)
+print(result)`}
+      </pre>
+    </div>
+  )
+}
+```
+
+## Best Practices
+
+1. **Use Variables**: Make your snippets flexible with customizable variables
+2. **Include Verification Warnings**: Always remind users to verify API syntax
+3. **Provide Examples**: Show multiple usage examples with different parameters
+4. **Keep Snippets Focused**: Each snippet should do one thing well
+5. **Document Parameters**: Clearly explain what each variable does
+
+## Advanced Usage
+
+### Combining Multiple Snippets
+
+You can combine multiple snippets in a single documentation page:
+
+```mdx
+import SessionContext from '/snippets/session-context.mdx';
+import LoadCsv from '/snippets/load-csv.mdx';
+import QueryFiltered from '/snippets/query-filtered.mdx';
+
+# Complete Analysis Workflow
+
+## Step 1: Create Session
+<SessionContext port="9091" memory="8g" />
+
+## Step 2: Load Data  
+<LoadCsv file_path="monthly_sales.csv" table_name="monthly_sales" />
+
+## Step 3: Query Data
+<QueryFiltered measure="monthly_revenue" dimension="product" filter_dim="month" filter_value="January" />
+```
+
+### Creating Snippet Libraries
+
+Organize related snippets into libraries:
+
+```mdx title="snippets/data-loading-library.mdx"
+export { default as LoadPandas } from './load-pandas.mdx';
+export { default as LoadCsv } from './load-csv.mdx';
+export { default as LoadDatabase } from './load-database.mdx';
+```
+
+Then import the entire library:
+
+```mdx
+import { LoadPandas, LoadCsv, LoadDatabase } from '/snippets/data-loading-library.mdx';
+```
+
+## Next Steps
+
+- Explore the [complete snippets collection](/snippets)
+- Learn about [advanced Atoti patterns](/advanced)
+- Check out [real-world examples](/examples)
+- Contribute your own snippets to the community
