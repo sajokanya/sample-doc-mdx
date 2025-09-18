@@ -1,0 +1,1049 @@
+---
+title: Advanced Usage Guides
+description: Deep dive into advanced Atoti features including performance optimization, production deployment, and complex analytics scenarios.
+---
+
+# Advanced Usage Guides
+
+This section covers advanced Atoti features and techniques for experienced users. Topics include performance optimization, production deployment, complex analytics scenarios, and enterprise-grade implementations.
+
+<Warning>
+All code examples use conceptual API patterns. Always verify exact method names and syntax against the [official Atoti documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/) before implementation.
+</Warning>
+
+## Performance Optimization
+
+### Memory Management
+
+Optimizing memory usage for large-scale analytics.
+
+#### JVM Configuration
+
+```python
+import atoti as tt
+
+# Configure JVM for large datasets
+session = tt.Session(
+    java_options=[
+        "-Xmx32g",                      # 32GB maximum heap size
+        "-Xms8g",                       # 8GB initial heap size
+        "-XX:+UseG1GC",                 # G1 garbage collector
+        "-XX:MaxGCPauseMillis=200",     # Maximum GC pause time
+        "-XX:G1HeapRegionSize=32m",     # G1 heap region size
+        "-XX:+UnlockExperimentalVMOptions",
+        "-XX:+UseJVMCICompiler"         # Enable advanced JIT compilation
+    ]
+)
+```
+
+#### Memory-Efficient Data Loading
+
+```python
+# Load large datasets efficiently
+# Note: Verify exact parameters and methods
+def load_large_dataset(session, file_path, chunk_size=50000):
+    """Load large CSV files in chunks to manage memory usage."""
+    
+    # Read file metadata first
+    sample_data = pd.read_csv(file_path, nrows=1000)
+    
+    # Optimize data types
+    optimized_dtypes = {}
+    for col in sample_data.columns:
+        if sample_data[col].dtype == 'object':
+            optimized_dtypes[col] = 'STRING'
+        elif sample_data[col].dtype == 'int64':
+            optimized_dtypes[col] = 'INT'
+        elif sample_data[col].dtype == 'float64':
+            optimized_dtypes[col] = 'DOUBLE'
+    
+    # Load in chunks
+    table = session.read_csv(
+        file_path,
+        table_name="large_dataset",
+        chunk_size=chunk_size,
+        dtypes=optimized_dtypes,
+        low_memory=True
+    )
+    
+    return table
+```
+
+#### Memory Monitoring
+
+```python
+import psutil
+import gc
+
+def monitor_memory_usage(session):
+    """Monitor memory usage during Atoti operations."""
+    
+    process = psutil.Process()
+    
+    print(f"Memory usage: {process.memory_info().rss / 1024 / 1024:.2f} MB")
+    print(f"Memory percent: {process.memory_percent():.2f}%")
+    
+    # JVM memory info (conceptual - verify actual method)
+    if hasattr(session, 'memory_info'):
+        jvm_memory = session.memory_info()
+        print(f"JVM Heap used: {jvm_memory.heap_used / 1024 / 1024:.2f} MB")
+        print(f"JVM Heap max: {jvm_memory.heap_max / 1024 / 1024:.2f} MB")
+    
+    # Force garbage collection
+    gc.collect()
+```
+
+### Query Optimization
+
+#### Indexing Strategies
+
+```python
+# Create optimized cubes with strategic indexing
+# Note: Verify exact indexing syntax
+def create_optimized_cube(session, table):
+    """Create cube with optimized indexes for common query patterns."""
+    
+    cube = session.create_cube(
+        table,
+        indexes=[
+            # Index frequently filtered columns
+            "date",
+            "product_category", 
+            "region",
+            # Composite indexes for common combinations
+            ["date", "region"],
+            ["product_category", "region"]
+        ],
+        # Enable query result caching
+        cache_enabled=True,
+        cache_size="1GB"
+    )
+    
+    return cube
+```
+
+#### Query Pattern Optimization
+
+```python
+# Efficient query patterns
+def optimized_queries(cube):
+    """Examples of optimized query patterns."""
+    
+    # 1. Filter early and specifically
+    filtered_query = cube.query(
+        measures=["sales_amount"],
+        rows=["product"],
+        filter={
+            "date": {">=": "2023-01-01", "<=": "2023-12-31"},
+            "region": ["North", "South"],  # Specific values
+            "sales_amount": {">": 100}     # Filter on measures
+        },
+        limit=1000  # Limit results
+    )
+    
+    # 2. Use aggregated queries when possible
+    summary_query = cube.query(
+        measures=["sales_amount", "quantity"],
+        rows=["product_category"],  # Higher level aggregation
+        include_totals=True
+    )
+    
+    # 3. Batch multiple related queries
+    batch_results = cube.batch_query([
+        {
+            "measures": ["sales_amount"],
+            "rows": ["product"],
+            "filter": {"region": "North"}
+        },
+        {
+            "measures": ["sales_amount"], 
+            "rows": ["product"],
+            "filter": {"region": "South"}
+        }
+    ])
+    
+    return filtered_query, summary_query, batch_results
+```
+
+### Parallel Processing
+
+```python
+import concurrent.futures
+import threading
+
+def parallel_cube_operations(session, data_sources):
+    """Process multiple data sources in parallel."""
+    
+    def load_and_process(source_config):
+        """Load and process a single data source."""
+        thread_id = threading.current_thread().ident
+        
+        # Create thread-local session or use shared session safely
+        # Note: Verify thread safety requirements
+        table = session.read_csv(
+            source_config["file_path"],
+            table_name=f"data_{thread_id}"
+        )
+        
+        cube = session.create_cube(table)
+        
+        result = cube.query(
+            measures=source_config["measures"],
+            rows=source_config["dimensions"]
+        )
+        
+        return {
+            "source": source_config["name"],
+            "result": result
+        }
+    
+    # Process sources in parallel
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        futures = [
+            executor.submit(load_and_process, source)
+            for source in data_sources
+        ]
+        
+        results = []
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                result = future.result()
+                results.append(result)
+            except Exception as e:
+                print(f"Error processing source: {e}")
+        
+        return results
+```
+
+## Production Deployment
+
+### Configuration Management
+
+```python
+import os
+import yaml
+from dataclasses import dataclass
+from typing import List, Dict, Any
+
+@dataclass
+class AtotiConfig:
+    """Production configuration for Atoti deployment."""
+    
+    # Server configuration
+    port: int = 9090
+    host: str = "0.0.0.0"
+    name: str = "atoti_production"
+    
+    # JVM configuration
+    max_memory: str = "16g"
+    initial_memory: str = "4g"
+    gc_algorithm: str = "G1GC"
+    
+    # Security configuration
+    authentication_enabled: bool = True
+    ssl_enabled: bool = True
+    ssl_cert_path: str = ""
+    ssl_key_path: str = ""
+    
+    # Data source configuration
+    data_sources: Dict[str, Any] = None
+    
+    # Monitoring configuration
+    metrics_enabled: bool = True
+    logging_level: str = "INFO"
+    
+    @classmethod
+    def from_yaml(cls, config_path: str):
+        """Load configuration from YAML file."""
+        with open(config_path, 'r') as f:
+            config_data = yaml.safe_load(f)
+        return cls(**config_data)
+    
+    def to_session_args(self) -> Dict[str, Any]:
+        """Convert to session arguments."""
+        java_options = [
+            f"-Xmx{self.max_memory}",
+            f"-Xms{self.initial_memory}",
+            f"-XX:+Use{self.gc_algorithm}"
+        ]
+        
+        if self.metrics_enabled:
+            java_options.extend([
+                "-Dcom.sun.management.jmxremote",
+                "-Dcom.sun.management.jmxremote.port=9999",
+                "-Dcom.sun.management.jmxremote.authenticate=false",
+                "-Dcom.sun.management.jmxremote.ssl=false"
+            ])
+        
+        return {
+            "port": self.port,
+            "name": self.name,
+            "java_options": java_options
+        }
+
+# Usage
+config = AtotiConfig.from_yaml("production_config.yaml")
+session = tt.Session(**config.to_session_args())
+```
+
+### Health Monitoring
+
+```python
+import time
+import logging
+from datetime import datetime
+from typing import Dict, Any
+
+class AtotiHealthMonitor:
+    """Monitor Atoti session health and performance."""
+    
+    def __init__(self, session, check_interval=60):
+        self.session = session
+        self.check_interval = check_interval
+        self.logger = logging.getLogger(__name__)
+        self.metrics_history = []
+    
+    def check_session_health(self) -> Dict[str, Any]:
+        """Check session health status."""
+        try:
+            # Basic connectivity check
+            is_alive = self.session.is_alive()
+            
+            # Memory usage check (conceptual - verify actual methods)
+            memory_info = self.session.get_memory_info()
+            memory_usage_pct = (memory_info.used / memory_info.max) * 100
+            
+            # Query performance check
+            start_time = time.time()
+            test_query = self.session.cubes["test_cube"].query(
+                measures=["count"],
+                limit=1
+            )
+            query_time = time.time() - start_time
+            
+            health_status = {
+                "timestamp": datetime.now().isoformat(),
+                "session_alive": is_alive,
+                "memory_usage_pct": memory_usage_pct,
+                "query_response_time": query_time,
+                "status": "healthy" if is_alive and memory_usage_pct < 90 and query_time < 5 else "unhealthy"
+            }
+            
+            self.metrics_history.append(health_status)
+            
+            # Keep only last 100 metrics
+            if len(self.metrics_history) > 100:
+                self.metrics_history = self.metrics_history[-100:]
+            
+            return health_status
+            
+        except Exception as e:
+            self.logger.error(f"Health check failed: {e}")
+            return {
+                "timestamp": datetime.now().isoformat(),
+                "status": "error",
+                "error": str(e)
+            }
+    
+    def start_monitoring(self):
+        """Start continuous health monitoring."""
+        while True:
+            health_status = self.check_session_health()
+            
+            if health_status["status"] != "healthy":
+                self.logger.warning(f"Health check warning: {health_status}")
+            
+            time.sleep(self.check_interval)
+```
+
+### Load Balancing and Scaling
+
+```python
+import random
+from typing import List
+
+class AtotiLoadBalancer:
+    """Simple load balancer for multiple Atoti sessions."""
+    
+    def __init__(self, session_configs: List[Dict]):
+        self.sessions = []
+        self.session_weights = []
+        
+        for config in session_configs:
+            session = tt.Session(**config)
+            self.sessions.append(session)
+            self.session_weights.append(config.get("weight", 1))
+    
+    def get_session(self, strategy="round_robin"):
+        """Get a session based on load balancing strategy."""
+        if strategy == "round_robin":
+            return self._round_robin()
+        elif strategy == "weighted_random":
+            return self._weighted_random()
+        elif strategy == "least_loaded":
+            return self._least_loaded()
+        else:
+            return random.choice(self.sessions)
+    
+    def _round_robin(self):
+        """Round-robin session selection."""
+        if not hasattr(self, '_current_index'):
+            self._current_index = 0
+        
+        session = self.sessions[self._current_index]
+        self._current_index = (self._current_index + 1) % len(self.sessions)
+        return session
+    
+    def _weighted_random(self):
+        """Weighted random session selection."""
+        return random.choices(self.sessions, weights=self.session_weights)[0]
+    
+    def _least_loaded(self):
+        """Select least loaded session based on memory usage."""
+        min_load = float('inf')
+        selected_session = None
+        
+        for session in self.sessions:
+            try:
+                # Conceptual - verify actual method
+                memory_info = session.get_memory_info()
+                load = memory_info.used / memory_info.max
+                
+                if load < min_load:
+                    min_load = load
+                    selected_session = session
+            except:
+                continue
+        
+        return selected_session or self.sessions[0]
+    
+    def close_all(self):
+        """Close all sessions."""
+        for session in self.sessions:
+            try:
+                session.close()
+            except:
+                pass
+
+# Usage
+load_balancer = AtotiLoadBalancer([
+    {"port": 9090, "name": "atoti_1"},
+    {"port": 9091, "name": "atoti_2"},
+    {"port": 9092, "name": "atoti_3"}
+])
+
+# Get session for query
+session = load_balancer.get_session("least_loaded")
+```
+
+## Complex Analytics Scenarios
+
+### Multi-Dimensional What-If Analysis
+
+```python
+def complex_scenario_analysis(session, base_data):
+    """Advanced scenario modeling with multiple variables."""
+    
+    # Load base data
+    base_table = session.read_pandas(base_data, table_name="base_sales")
+    base_cube = session.create_cube(base_table)
+    
+    # Create multiple scenarios
+    scenarios = {}
+    
+    # Scenario 1: Price increase
+    scenarios["price_increase"] = session.create_scenario(
+        "price_increase_10pct",
+        base_cube=base_cube
+    )
+    
+    # Apply price changes
+    scenarios["price_increase"].modify_table(
+        "base_sales",
+        filter={"product_category": ["Electronics", "Appliances"]},
+        changes={"unit_price": lambda x: x * 1.1}
+    )
+    
+    # Scenario 2: Market expansion
+    scenarios["market_expansion"] = session.create_scenario(
+        "new_markets",
+        base_cube=base_cube
+    )
+    
+    # Add new market data
+    new_market_data = pd.DataFrame({
+        "region": ["Asia", "Europe"] * 100,
+        "product": ["Product A", "Product B"] * 100,
+        "sales_amount": np.random.randint(100, 1000, 200),
+        "quantity": np.random.randint(1, 50, 200)
+    })
+    
+    scenarios["market_expansion"].add_data(
+        new_market_data,
+        table_name="base_sales"
+    )
+    
+    # Scenario 3: Combined scenario
+    scenarios["combined"] = session.create_scenario(
+        "price_and_expansion",
+        base_scenarios=[scenarios["price_increase"], scenarios["market_expansion"]]
+    )
+    
+    # Compare all scenarios
+    comparison_results = {}
+    
+    for scenario_name, scenario in scenarios.items():
+        result = scenario.query(
+            measures=["sales_amount", "quantity"],
+            rows=["region", "product_category"],
+            include_totals=True
+        )
+        comparison_results[scenario_name] = result
+    
+    return comparison_results
+```
+
+### Advanced Time Series Analytics
+
+```python
+def time_series_analytics(cube):
+    """Advanced time-based calculations and analysis."""
+    
+    # Create time-based measures
+    # Note: Verify exact syntax for time functions
+    
+    # Year-over-year growth
+    cube.measures["yoy_growth"] = tt.growth_rate(
+        cube.measures["sales_amount"],
+        cube.hierarchies["date"],
+        period="year"
+    )
+    
+    # Moving averages
+    cube.measures["ma_30d"] = tt.moving_average(
+        cube.measures["sales_amount"],
+        cube.hierarchies["date"],
+        window=30
+    )
+    
+    cube.measures["ma_90d"] = tt.moving_average(
+        cube.measures["sales_amount"],
+        cube.hierarchies["date"],
+        window=90
+    )
+    
+    # Seasonal decomposition
+    cube.measures["seasonal_component"] = tt.seasonal_decompose(
+        cube.measures["sales_amount"],
+        cube.hierarchies["date"],
+        period=365
+    )
+    
+    # Trend analysis
+    cube.measures["trend_component"] = tt.trend_analysis(
+        cube.measures["sales_amount"],
+        cube.hierarchies["date"],
+        method="linear"
+    )
+    
+    # Forecasting (conceptual)
+    cube.measures["forecast_30d"] = tt.forecast(
+        cube.measures["sales_amount"],
+        cube.hierarchies["date"],
+        periods=30,
+        method="arima"
+    )
+    
+    # Advanced time series query
+    time_analysis = cube.query(
+        measures=[
+            "sales_amount",
+            "yoy_growth", 
+            "ma_30d",
+            "ma_90d",
+            "seasonal_component",
+            "trend_component",
+            "forecast_30d"
+        ],
+        rows=["date"],
+        filter={"date": {">=": "2023-01-01"}},
+        order_by={"date": "ASC"}
+    )
+    
+    return time_analysis
+```
+
+### Statistical Analysis
+
+```python
+def statistical_analysis(cube):
+    """Advanced statistical measures and analysis."""
+    
+    # Statistical measures
+    # Note: Verify exact syntax for statistical functions
+    
+    # Descriptive statistics
+    cube.measures["mean_sales"] = tt.mean(cube.measures["sales_amount"])
+    cube.measures["median_sales"] = tt.median(cube.measures["sales_amount"])
+    cube.measures["std_dev_sales"] = tt.std_dev(cube.measures["sales_amount"])
+    cube.measures["variance_sales"] = tt.variance(cube.measures["sales_amount"])
+    
+    # Percentiles
+    cube.measures["p25_sales"] = tt.percentile(cube.measures["sales_amount"], 25)
+    cube.measures["p75_sales"] = tt.percentile(cube.measures["sales_amount"], 75)
+    cube.measures["p95_sales"] = tt.percentile(cube.measures["sales_amount"], 95)
+    
+    # Correlation analysis
+    cube.measures["sales_quantity_corr"] = tt.correlation(
+        cube.measures["sales_amount"],
+        cube.measures["quantity"]
+    )
+    
+    # Regression analysis
+    cube.measures["sales_trend"] = tt.linear_regression(
+        cube.measures["sales_amount"],
+        cube.hierarchies["date"]
+    )
+    
+    # Outlier detection
+    cube.measures["is_outlier"] = tt.outlier_detection(
+        cube.measures["sales_amount"],
+        method="iqr",
+        threshold=1.5
+    )
+    
+    # Statistical significance testing
+    cube.measures["significance_test"] = tt.t_test(
+        cube.measures["sales_amount"],
+        groupby=cube.hierarchies["region"]
+    )
+    
+    # Comprehensive statistical analysis
+    stats_analysis = cube.query(
+        measures=[
+            "mean_sales", "median_sales", "std_dev_sales",
+            "p25_sales", "p75_sales", "p95_sales",
+            "sales_quantity_corr", "sales_trend"
+        ],
+        rows=["product_category", "region"],
+        include_totals=True
+    )
+    
+    return stats_analysis
+```
+
+## Security and Compliance
+
+### Authentication and Authorization
+
+```python
+class AtotiSecurityManager:
+    """Manage security for Atoti deployments."""
+    
+    def __init__(self, session):
+        self.session = session
+        self.users = {}
+        self.roles = {}
+    
+    def create_role(self, role_name, permissions):
+        """Create a role with specific permissions."""
+        # Note: Verify exact security API
+        role = self.session.security.create_role(
+            name=role_name,
+            permissions=permissions
+        )
+        self.roles[role_name] = role
+        return role
+    
+    def create_user(self, username, password, roles):
+        """Create a user with assigned roles."""
+        user = self.session.security.create_user(
+            username=username,
+            password=password,
+            roles=roles
+        )
+        self.users[username] = user
+        return user
+    
+    def setup_data_security(self, cube):
+        """Set up row-level security on cube data."""
+        
+        # Create security filters
+        # Managers can see all data
+        cube.security.add_filter(
+            role="manager",
+            filter={}  # No restrictions
+        )
+        
+        # Regional users can only see their region
+        cube.security.add_filter(
+            role="regional_user",
+            filter={"region": "${user.region}"}  # Dynamic filter
+        )
+        
+        # Analysts can see aggregated data only
+        cube.security.add_filter(
+            role="analyst",
+            filter={},
+            aggregation_level="product_category"  # Force aggregation
+        )
+
+# Usage
+security_manager = AtotiSecurityManager(session)
+
+# Create roles
+security_manager.create_role("manager", ["read", "write", "admin"])
+security_manager.create_role("regional_user", ["read"])
+security_manager.create_role("analyst", ["read"])
+
+# Create users
+security_manager.create_user("john_manager", "secure_password", ["manager"])
+security_manager.create_user("jane_regional", "secure_password", ["regional_user"])
+```
+
+### Data Encryption and Privacy
+
+```python
+def setup_data_encryption(session):
+    """Configure data encryption and privacy settings."""
+    
+    # Enable encryption at rest
+    # Note: Verify exact encryption API
+    session.configure_encryption(
+        encryption_at_rest=True,
+        encryption_key_path="/secure/path/to/key",
+        encryption_algorithm="AES-256"
+    )
+    
+    # Configure data masking for sensitive fields
+    session.configure_data_masking([
+        {
+            "column": "customer_email",
+            "mask_type": "email",
+            "roles_exempt": ["admin"]
+        },
+        {
+            "column": "customer_phone",
+            "mask_type": "phone",
+            "roles_exempt": ["admin", "customer_service"]
+        },
+        {
+            "column": "credit_card",
+            "mask_type": "credit_card",
+            "roles_exempt": ["admin"]
+        }
+    ])
+    
+    # Enable audit logging
+    session.configure_audit_logging(
+        enabled=True,
+        log_path="/var/log/atoti/audit.log",
+        log_level="INFO",
+        include_query_details=True
+    )
+```
+
+## Integration Patterns
+
+### Enterprise Data Pipeline
+
+```python
+import apache_beam as beam
+from apache_beam.options.pipeline_options import PipelineOptions
+
+class AtotiDataPipeline:
+    """Enterprise data pipeline for Atoti integration."""
+    
+    def __init__(self, session, pipeline_config):
+        self.session = session
+        self.config = pipeline_config
+    
+    def create_streaming_pipeline(self):
+        """Create a streaming data pipeline."""
+        
+        pipeline_options = PipelineOptions([
+            '--streaming',
+            '--runner=DataflowRunner',
+            '--project=your-project-id',
+            '--region=us-central1'
+        ])
+        
+        with beam.Pipeline(options=pipeline_options) as pipeline:
+            
+            # Read from Pub/Sub
+            raw_data = (
+                pipeline
+                | 'Read from Pub/Sub' >> beam.io.ReadFromPubSub(
+                    subscription=self.config['pubsub_subscription']
+                )
+                | 'Parse JSON' >> beam.Map(json.loads)
+            )
+            
+            # Transform data
+            transformed_data = (
+                raw_data
+                | 'Clean Data' >> beam.Map(self._clean_data)
+                | 'Enrich Data' >> beam.Map(self._enrich_data)
+                | 'Validate Data' >> beam.Filter(self._validate_data)
+            )
+            
+            # Write to Atoti
+            (
+                transformed_data
+                | 'Batch Data' >> beam.WindowInto(
+                    beam.window.FixedWindows(60)  # 1-minute windows
+                )
+                | 'Write to Atoti' >> beam.ParDo(
+                    AtotiWriteDoFn(self.session)
+                )
+            )
+    
+    def _clean_data(self, record):
+        """Clean and normalize data."""
+        # Data cleaning logic
+        return record
+    
+    def _enrich_data(self, record):
+        """Enrich data with additional information."""
+        # Data enrichment logic
+        return record
+    
+    def _validate_data(self, record):
+        """Validate data quality."""
+        # Data validation logic
+        return True
+
+class AtotiWriteDoFn(beam.DoFn):
+    """Apache Beam DoFn for writing to Atoti."""
+    
+    def __init__(self, session):
+        self.session = session
+    
+    def process(self, batch):
+        """Process a batch of records."""
+        try:
+            # Convert to DataFrame
+            df = pd.DataFrame(batch)
+            
+            # Append to Atoti table
+            # Note: Verify exact method for streaming updates
+            self.session.tables["streaming_data"].append(df)
+            
+            yield f"Processed {len(batch)} records"
+            
+        except Exception as e:
+            yield beam.pvalue.TaggedOutput('errors', str(e))
+```
+
+### Microservices Integration
+
+```python
+from flask import Flask, request, jsonify
+import threading
+
+class AtotiMicroservice:
+    """Microservice wrapper for Atoti analytics."""
+    
+    def __init__(self, config):
+        self.app = Flask(__name__)
+        self.session = None
+        self.config = config
+        self.setup_routes()
+    
+    def setup_routes(self):
+        """Setup REST API routes."""
+        
+        @self.app.route('/health', methods=['GET'])
+        def health_check():
+            """Health check endpoint."""
+            try:
+                is_alive = self.session.is_alive() if self.session else False
+                return jsonify({
+                    "status": "healthy" if is_alive else "unhealthy",
+                    "session_active": is_alive
+                })
+            except Exception as e:
+                return jsonify({"status": "error", "error": str(e)}), 500
+        
+        @self.app.route('/query', methods=['POST'])
+        def execute_query():
+            """Execute analytics query."""
+            try:
+                query_params = request.json
+                
+                cube = self.session.cubes[query_params.get('cube_name')]
+                
+                result = cube.query(
+                    measures=query_params.get('measures', []),
+                    rows=query_params.get('rows', []),
+                    columns=query_params.get('columns', []),
+                    filter=query_params.get('filter', {}),
+                    limit=query_params.get('limit', 1000)
+                )
+                
+                # Convert result to JSON-serializable format
+                return jsonify({
+                    "status": "success",
+                    "data": result.to_dict(),
+                    "row_count": len(result)
+                })
+                
+            except Exception as e:
+                return jsonify({
+                    "status": "error", 
+                    "error": str(e)
+                }), 400
+        
+        @self.app.route('/cubes', methods=['GET'])
+        def list_cubes():
+            """List available cubes."""
+            try:
+                cubes = list(self.session.cubes.keys())
+                return jsonify({
+                    "status": "success",
+                    "cubes": cubes
+                })
+            except Exception as e:
+                return jsonify({"status": "error", "error": str(e)}), 500
+    
+    def start(self):
+        """Start the microservice."""
+        # Initialize Atoti session in background thread
+        def init_session():
+            self.session = tt.Session(**self.config)
+            # Load initial data, create cubes, etc.
+        
+        session_thread = threading.Thread(target=init_session)
+        session_thread.start()
+        
+        # Start Flask app
+        self.app.run(
+            host='0.0.0.0',
+            port=5000,
+            threaded=True
+        )
+
+# Usage
+config = {
+    "port": 9090,
+    "java_options": ["-Xmx8g"]
+}
+
+microservice = AtotiMicroservice(config)
+microservice.start()
+```
+
+## Troubleshooting and Debugging
+
+### Advanced Debugging Techniques
+
+```python
+import logging
+import traceback
+from contextlib import contextmanager
+
+class AtotiDebugger:
+    """Advanced debugging utilities for Atoti."""
+    
+    def __init__(self, session):
+        self.session = session
+        self.logger = logging.getLogger(__name__)
+        self.query_history = []
+    
+    @contextmanager
+    def debug_context(self, operation_name):
+        """Context manager for debugging operations."""
+        start_time = time.time()
+        self.logger.info(f"Starting operation: {operation_name}")
+        
+        try:
+            yield
+            duration = time.time() - start_time
+            self.logger.info(f"Completed operation: {operation_name} in {duration:.2f}s")
+            
+        except Exception as e:
+            duration = time.time() - start_time
+            self.logger.error(f"Failed operation: {operation_name} after {duration:.2f}s")
+            self.logger.error(f"Error: {str(e)}")
+            self.logger.error(f"Traceback: {traceback.format_exc()}")
+            raise
+    
+    def debug_query(self, cube, **query_params):
+        """Debug query execution with detailed logging."""
+        
+        with self.debug_context(f"Query on cube {cube.name}"):
+            
+            # Log query parameters
+            self.logger.debug(f"Query parameters: {query_params}")
+            
+            # Check cube state
+            self.logger.debug(f"Cube measures: {list(cube.measures.keys())}")
+            self.logger.debug(f"Cube hierarchies: {list(cube.hierarchies.keys())}")
+            
+            # Execute query with timing
+            start_time = time.time()
+            result = cube.query(**query_params)
+            query_time = time.time() - start_time
+            
+            # Log results
+            self.logger.debug(f"Query returned {len(result)} rows in {query_time:.2f}s")
+            
+            # Store in history
+            self.query_history.append({
+                "timestamp": datetime.now(),
+                "cube": cube.name,
+                "parameters": query_params,
+                "execution_time": query_time,
+                "row_count": len(result)
+            })
+            
+            return result
+    
+    def analyze_performance(self):
+        """Analyze query performance patterns."""
+        
+        if not self.query_history:
+            return "No query history available"
+        
+        # Calculate statistics
+        execution_times = [q["execution_time"] for q in self.query_history]
+        row_counts = [q["row_count"] for q in self.query_history]
+        
+        analysis = {
+            "total_queries": len(self.query_history),
+            "avg_execution_time": sum(execution_times) / len(execution_times),
+            "max_execution_time": max(execution_times),
+            "avg_row_count": sum(row_counts) / len(row_counts),
+            "max_row_count": max(row_counts),
+            "slow_queries": [
+                q for q in self.query_history 
+                if q["execution_time"] > 5.0  # Queries taking more than 5 seconds
+            ]
+        }
+        
+        return analysis
+
+# Usage
+debugger = AtotiDebugger(session)
+
+# Debug a query
+result = debugger.debug_query(
+    cube,
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={"region": "North"}
+)
+
+# Analyze performance
+performance_analysis = debugger.analyze_performance()
+print(performance_analysis)
+```
+
+This comprehensive advanced guide covers the most sophisticated aspects of Atoti usage. Remember to always verify the exact API methods and syntax against the official documentation before implementing these patterns in production environments.
+
+## Next Steps
+
+- **[Production Deployment Checklist](/deployment-checklist)**: Essential steps for production deployment
+- **[Performance Tuning Guide](/performance-tuning)**: Detailed performance optimization strategies  
+- **[Enterprise Architecture Patterns](/enterprise-patterns)**: Scalable architecture designs
+- **[Official Documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)**: Complete technical reference
