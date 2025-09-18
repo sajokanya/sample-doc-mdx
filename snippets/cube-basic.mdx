@@ -1,0 +1,14 @@
+```python
+import atoti as tt
+
+session = tt.Session()
+# ... load data into table ...
+
+# Create cube from table
+# Note: Verify exact method signature
+cube = session.create_cube(table)
+
+# List available measures and hierarchies
+print("Measures:", list(cube.measures.keys()))
+print("Hierarchies:", list(cube.hierarchies.keys()))
+```
