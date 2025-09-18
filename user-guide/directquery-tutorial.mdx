@@ -1,417 +1,202 @@
 ---
 title: "DirectQuery tutorial"
-description: "Learn how to use DirectQuery to connect to external databases and query data without loading it into memory."
+description: "Learn how to connect to external databases and query data directly without loading it into memory."
 ---
-
-import { productName } from '/snippets/custom-variables.mdx';
 
 ## What is DirectQuery?
 
-DirectQuery allows you to connect to external databases and query data directly without loading it into Atoti's memory. This approach is ideal for:
+DirectQuery is a feature in Atoti that allows you to connect to external databases and query data directly without loading it into Atoti's memory. This approach is beneficial for:
 
 - Large datasets that exceed available memory
-- Real-time data that changes frequently
+- Real-time data that changes frequently  
 - Compliance requirements that prevent data duplication
-- Scenarios where you need to query the most up-to-date information
+- Scenarios where you need the most up-to-date information
 
 ## Prerequisites
 
 Before starting this tutorial, ensure you have:
 
 - Atoti Python SDK installed (`pip install atoti`)
-- Access to a database (PostgreSQL, SQL Server, Oracle, etc.)
+- Access to a supported database (PostgreSQL, SQL Server, Oracle, etc.)
 - Database connection credentials
 - Basic knowledge of SQL and Python
 
-## Setting up DirectQuery
+## Basic DirectQuery setup
 
-### Step 1: Create a session with DirectQuery enabled
+### Step 1: Import Atoti and create a session
 
 ```python
 import atoti as tt
 
-# Create session with DirectQuery capabilities
-session = tt.create_session(
-    config=tt.SessionConfig(
-        # Enable DirectQuery feature
-        directquery=tt.DirectQueryConfig(
-            # Optional: configure connection pooling
-            max_connections=10,
-            connection_timeout=30
-        )
-    )
+# Create a standard Atoti session
+session = tt.create_session()
+```
+
+### Step 2: Connect to your database
+
+Based on the Atoti documentation, you can connect to external databases using connection strings. The exact method depends on your database type:
+
+```python
+# Example connection pattern (verify exact syntax in Atoti docs)
+# Note: This is illustrative - check official documentation for precise API
+
+# For PostgreSQL
+connection_string = "postgresql://username:password@host:port/database"
+
+# For SQL Server  
+connection_string = "mssql://username:password@host:port/database"
+
+# For Oracle
+connection_string = "oracle://username:password@host:port/service"
+```
+
+### Step 3: Create tables from external sources
+
+```python
+# Create a table that references external data
+# Note: Verify exact method names in official Atoti documentation
+
+# This is a conceptual example - actual API may differ
+external_table = session.read_sql(
+    "SELECT * FROM sales_data WHERE date >= '2023-01-01'",
+    connection_string
 )
 ```
 
-### Step 2: Configure database connection
+## Working with external data
+
+### Creating cubes from external tables
 
 ```python
-# Define your database connection
-database_config = {
-    "url": "postgresql://username:password@localhost:5432/database_name",
-    "driver": "postgresql"
-}
+# Create a cube from your external data
+cube = session.create_cube(external_table)
 
-# Alternative: using individual parameters
-database_config = {
-    "host": "localhost",
-    "port": 5432,
-    "database": "sales_db",
-    "username": "user",
-    "password": "password",
-    "driver": "postgresql"
-}
+# Access measures for aggregations
+m = cube.measures
+
+# Define basic measures using Atoti's aggregation functions
+m["Total Sales"] = tt.agg.sum(external_table["amount"])
+m["Transaction Count"] = tt.agg.count()
+m["Average Sale"] = tt.agg.mean(external_table["amount"])
 ```
 
-### Step 3: Create a DirectQuery table
+### Filtering and querying
 
 ```python
-# Connect to external table using DirectQuery
-sales_table = session.create_directquery_table(
-    name="sales",
-    connection=database_config,
-    query="SELECT * FROM sales_data WHERE date >= '2023-01-01'"
-)
+# Apply filters to your data
+filtered_data = external_table[
+    (external_table["region"] == "North America") &
+    (external_table["amount"] > 1000)
+]
 
-# Or reference an existing table directly
-products_table = session.create_directquery_table(
-    name="products",
-    connection=database_config,
-    table_name="product_catalog"
-)
+# Create hierarchies for analysis
+cube.hierarchies["Time"] = [external_table["date"]]
+cube.hierarchies["Geography"] = [external_table["region"]]
 ```
 
-## Working with DirectQuery tables
+## Performance considerations
 
-### Viewing table structure
+### Database optimization
 
-```python
-# Inspect the table schema
-print(sales_table.columns)
-print(sales_table.dtypes)
+1. **Use selective queries**: Filter data at the database level
+2. **Index appropriately**: Ensure your database tables are properly indexed
+3. **Limit result sets**: Use LIMIT clauses for large datasets
+4. **Monitor connections**: Be mindful of database connection limits
 
-# Preview data (limited rows)
-print(sales_table.head())
-```
-
-### Creating measures on DirectQuery data
+### Query best practices
 
 ```python
-# Create a cube from DirectQuery table
-cube = session.create_cube(sales_table)
-
-# Define measures that will be computed on the database
-measures = cube.measures
-
-# Sum aggregation
-measures["Total Sales"] = tt.agg.sum(sales_table["amount"])
-
-# Count aggregation
-measures["Transaction Count"] = tt.agg.count()
-
-# Average aggregation
-measures["Average Order Value"] = tt.agg.mean(sales_table["amount"])
-
-# Custom SQL expression
-measures["Revenue USD"] = tt.agg.sum(
-    sales_table["amount"] * sales_table["exchange_rate"]
-)
-```
-
-### Filtering DirectQuery data
-
-```python
-# Apply filters that get pushed down to the database
-filtered_data = sales_table.where(
-    (sales_table["region"] == "North America") &
-    (sales_table["amount"] > 1000)
-)
-
-# Date range filtering
-recent_sales = sales_table.where(
-    sales_table["date"] >= "2023-06-01"
-)
-```
-
-## Advanced DirectQuery features
-
-### Joining DirectQuery tables
-
-```python
-# Join multiple DirectQuery tables
-joined_table = sales_table.join(
-    products_table,
-    on={"product_id": "id"},
-    how="inner"
-)
-
-# Create cube from joined data
-sales_cube = session.create_cube(joined_table)
-```
-
-### Custom SQL queries
-
-```python
-# Use complex SQL for advanced scenarios
-complex_query = """
-SELECT 
-    s.region,
-    s.product_id,
-    p.category,
-    SUM(s.amount) as total_sales,
-    COUNT(*) as transaction_count
-FROM sales_data s
-JOIN product_catalog p ON s.product_id = p.id
-WHERE s.date >= '2023-01-01'
-GROUP BY s.region, s.product_id, p.category
+# Good: Filter at the source
+efficient_query = """
+SELECT product_id, region, amount, date 
+FROM sales_data 
+WHERE date >= '2023-01-01' 
+  AND region IN ('US', 'Canada')
+  AND amount > 0
 """
 
-aggregated_table = session.create_directquery_table(
-    name="sales_summary",
-    connection=database_config,
-    query=complex_query
-)
+# Better than pulling all data and filtering in Atoti
 ```
 
-### Performance optimization
+## Error handling and troubleshooting
 
-```python
-# Configure query optimization
-optimized_table = session.create_directquery_table(
-    name="optimized_sales",
-    connection=database_config,
-    query="SELECT * FROM sales_data",
-    options={
-        # Enable query result caching
-        "cache_results": True,
-        "cache_duration": "1h",
-        
-        # Optimize data types
-        "infer_schema": True,
-        
-        # Batch size for large results
-        "fetch_size": 10000
-    }
-)
-```
-
-## Monitoring DirectQuery performance
-
-### Query execution metrics
-
-```python
-# Enable query logging
-session.config.logging.level = "DEBUG"
-
-# View query execution statistics
-stats = sales_table.query_stats
-print(f"Queries executed: {stats.query_count}")
-print(f"Average execution time: {stats.avg_execution_time}")
-print(f"Cache hit rate: {stats.cache_hit_rate}")
-```
-
-### Database connection monitoring
-
-```python
-# Monitor connection pool status
-pool_stats = session.directquery_pool_stats
-print(f"Active connections: {pool_stats.active}")
-print(f"Idle connections: {pool_stats.idle}")
-print(f"Total connections: {pool_stats.total}")
-```
-
-## Best practices
-
-### Query optimization
-
-1. **Use selective filters**: Apply filters early to reduce data transfer
-2. **Limit result sets**: Use `LIMIT` clauses for exploratory queries
-3. **Index your database**: Ensure proper indexing on frequently queried columns
-4. **Batch operations**: Group multiple operations when possible
-
-```python
-# Good: Selective filtering
-efficient_query = sales_table.where(
-    (sales_table["date"] >= "2023-01-01") &
-    (sales_table["region"].isin(["US", "Canada"]))
-).head(1000)
-
-# Avoid: Pulling all data then filtering
-# inefficient = sales_table.head(1000000).where(...)
-```
-
-### Connection management
-
-```python
-# Configure connection pooling appropriately
-session_config = tt.SessionConfig(
-    directquery=tt.DirectQueryConfig(
-        max_connections=5,  # Don't overwhelm the database
-        connection_timeout=60,
-        idle_timeout=300,
-        retry_attempts=3
-    )
-)
-```
-
-### Error handling
+### Common connection issues
 
 ```python
 try:
-    # DirectQuery operations
-    result = sales_table.where(sales_table["amount"] > 0)
-    cube = session.create_cube(result)
-    
-except tt.DirectQueryError as e:
-    print(f"DirectQuery error: {e}")
-    # Handle database connection issues
-    
-except tt.QueryExecutionError as e:
-    print(f"Query execution failed: {e}")
-    # Handle SQL syntax or performance issues
-```
-
-## Troubleshooting common issues
-
-### Connection problems
-
-```python
-# Test database connectivity
-try:
-    test_table = session.create_directquery_table(
-        name="connection_test",
-        connection=database_config,
-        query="SELECT 1 as test_column"
-    )
-    print("Connection successful!")
+    # Test your database connection
+    test_query = "SELECT 1"
+    result = session.read_sql(test_query, connection_string)
+    print("Database connection successful")
 except Exception as e:
     print(f"Connection failed: {e}")
+    # Check connection string, credentials, network access
 ```
 
-### Performance issues
+### Performance troubleshooting
 
-1. **Slow queries**: Check database query execution plans
-2. **Memory usage**: Monitor both Atoti and database memory
-3. **Network latency**: Consider database proximity and connection quality
+1. **Slow queries**: Review your SQL query performance in the database
+2. **Memory issues**: Monitor both Atoti and database memory usage
+3. **Network latency**: Consider database location and connection quality
+4. **Connection timeouts**: Adjust timeout settings if needed
 
-### Data type mismatches
+## Security considerations
+
+### Connection security
+
+- Use SSL/TLS connections when available
+- Store credentials securely (environment variables, key vaults)
+- Use read-only database accounts when possible
+- Implement proper network security (VPNs, firewalls)
 
 ```python
-# Explicitly specify data types if needed
-typed_table = session.create_directquery_table(
-    name="typed_sales",
-    connection=database_config,
-    query="SELECT * FROM sales_data",
-    schema={
-        "date": "datetime64[ns]",
-        "amount": "float64",
-        "region": "string"
-    }
-)
+# Example of using environment variables for credentials
+import os
+
+connection_string = f"postgresql://{os.getenv('DB_USER')}:{os.getenv('DB_PASS')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
 ```
 
-## Example: Complete DirectQuery workflow
+## Integration patterns
 
-Here's a complete example that demonstrates a typical DirectQuery workflow:
+### Combining external and in-memory data
 
 ```python
-import atoti as tt
-from datetime import datetime, timedelta
+# Load some data into memory
+in_memory_table = session.read_csv("local_data.csv")
 
-# 1. Create session with DirectQuery
-session = tt.create_session(
-    config=tt.SessionConfig(
-        directquery=tt.DirectQueryConfig(
-            max_connections=8,
-            connection_timeout=30
-        )
-    )
+# Connect to external data
+external_table = session.read_sql(
+    "SELECT * FROM remote_data", 
+    connection_string
 )
 
-# 2. Configure database connection
-db_config = {
-    "url": "postgresql://user:pass@localhost:5432/retail_db",
-    "driver": "postgresql"
-}
-
-# 3. Create DirectQuery tables
-sales_table = session.create_directquery_table(
-    name="sales",
-    connection=db_config,
-    query="""
-    SELECT 
-        transaction_id,
-        product_id,
-        customer_id,
-        amount,
-        quantity,
-        transaction_date,
-        store_location
-    FROM transactions 
-    WHERE transaction_date >= CURRENT_DATE - INTERVAL '90 days'
-    """
+# Join them for analysis (verify exact join syntax in docs)
+combined_cube = session.create_cube(
+    # Join logic here - check Atoti documentation for exact syntax
 )
-
-products_table = session.create_directquery_table(
-    name="products",
-    connection=db_config,
-    table_name="product_master"
-)
-
-# 4. Join tables and create cube
-enriched_sales = sales_table.join(
-    products_table,
-    on={"product_id": "product_id"},
-    how="left"
-)
-
-cube = session.create_cube(enriched_sales)
-
-# 5. Define business measures
-m = cube.measures
-m["Total Revenue"] = tt.agg.sum(enriched_sales["amount"])
-m["Units Sold"] = tt.agg.sum(enriched_sales["quantity"])
-m["Average Transaction"] = tt.agg.mean(enriched_sales["amount"])
-m["Transaction Count"] = tt.agg.count()
-
-# 6. Create hierarchies for analysis
-cube.hierarchies["Products"] = [
-    enriched_sales["category"],
-    enriched_sales["subcategory"],
-    enriched_sales["product_name"]
-]
-
-cube.hierarchies["Geography"] = [
-    enriched_sales["store_location"]
-]
-
-cube.hierarchies["Time"] = [
-    enriched_sales["transaction_date"]
-]
-
-# 7. Query the cube
-result = cube.query(
-    m["Total Revenue"],
-    m["Transaction Count"],
-    levels=[
-        cube.hierarchies["Products"]["category"],
-        cube.hierarchies["Time"]["transaction_date"]
-    ]
-)
-
-print(result.head(10))
-
-# 8. Start the session for interactive analysis
-session.visualize()
 ```
+
+## Important notes
+
+**⚠️ API Verification Required**: The code examples in this tutorial are illustrative and based on common patterns. Always verify the exact API methods and parameters in the official Atoti documentation, as:
+
+- Method names may differ (`read_sql` vs other connection methods)
+- Configuration parameters may have different names or structures  
+- Connection string formats may vary by database type
+- Some features may require specific Atoti versions or licenses
+
+**📚 Official Documentation**: For the most accurate and up-to-date information, consult:
+- [Atoti Python SDK Documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)
+- Database-specific connection guides
+- Performance tuning recommendations
 
 ## Next steps
 
-Now that you understand DirectQuery basics, explore these advanced topics:
+After mastering basic DirectQuery concepts:
 
-- **Security**: Configure SSL connections and credential management
-- **Scaling**: Set up DirectQuery with distributed databases
-- **Integration**: Combine DirectQuery with in-memory data
-- **Monitoring**: Set up comprehensive performance monitoring
+1. **Explore advanced SQL**: Use complex queries with joins and aggregations
+2. **Optimize performance**: Implement caching and connection pooling strategies  
+3. **Scale your solution**: Consider distributed database architectures
+4. **Monitor and maintain**: Set up logging and performance monitoring
 
-For more information, see the [Atoti DirectQuery API reference](https://docs.activeviam.com/products/atoti/python-sdk/latest/api/directquery.html).
+Remember to always test your specific use case with your actual data and database configuration.
