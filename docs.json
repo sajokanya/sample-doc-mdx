@@ -35,7 +35,8 @@
           {
             "group": "Users",
             "pages": [
-              "user-guide/user-guide"
+              "user-guide/user-guide",
+              "user-guide/directquery-tutorial"
             ]
           },
           {
