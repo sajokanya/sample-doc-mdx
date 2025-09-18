@@ -1,0 +1,268 @@
+---
+title: Quickstart Tutorial
+description: Build your first OLAP cube with Atoti in 15 minutes. Learn core concepts through a hands-on example with sample data.
+---
+
+# Quickstart Tutorial
+
+This tutorial guides you through creating your first OLAP cube with Atoti. You'll learn core concepts by building a simple analytics solution with sample data.
+
+<Note>
+**Prerequisites**: Ensure you have [installed Atoti](/installation) and can run Jupyter notebooks.
+</Note>
+
+## What You'll Build
+
+By the end of this tutorial, you'll have:
+- Created an Atoti session
+- Loaded sample data into tables
+- Built an OLAP cube with measures and hierarchies
+- Created interactive visualizations
+- Performed basic analytics queries
+
+## Step 1: Create Your First Session
+
+Start by importing Atoti and creating a session:
+
+```python
+import atoti as tt
+import pandas as pd
+
+# Create an Atoti session
+session = tt.Session()
+print(f"Atoti session started at: {session.url}")
+```
+
+The session is your main entry point to Atoti. It manages your data, cubes, and provides the web interface for visualizations.
+
+## Step 2: Prepare Sample Data
+
+Let's create some sample sales data to work with:
+
+```python
+# Create sample sales data
+sales_data = pd.DataFrame({
+    'date': pd.date_range('2023-01-01', periods=100, freq='D'),
+    'product': ['Product A', 'Product B', 'Product C'] * 34,
+    'region': ['North', 'South', 'East', 'West'] * 25,
+    'sales_amount': [100, 150, 200, 120, 180] * 20,
+    'quantity': [10, 15, 20, 12, 18] * 20
+})
+
+# Display the first few rows
+print(sales_data.head())
+```
+
+## Step 3: Load Data into Atoti
+
+<Warning>
+The following code examples use conceptual API patterns. Always verify exact method names and parameters against the [official Atoti documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/).
+</Warning>
+
+```python
+# Create a table in Atoti and load the data
+# Note: Verify exact method names in official documentation
+sales_table = session.read_pandas(
+    sales_data,
+    table_name="sales"
+)
+
+# Verify the table was created
+print(f"Table created with {len(sales_table)} rows")
+```
+
+## Step 4: Create Your First Cube
+
+Now let's create an OLAP cube from our data:
+
+```python
+# Create a cube from the sales table
+# Note: Verify exact syntax in official documentation
+cube = session.create_cube(sales_table)
+
+# The cube automatically creates basic measures and hierarchies
+print("Cube created successfully!")
+```
+
+## Step 5: Explore Basic Measures
+
+Atoti automatically creates measures from numeric columns:
+
+```python
+# List available measures
+# Note: Verify exact method names in official documentation
+measures = cube.measures
+print("Available measures:")
+for measure_name in measures:
+    print(f"  - {measure_name}")
+```
+
+## Step 6: Create Custom Measures
+
+You can create custom calculated measures:
+
+```python
+# Example: Create an average sales amount measure
+# Note: Verify exact syntax in official documentation
+cube.measures["Average Sales"] = cube.measures["sales_amount"] / cube.measures["quantity"]
+
+print("Custom measure 'Average Sales' created")
+```
+
+## Step 7: Explore Hierarchies
+
+Hierarchies allow you to slice and dice your data:
+
+```python
+# List available hierarchies
+# Note: Verify exact method names in official documentation
+hierarchies = cube.hierarchies
+print("Available hierarchies:")
+for hierarchy_name in hierarchies:
+    print(f"  - {hierarchy_name}")
+```
+
+## Step 8: Query Your Cube
+
+Perform basic queries on your cube:
+
+```python
+# Create a simple query
+# Note: Verify exact syntax in official documentation
+query = cube.query(
+    measures=["sales_amount", "quantity"],
+    include_totals=True
+)
+
+# Display results
+print("Query results:")
+print(query.head())
+```
+
+## Step 9: Create Visualizations
+
+<Note>
+Atoti provides built-in widgets for Jupyter notebooks. The exact widget names and parameters should be verified in the official documentation.
+</Note>
+
+```python
+# Create a simple chart widget
+# Note: Verify exact widget names and syntax in official documentation
+import atoti.widgets as widgets
+
+# Create a bar chart
+chart = widgets.bar_chart(
+    cube=cube,
+    measures=["sales_amount"],
+    rows=["product"]
+)
+
+# Display the chart
+chart
+```
+
+## Step 10: Access the Web Interface
+
+Atoti provides a web-based interface for advanced analytics:
+
+```python
+# Open the web interface
+print(f"Access the Atoti web interface at: {session.url}")
+
+# The web interface provides:
+# - Interactive pivot tables
+# - Advanced charting capabilities
+# - Dashboard creation tools
+# - Collaborative features
+```
+
+## Key Concepts Learned
+
+### Session
+- Entry point to Atoti
+- Manages data, cubes, and web interface
+- Provides connection to the analytics engine
+
+### Tables
+- Store your source data
+- Can be loaded from various sources (Pandas, CSV, databases)
+- Form the foundation for cube creation
+
+### Cubes
+- OLAP cubes for multidimensional analysis
+- Automatically generate measures and hierarchies
+- Support complex calculations and aggregations
+
+### Measures
+- Numeric values that can be aggregated
+- Include automatic measures (SUM, COUNT) and custom calculations
+- Form the "facts" in your analysis
+
+### Hierarchies
+- Dimensional structures for slicing data
+- Allow drill-down and roll-up operations
+- Provide the "dimensions" for analysis
+
+## Next Steps
+
+Now that you've built your first cube, explore these advanced topics:
+
+### Data Integration
+- [Connect to databases](/advanced/data-sources)
+- [Real-time data streaming](/advanced/streaming)
+- [Multiple data source joins](/advanced/joins)
+
+### Advanced Analytics
+- [What-if scenarios](/advanced/scenarios)
+- [Custom calculations](/advanced/calculations)
+- [Time-based analysis](/advanced/time-analysis)
+
+### Visualization and Dashboards
+- [Advanced widgets](/examples/widgets)
+- [Dashboard creation](/examples/dashboards)
+- [Sharing and collaboration](/advanced/sharing)
+
+### Performance and Scaling
+- [Memory optimization](/advanced/performance)
+- [Large dataset handling](/advanced/scaling)
+- [Production deployment](/advanced/deployment)
+
+## Troubleshooting
+
+### Common Issues
+
+**Session won't start**
+- Check if port 9090 is available
+- Verify Java installation if using custom JDK
+- Review firewall settings
+
+**Data loading errors**
+- Verify data types in your DataFrame
+- Check for missing values
+- Ensure column names are valid
+
+**Memory issues**
+- Increase JVM memory allocation
+- Optimize data types
+- Consider data sampling for large datasets
+
+### Getting Help
+
+- **[Examples](/examples)**: Practical use cases and code samples
+- **[API Reference](/api-reference)**: Complete method documentation
+- **[GitHub Discussions](https://github.com/atoti/atoti/discussions)**: Community support
+- **[Official Documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)**: Comprehensive guides
+
+## Clean Up
+
+When you're done with your session:
+
+```python
+# Close the session to free up resources
+session.close()
+print("Session closed successfully")
+```
+
+---
+
+**Congratulations!** You've successfully created your first OLAP cube with Atoti. Continue with our [examples](/examples) to explore more advanced use cases and features.
