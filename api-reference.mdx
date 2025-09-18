@@ -1,0 +1,472 @@
+---
+title: API Reference
+description: Complete reference for Atoti Python SDK classes, methods, and functions with examples and best practices.
+---
+
+# API Reference
+
+This reference provides comprehensive documentation for the Atoti Python SDK. All code examples are conceptual and should be verified against the [official Atoti documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/).
+
+<Warning>
+**Important**: This reference uses conceptual API patterns. Always verify exact method names, parameters, and syntax against the official Atoti documentation before implementation.
+</Warning>
+
+## Core Classes
+
+### Session
+
+The `Session` class is the main entry point to Atoti, managing your data, cubes, and web interface.
+
+#### Constructor
+
+```python
+import atoti as tt
+
+# Basic session
+session = tt.Session()
+
+# Session with custom configuration
+session = tt.Session(
+    port=9091,                    # Custom port
+    java_options=["-Xmx8g"],     # JVM options
+    name="MyAnalytics"           # Session name
+)
+```
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `url` | `str` | Web interface URL |
+| `tables` | `dict` | Dictionary of loaded tables |
+| `cubes` | `dict` | Dictionary of created cubes |
+
+#### Methods
+
+**Data Loading**
+```python
+# Load from Pandas DataFrame
+# Note: Verify exact method signature
+table = session.read_pandas(dataframe, table_name="sales")
+
+# Load from CSV
+# Note: Verify exact method signature  
+table = session.read_csv("data.csv", table_name="sales")
+
+# Load from database
+# Note: Verify exact method signature
+table = session.read_sql(connection_string, query, table_name="sales")
+```
+
+**Cube Management**
+```python
+# Create cube from table
+# Note: Verify exact method signature
+cube = session.create_cube(table)
+
+# Get existing cube
+cube = session.cubes["cube_name"]
+```
+
+**Session Control**
+```python
+# Close session
+session.close()
+
+# Check if session is active
+is_active = session.is_alive()
+```
+
+### Table
+
+Represents a data table in Atoti with methods for data manipulation and querying.
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `name` | `str` | Table name |
+| `columns` | `list` | List of column names |
+| `dtypes` | `dict` | Column data types |
+
+#### Methods
+
+**Data Operations**
+```python
+# Get table size
+row_count = len(table)
+
+# View table schema
+print(table.dtypes)
+
+# Sample data
+sample = table.head(10)  # Note: Verify method name
+```
+
+### Cube
+
+Represents an OLAP cube for multidimensional analysis.
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `measures` | `MeasureCollection` | Collection of measures |
+| `hierarchies` | `HierarchyCollection` | Collection of hierarchies |
+| `name` | `str` | Cube name |
+
+#### Methods
+
+**Querying**
+```python
+# Basic query
+# Note: Verify exact syntax
+result = cube.query(
+    measures=["sales_amount", "quantity"],
+    rows=["product"],
+    columns=["region"]
+)
+
+# Query with filters
+# Note: Verify exact syntax
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={"region": ["North", "South"]}
+)
+```
+
+**Measure Management**
+```python
+# Create calculated measure
+# Note: Verify exact syntax
+cube.measures["profit"] = cube.measures["revenue"] - cube.measures["cost"]
+
+# List all measures
+measure_names = list(cube.measures.keys())
+```
+
+### Measures
+
+Collection of measures (numeric values that can be aggregated).
+
+#### Built-in Measures
+
+Atoti automatically creates measures from numeric columns:
+
+| Measure Type | Description | Example |
+|--------------|-------------|---------|
+| `SUM` | Sum aggregation | `SUM(sales_amount)` |
+| `COUNT` | Count of records | `COUNT(*)` |
+| `AVG` | Average value | `AVG(sales_amount)` |
+| `MIN` | Minimum value | `MIN(sales_amount)` |
+| `MAX` | Maximum value | `MAX(sales_amount)` |
+
+#### Custom Measures
+
+```python
+# Arithmetic operations
+# Note: Verify exact syntax
+cube.measures["profit_margin"] = (
+    cube.measures["profit"] / cube.measures["revenue"] * 100
+)
+
+# Conditional measures
+# Note: Verify exact syntax and available functions
+cube.measures["high_value_sales"] = tt.where(
+    cube.measures["sales_amount"] > 1000,
+    cube.measures["sales_amount"],
+    0
+)
+```
+
+### Hierarchies
+
+Dimensional structures for slicing and dicing data.
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `levels` | `list` | Hierarchy levels |
+| `name` | `str` | Hierarchy name |
+
+#### Methods
+
+```python
+# Get hierarchy levels
+levels = hierarchy.levels
+
+# Create custom hierarchy
+# Note: Verify exact syntax
+time_hierarchy = cube.hierarchies.create(
+    "time",
+    levels=["year", "month", "day"]
+)
+```
+
+## Data Types
+
+### Supported Data Types
+
+| Python Type | Atoti Type | Description |
+|-------------|------------|-------------|
+| `int` | `INT` | Integer values |
+| `float` | `DOUBLE` | Floating-point values |
+| `str` | `STRING` | Text values |
+| `datetime` | `DATETIME` | Date and time |
+| `bool` | `BOOLEAN` | Boolean values |
+
+### Type Conversion
+
+```python
+# Explicit type conversion during data loading
+# Note: Verify exact syntax
+table = session.read_pandas(
+    dataframe,
+    table_name="sales",
+    dtypes={
+        "sales_amount": "DOUBLE",
+        "date": "DATETIME",
+        "product": "STRING"
+    }
+)
+```
+
+## Query Operations
+
+### Basic Queries
+
+```python
+# Simple aggregation
+# Note: Verify exact syntax
+result = cube.query(
+    measures=["sales_amount"],
+    include_totals=True
+)
+
+# Multi-dimensional query
+# Note: Verify exact syntax
+result = cube.query(
+    measures=["sales_amount", "quantity"],
+    rows=["product", "region"],
+    columns=["year", "month"]
+)
+```
+
+### Filtering
+
+```python
+# Single filter
+# Note: Verify exact syntax
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={"region": "North"}
+)
+
+# Multiple filters
+# Note: Verify exact syntax
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={
+        "region": ["North", "South"],
+        "year": 2023
+    }
+)
+```
+
+### Sorting
+
+```python
+# Sort by measure
+# Note: Verify exact syntax
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    order_by={"sales_amount": "DESC"}
+)
+```
+
+## Visualization Widgets
+
+<Note>
+Widget names and parameters are conceptual. Verify exact syntax in the official documentation.
+</Note>
+
+### Chart Widgets
+
+```python
+import atoti.widgets as widgets
+
+# Bar chart
+# Note: Verify exact widget names and parameters
+bar_chart = widgets.bar_chart(
+    cube=cube,
+    measures=["sales_amount"],
+    rows=["product"]
+)
+
+# Line chart
+# Note: Verify exact widget names and parameters
+line_chart = widgets.line_chart(
+    cube=cube,
+    measures=["sales_amount"],
+    rows=["date"]
+)
+
+# Pie chart
+# Note: Verify exact widget names and parameters
+pie_chart = widgets.pie_chart(
+    cube=cube,
+    measures=["sales_amount"],
+    rows=["region"]
+)
+```
+
+### Table Widgets
+
+```python
+# Pivot table
+# Note: Verify exact widget names and parameters
+pivot_table = widgets.pivot_table(
+    cube=cube,
+    measures=["sales_amount", "quantity"],
+    rows=["product"],
+    columns=["region"]
+)
+
+# Data grid
+# Note: Verify exact widget names and parameters
+data_grid = widgets.data_grid(
+    cube=cube,
+    measures=["sales_amount"],
+    rows=["product", "region"]
+)
+```
+
+## Configuration
+
+### Session Configuration
+
+```python
+# Memory configuration
+session = tt.Session(
+    java_options=[
+        "-Xmx8g",           # Maximum heap size
+        "-Xms2g",           # Initial heap size
+        "-XX:+UseG1GC"      # Garbage collector
+    ]
+)
+
+# Network configuration
+session = tt.Session(
+    port=9091,              # Custom port
+    host="0.0.0.0"         # Bind to all interfaces
+)
+```
+
+### Performance Tuning
+
+```python
+# Optimize for large datasets
+session = tt.Session(
+    java_options=[
+        "-Xmx16g",
+        "-XX:+UseG1GC",
+        "-XX:MaxGCPauseMillis=200"
+    ]
+)
+```
+
+## Error Handling
+
+### Common Exceptions
+
+```python
+try:
+    session = tt.Session()
+    # Your Atoti operations here
+    
+except tt.SessionError as e:
+    print(f"Session error: {e}")
+    
+except tt.DataError as e:
+    print(f"Data error: {e}")
+    
+except Exception as e:
+    print(f"Unexpected error: {e}")
+    
+finally:
+    if 'session' in locals():
+        session.close()
+```
+
+### Best Practices
+
+1. **Always close sessions** when done
+2. **Verify data types** before loading
+3. **Handle memory limits** for large datasets
+4. **Use try-catch blocks** for error handling
+5. **Check official documentation** for exact syntax
+
+## Examples
+
+### Complete Workflow
+
+```python
+import atoti as tt
+import pandas as pd
+
+# Create session
+session = tt.Session()
+
+try:
+    # Load data
+    data = pd.read_csv("sales_data.csv")
+    table = session.read_pandas(data, table_name="sales")
+    
+    # Create cube
+    cube = session.create_cube(table)
+    
+    # Create custom measure
+    cube.measures["profit"] = cube.measures["revenue"] - cube.measures["cost"]
+    
+    # Query data
+    result = cube.query(
+        measures=["profit"],
+        rows=["product"],
+        columns=["region"]
+    )
+    
+    print(result)
+    
+finally:
+    session.close()
+```
+
+## Migration and Compatibility
+
+### Version Compatibility
+
+Check your Atoti version:
+```python
+import atoti as tt
+print(f"Atoti version: {tt.__version__}")
+```
+
+### Upgrading
+
+When upgrading Atoti versions:
+1. Review the [changelog](/changelog) for breaking changes
+2. Test your code with the new version
+3. Update deprecated method calls
+4. Verify widget compatibility
+
+## Additional Resources
+
+- **[Official Documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)**: Complete API reference
+- **[GitHub Repository](https://github.com/atoti/atoti)**: Source code and examples
+- **[Community Discussions](https://github.com/atoti/atoti/discussions)**: Get help from the community
+- **[Examples](/examples)**: Practical code examples and use cases
