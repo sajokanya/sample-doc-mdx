@@ -1,0 +1,18 @@
+```python
+import atoti as tt
+
+session = tt.Session()
+
+# Load CSV with type specification
+# Note: Verify exact method signature and parameters
+table = session.read_csv(
+    "{file_path or "sales_data.csv"}",
+    table_name="{table_name or "sales"}",
+    dtypes={
+        "date": "DATETIME",
+        "sales_amount": "DOUBLE",
+        "quantity": "INT",
+        "product": "STRING"
+    }
+)
+```

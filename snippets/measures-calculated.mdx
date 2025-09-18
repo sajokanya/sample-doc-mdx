@@ -1,0 +1,9 @@
+```python
+# Arithmetic operations
+# Note: Verify exact syntax
+cube.measures["{profit_measure or "profit"}"] = cube.measures["{revenue or "revenue"}"] - cube.measures["{cost or "cost"}"]
+cube.measures["{margin_measure or "profit_margin"}"] = cube.measures["{profit or "profit"}"] / cube.measures["{revenue or "revenue"}"] * 100
+
+# Average calculation
+cube.measures["{avg_measure or "avg_order_value"}"] = cube.measures["{total or "total_sales"}"] / cube.measures["{count or "order_count"}"]
+```

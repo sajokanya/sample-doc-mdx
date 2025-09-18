@@ -1,0 +1,35 @@
+```python
+import atoti as tt
+
+session = None
+
+try:
+    session = tt.Session()
+    
+    # Your Atoti operations here
+    table = session.read_csv("{file_path or "data.csv"}", table_name="{table_name or "sales"}")
+    cube = session.create_cube(table)
+    
+    result = cube.query(
+        measures=["{measure or "sales_amount"}"],
+        rows=["{dimension or "product"}"]
+    )
+    
+    print(result)
+    
+except tt.SessionError as e:
+    print(f"Session error: {{e}}")
+    
+except tt.DataError as e:
+    print(f"Data error: {{e}}")
+    
+except FileNotFoundError as e:
+    print(f"File not found: {{e}}")
+    
+except Exception as e:
+    print(f"Unexpected error: {{e}}")
+    
+finally:
+    if session:
+        session.close()
+```

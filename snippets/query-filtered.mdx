@@ -1,0 +1,20 @@
+```python
+# Single filter
+# Note: Verify exact filter syntax
+result = cube.query(
+    measures=["{measure or "sales_amount"}"],
+    rows=["{dimension or "product"}"],
+    filter={{"{filter_dim or "region"}": "{filter_value or "North"}"}}
+)
+
+# Multiple filters
+result = cube.query(
+    measures=["{measure or "sales_amount"}"],
+    rows=["{dimension or "product"}"],
+    filter={{
+        "{filter_dim1 or "region"}": ["{value1 or "North"}", "{value2 or "South"}"],
+        "{filter_dim2 or "year"}": {year or "2023"},
+        "{filter_dim3 or "sales_amount"}": {{">"}: {threshold or "100"}}
+    }}
+)
+```

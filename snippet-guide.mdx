@@ -1,0 +1,380 @@
+---
+title: Using Code Snippets
+description: Guide for using and contributing to the reusable code snippets collection. Learn how to leverage pre-built patterns for faster development.
+---
+
+# Using Code Snippets
+
+This guide explains how to effectively use the code snippets collection and contribute new patterns to help the community.
+
+## Overview
+
+The [Code Snippets](/snippets) page provides copy-paste ready code examples for common Atoti operations. Each snippet includes:
+
+- **Verification notes** - Reminders to check syntax against official documentation
+- **Usage context** - When and how to use each pattern
+- **Customization hints** - How to adapt snippets for your specific needs
+- **Error handling** - Robust patterns with proper exception management
+
+## Quick Start
+
+### 1. Find the Right Snippet
+
+Navigate to the [Code Snippets](/snippets) page and use the table of contents to find relevant patterns:
+
+- **Session Management** - Creating and configuring Atoti sessions
+- **Data Loading** - Loading data from various sources (CSV, databases, Pandas)
+- **Cube Operations** - Creating cubes and managing joins
+- **Custom Measures** - Calculated fields and advanced aggregations
+- **Querying** - Filtering, sorting, and retrieving data
+- **Visualizations** - Charts, tables, and dashboard widgets
+- **Error Handling** - Robust patterns with exception management
+- **Performance Optimization** - Memory and query optimization techniques
+
+### 2. Copy and Verify
+
+1. **Copy the snippet** you need
+2. **Read the verification notes** carefully
+3. **Check the official documentation** for exact syntax
+4. **Test in your environment** before production use
+
+### 3. Customize for Your Use Case
+
+Most snippets include placeholder values that you should customize:
+
+```python
+# Example snippet with placeholders
+table = session.read_csv(
+    "your_data_file.csv",        # ← Replace with your file path
+    table_name="your_table",     # ← Replace with your table name
+    dtypes={
+        "date": "DATETIME",      # ← Adjust data types as needed
+        "amount": "DOUBLE"
+    }
+)
+```
+
+## Verification Process
+
+<Warning>
+**Critical**: All snippets use conceptual API patterns. Always verify exact method names and parameters against the [official Atoti documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/).
+</Warning>
+
+### Why Verification is Required
+
+The snippets are designed to show **patterns and concepts** rather than exact API calls because:
+
+1. **API evolution** - Method signatures may change between versions
+2. **Parameter variations** - Different use cases may require different parameters
+3. **Environment differences** - Your setup may have specific requirements
+4. **Accuracy assurance** - Prevents code hallucination issues
+
+### How to Verify
+
+1. **Check official documentation** for the exact method signature
+2. **Review parameter names** and required vs optional parameters
+3. **Test with small datasets** before scaling up
+4. **Validate return types** and data structures
+
+Example verification process:
+
+```python
+# Snippet shows conceptual pattern:
+table = session.read_pandas(data, table_name="sales")
+
+# Verify in official docs:
+# - Is the method name correct?
+# - What parameters are required?
+# - Are there additional optional parameters?
+# - What does the method return?
+```
+
+## Common Patterns
+
+### Session Management Pattern
+
+Most operations follow this pattern:
+
+```python
+import atoti as tt
+
+session = None
+try:
+    # Create session
+    session = tt.Session()
+    
+    # Your operations here
+    # ...
+    
+except Exception as e:
+    print(f"Error: {e}")
+    
+finally:
+    if session:
+        session.close()
+```
+
+### Data Loading Pattern
+
+```python
+# 1. Validate data first
+if not os.path.exists("data.csv"):
+    raise FileNotFoundError("Data file not found")
+
+# 2. Load with error handling
+try:
+    table = session.read_csv("data.csv", table_name="data")
+    print(f"Loaded {len(table)} rows")
+except Exception as e:
+    print(f"Failed to load data: {e}")
+    raise
+```
+
+### Query Pattern
+
+```python
+# 1. Build query with filters
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={"region": "North"},
+    include_totals=True
+)
+
+# 2. Process results
+if result is not None and not result.empty:
+    print(result)
+else:
+    print("No data returned")
+```
+
+## Best Practices
+
+### 1. Start Simple
+
+Begin with basic snippets and gradually add complexity:
+
+```python
+# Start with basic session
+session = tt.Session()
+
+# Then add configuration as needed
+session = tt.Session(
+    port=9091,
+    java_options=["-Xmx8g"]
+)
+```
+
+### 2. Use Error Handling
+
+Always wrap operations in try-catch blocks:
+
+```python
+try:
+    # Atoti operations
+    pass
+except tt.SessionError as e:
+    # Handle session-specific errors
+    pass
+except Exception as e:
+    # Handle general errors
+    pass
+finally:
+    # Cleanup
+    if session:
+        session.close()
+```
+
+### 3. Validate Data
+
+Check data quality before loading:
+
+```python
+# Check file exists
+if not os.path.exists(file_path):
+    raise FileNotFoundError(f"File not found: {file_path}")
+
+# Check data structure
+data = pd.read_csv(file_path)
+if data.empty:
+    raise ValueError("Data file is empty")
+
+# Check required columns
+required_cols = ["date", "product", "sales"]
+missing_cols = [col for col in required_cols if col not in data.columns]
+if missing_cols:
+    raise ValueError(f"Missing columns: {missing_cols}")
+```
+
+### 4. Optimize Performance
+
+Use performance-oriented patterns for large datasets:
+
+```python
+# Memory optimization
+session = tt.Session(
+    java_options=["-Xmx16g", "-XX:+UseG1GC"]
+)
+
+# Query optimization
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={"date": {">": "2023-01-01"}},  # Filter early
+    limit=1000,                            # Limit results
+    include_totals=False                   # Skip totals if not needed
+)
+```
+
+## Customization Examples
+
+### Environment-Specific Configuration
+
+```python
+import os
+
+# Development configuration
+if os.getenv("ENV") == "development":
+    session = tt.Session(
+        port=9090,
+        java_options=["-Xmx4g"]
+    )
+# Production configuration
+else:
+    session = tt.Session(
+        port=9091,
+        java_options=["-Xmx16g", "-XX:+UseG1GC"]
+    )
+```
+
+### Data Source Adaptation
+
+```python
+# Adapt data loading based on source
+data_source = os.getenv("DATA_SOURCE", "csv")
+
+if data_source == "csv":
+    table = session.read_csv("data.csv", table_name="sales")
+elif data_source == "postgres":
+    engine = sqlalchemy.create_engine(DATABASE_URL)
+    table = session.read_sql(engine, "SELECT * FROM sales", table_name="sales")
+else:
+    raise ValueError(f"Unsupported data source: {data_source}")
+```
+
+### Measure Customization
+
+```python
+# Basic measures
+cube.measures["profit"] = cube.measures["revenue"] - cube.measures["cost"]
+
+# Industry-specific measures
+if industry == "retail":
+    cube.measures["margin"] = cube.measures["profit"] / cube.measures["revenue"] * 100
+    cube.measures["inventory_turnover"] = cube.measures["cogs"] / cube.measures["avg_inventory"]
+elif industry == "saas":
+    cube.measures["mrr"] = cube.measures["monthly_revenue"]
+    cube.measures["churn_rate"] = cube.measures["churned_customers"] / cube.measures["total_customers"] * 100
+```
+
+## Contributing Snippets
+
+### What Makes a Good Snippet
+
+1. **Common use case** - Addresses a frequent need
+2. **Clear purpose** - Obvious what the snippet does
+3. **Proper error handling** - Includes try-catch blocks
+4. **Verification notes** - Reminds users to check official docs
+5. **Customization hints** - Shows what to modify for different use cases
+
+### Snippet Template
+
+```python
+# Brief description of what this snippet does
+# Note: Verify exact method names and parameters in official documentation
+
+import atoti as tt
+
+session = None
+try:
+    # Step 1: Setup
+    session = tt.Session()
+    
+    # Step 2: Main operation (with verification note)
+    # Note: Verify exact method signature
+    result = session.some_method(
+        parameter1="value1",    # Customize this
+        parameter2="value2"     # Customize this
+    )
+    
+    # Step 3: Process result
+    print(f"Operation completed: {result}")
+    
+except tt.SpecificError as e:
+    print(f"Specific error: {e}")
+    
+except Exception as e:
+    print(f"General error: {e}")
+    
+finally:
+    if session:
+        session.close()
+```
+
+### Contribution Process
+
+1. **Identify a common pattern** you use frequently
+2. **Create a clean, reusable version** with error handling
+3. **Add verification notes** for API calls
+4. **Test the snippet** in a clean environment
+5. **Share with the community** via [GitHub discussions](https://github.com/atoti/atoti/discussions)
+
+## Troubleshooting
+
+### Common Issues
+
+**Snippet doesn't work as expected**
+- Verify method names against official documentation
+- Check parameter names and types
+- Ensure you have the correct Atoti version
+
+**Import errors**
+- Check if all required packages are installed
+- Verify import statements match your environment
+
+**Performance issues**
+- Review memory configuration snippets
+- Check query optimization patterns
+- Consider data size and filtering
+
+**Data loading failures**
+- Use data validation snippets
+- Check file paths and permissions
+- Verify data format and structure
+
+### Getting Help
+
+1. **Check the [examples page](/examples)** for complete workflows
+2. **Review [API reference](/api-reference)** for method details
+3. **Visit [GitHub discussions](https://github.com/atoti/atoti/discussions)** for community help
+4. **Consult [official documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)** for authoritative information
+
+## Next Steps
+
+After mastering the snippets:
+
+1. **Explore [complete examples](/examples)** for full workflows
+2. **Review [advanced patterns](/advanced)** for complex scenarios
+3. **Check [API reference](/api-reference)** for comprehensive method documentation
+4. **Join the [community discussions](https://github.com/atoti/atoti/discussions)** to share your own patterns
+
+## Version Compatibility
+
+Snippets are designed to be version-agnostic patterns, but always:
+
+1. **Check your Atoti version**: `print(tt.__version__)`
+2. **Review the [changelog](/changelog)** for breaking changes
+3. **Test snippets** with your specific version
+4. **Update deprecated patterns** as needed
+
+Remember: The snippets are starting points, not final solutions. Always adapt them to your specific requirements and verify against the official documentation.

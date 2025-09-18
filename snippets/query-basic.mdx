@@ -1,0 +1,15 @@
+```python
+# Simple aggregation
+# Note: Verify exact method signature
+result = cube.query(
+    measures=["{measure or "sales_amount"}", "{measure2 or "quantity"}"],
+    include_totals=True
+)
+
+# Multi-dimensional query
+result = cube.query(
+    measures=["{measure or "sales_amount"}"],
+    rows=["{row_dim or "product"}"],
+    columns=["{col_dim or "region"}"]
+)
+```

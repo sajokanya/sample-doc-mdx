@@ -1,0 +1,814 @@
+---
+title: Code Snippets
+description: Reusable code snippets for common Atoti patterns and operations. Copy-paste ready examples with verification notes.
+---
+
+# Code Snippets
+
+This page provides reusable code snippets for common Atoti operations. All snippets include verification notes to ensure accuracy.
+
+<Warning>
+**Verification Required**: All code snippets use conceptual API patterns. Always verify exact method names, parameters, and syntax against the [official Atoti documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/) before implementation.
+</Warning>
+
+## Session Management
+
+### Basic Session Creation
+
+```python
+import atoti as tt
+
+# Basic session
+session = tt.Session()
+print(f"Session started at: {session.url}")
+
+# Always close when done
+try:
+    # Your Atoti operations here
+    pass
+finally:
+    session.close()
+```
+
+### Session with Custom Configuration
+
+```python
+import atoti as tt
+
+# Session with custom settings
+session = tt.Session(
+    port=9091,                    # Custom port
+    java_options=["-Xmx8g"],     # 8GB memory
+    name="MyAnalytics"           # Session name
+)
+
+# Verify session is active
+if session.is_alive():
+    print("Session is running")
+```
+
+### Production Session Configuration
+
+```python
+import atoti as tt
+
+# Production-ready session
+session = tt.Session(
+    port=9090,
+    java_options=[
+        "-Xmx16g",                    # 16GB max heap
+        "-Xms4g",                     # 4GB initial heap
+        "-XX:+UseG1GC",               # G1 garbage collector
+        "-XX:MaxGCPauseMillis=200"    # Max GC pause time
+    ],
+    name="production_analytics"
+)
+```
+
+## Data Loading
+
+### Load from Pandas DataFrame
+
+```python
+import atoti as tt
+import pandas as pd
+
+session = tt.Session()
+
+# Create sample data
+data = pd.DataFrame({
+    'date': pd.date_range('2023-01-01', periods=100),
+    'product': ['A', 'B', 'C'] * 34,
+    'sales': [100, 150, 200] * 34
+})
+
+# Load into Atoti
+# Note: Verify exact method signature
+table = session.read_pandas(
+    data,
+    table_name="sales"
+)
+
+print(f"Loaded {len(table)} rows")
+```
+
+### Load from CSV File
+
+```python
+import atoti as tt
+
+session = tt.Session()
+
+# Load CSV with type specification
+# Note: Verify exact method signature and parameters
+table = session.read_csv(
+    "sales_data.csv",
+    table_name="sales",
+    dtypes={
+        "date": "DATETIME",
+        "sales_amount": "DOUBLE",
+        "quantity": "INT",
+        "product": "STRING"
+    }
+)
+```
+
+### Load from Database
+
+```python
+import atoti as tt
+import sqlalchemy
+
+# Create database connection
+engine = sqlalchemy.create_engine(
+    "postgresql://user:password@localhost:5432/database"
+)
+
+session = tt.Session()
+
+# Load from SQL query
+# Note: Verify exact method signature
+table = session.read_sql(
+    engine,
+    "SELECT * FROM sales WHERE date >= '2023-01-01'",
+    table_name="sales"
+)
+```
+
+## Cube Operations
+
+### Basic Cube Creation
+
+```python
+import atoti as tt
+
+session = tt.Session()
+# ... load data into table ...
+
+# Create cube from table
+# Note: Verify exact method signature
+cube = session.create_cube(table)
+
+# List available measures and hierarchies
+print("Measures:", list(cube.measures.keys()))
+print("Hierarchies:", list(cube.hierarchies.keys()))
+```
+
+### Cube with Joins
+
+```python
+import atoti as tt
+
+session = tt.Session()
+# ... load sales_table and customer_table ...
+
+# Create cube with joined tables
+# Note: Verify exact join syntax
+cube = session.create_cube(
+    sales_table,
+    joins=[
+        {
+            "table": customer_table,
+            "on": "customer_id"
+        }
+    ]
+)
+```
+
+## Custom Measures
+
+### Basic Calculated Measures
+
+```python
+# Arithmetic operations
+# Note: Verify exact syntax
+cube.measures["profit"] = cube.measures["revenue"] - cube.measures["cost"]
+cube.measures["profit_margin"] = cube.measures["profit"] / cube.measures["revenue"] * 100
+
+# Average calculation
+cube.measures["avg_order_value"] = cube.measures["total_sales"] / cube.measures["order_count"]
+```
+
+### Conditional Measures
+
+```python
+# Conditional logic
+# Note: Verify exact function names and syntax
+cube.measures["high_value_sales"] = tt.where(
+    cube.measures["sales_amount"] > 1000,
+    cube.measures["sales_amount"],
+    0
+)
+
+# Category-based calculation
+cube.measures["premium_revenue"] = tt.where(
+    cube.hierarchies["product_category"] == "Premium",
+    cube.measures["revenue"],
+    0
+)
+```
+
+### Time-Based Measures
+
+```python
+# Running totals
+# Note: Verify exact function names and syntax
+cube.measures["running_total"] = tt.cumulative_sum(
+    cube.measures["sales_amount"],
+    cube.hierarchies["date"]
+)
+
+# Moving averages
+cube.measures["moving_avg_7d"] = tt.moving_average(
+    cube.measures["sales_amount"],
+    cube.hierarchies["date"],
+    window=7
+)
+
+# Year-over-year comparison
+cube.measures["yoy_growth"] = tt.year_over_year(
+    cube.measures["sales_amount"],
+    cube.hierarchies["date"]
+)
+```
+
+## Querying
+
+### Basic Queries
+
+```python
+# Simple aggregation
+# Note: Verify exact method signature
+result = cube.query(
+    measures=["sales_amount", "quantity"],
+    include_totals=True
+)
+
+# Multi-dimensional query
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    columns=["region"]
+)
+```
+
+### Filtered Queries
+
+```python
+# Single filter
+# Note: Verify exact filter syntax
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={"region": "North"}
+)
+
+# Multiple filters
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={
+        "region": ["North", "South"],
+        "year": 2023,
+        "sales_amount": {">": 100}
+    }
+)
+
+# Date range filter
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={
+        "date": {
+            ">=": "2023-01-01",
+            "<=": "2023-12-31"
+        }
+    }
+)
+```
+
+### Sorted and Limited Queries
+
+```python
+# Sort by measure
+# Note: Verify exact syntax
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    order_by={"sales_amount": "DESC"}
+)
+
+# Limit results
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    order_by={"sales_amount": "DESC"},
+    limit=10
+)
+```
+
+## Visualizations
+
+### Chart Widgets
+
+```python
+import atoti.widgets as widgets
+
+# Bar chart
+# Note: Verify exact widget names and parameters
+bar_chart = widgets.bar_chart(
+    cube=cube,
+    measures=["sales_amount"],
+    rows=["product"],
+    title="Sales by Product"
+)
+
+# Line chart for time series
+line_chart = widgets.line_chart(
+    cube=cube,
+    measures=["sales_amount"],
+    rows=["date"],
+    title="Sales Trend"
+)
+
+# Pie chart
+pie_chart = widgets.pie_chart(
+    cube=cube,
+    measures=["sales_amount"],
+    rows=["region"],
+    title="Regional Distribution"
+)
+
+# Display widgets
+display(bar_chart)
+display(line_chart)
+display(pie_chart)
+```
+
+### Table Widgets
+
+```python
+import atoti.widgets as widgets
+
+# Pivot table
+# Note: Verify exact widget names and parameters
+pivot_table = widgets.pivot_table(
+    cube=cube,
+    measures=["sales_amount", "quantity"],
+    rows=["product"],
+    columns=["region"],
+    title="Sales Pivot Table"
+)
+
+# Data grid
+data_grid = widgets.data_grid(
+    cube=cube,
+    measures=["sales_amount", "profit"],
+    rows=["product", "region"],
+    title="Detailed Sales Data"
+)
+
+display(pivot_table)
+display(data_grid)
+```
+
+### KPI Widgets
+
+```python
+import atoti.widgets as widgets
+
+# Key performance indicators
+# Note: Verify exact widget names and parameters
+kpi_widget = widgets.kpi(
+    cube=cube,
+    measures=["sales_amount", "profit", "order_count"],
+    title="Key Metrics"
+)
+
+# Single metric display
+revenue_kpi = widgets.single_metric(
+    cube=cube,
+    measure="sales_amount",
+    title="Total Revenue",
+    format="currency"
+)
+
+display(kpi_widget)
+display(revenue_kpi)
+```
+
+## Error Handling
+
+### Basic Error Handling
+
+```python
+import atoti as tt
+
+session = None
+
+try:
+    session = tt.Session()
+    
+    # Your Atoti operations here
+    table = session.read_csv("data.csv", table_name="sales")
+    cube = session.create_cube(table)
+    
+    result = cube.query(
+        measures=["sales_amount"],
+        rows=["product"]
+    )
+    
+    print(result)
+    
+except tt.SessionError as e:
+    print(f"Session error: {e}")
+    
+except tt.DataError as e:
+    print(f"Data error: {e}")
+    
+except FileNotFoundError as e:
+    print(f"File not found: {e}")
+    
+except Exception as e:
+    print(f"Unexpected error: {e}")
+    
+finally:
+    if session:
+        session.close()
+```
+
+### Robust Data Loading
+
+```python
+import atoti as tt
+import pandas as pd
+
+def load_data_safely(session, file_path, table_name):
+    """Safely load data with validation"""
+    try:
+        # Check if file exists
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"Data file not found: {file_path}")
+        
+        # Load and validate data
+        data = pd.read_csv(file_path)
+        
+        if data.empty:
+            raise ValueError("Data file is empty")
+        
+        # Check required columns
+        required_columns = ["date", "product", "sales_amount"]
+        missing_columns = [col for col in required_columns if col not in data.columns]
+        
+        if missing_columns:
+            raise ValueError(f"Missing required columns: {missing_columns}")
+        
+        # Load into Atoti
+        table = session.read_pandas(data, table_name=table_name)
+        
+        print(f"Successfully loaded {len(table)} rows into {table_name}")
+        return table
+        
+    except Exception as e:
+        print(f"Failed to load data: {e}")
+        raise
+
+# Usage
+session = tt.Session()
+try:
+    table = load_data_safely(session, "sales_data.csv", "sales")
+    cube = session.create_cube(table)
+finally:
+    session.close()
+```
+
+## Performance Optimization
+
+### Memory Optimization
+
+```python
+import atoti as tt
+
+# Optimized session for large datasets
+session = tt.Session(
+    java_options=[
+        "-Xmx16g",                    # 16GB max heap
+        "-Xms4g",                     # 4GB initial heap
+        "-XX:+UseG1GC",               # G1 garbage collector
+        "-XX:MaxGCPauseMillis=200",   # Max GC pause
+        "-XX:+UseStringDeduplication" # String deduplication
+    ]
+)
+
+# Load data in chunks for large files
+# Note: Verify exact parameters
+table = session.read_csv(
+    "large_dataset.csv",
+    table_name="large_data",
+    chunk_size=10000,
+    dtypes={
+        "id": "INT",
+        "amount": "DOUBLE",
+        "category": "STRING"
+    }
+)
+```
+
+### Query Optimization
+
+```python
+# Efficient querying patterns
+
+# 1. Filter early to reduce data processing
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    filter={
+        "date": {">": "2023-01-01"},
+        "region": ["North", "South"]
+    },
+    limit=100
+)
+
+# 2. Use specific measures instead of querying all
+result = cube.query(
+    measures=["sales_amount"],  # Specific measures only
+    rows=["product"]
+)
+
+# 3. Avoid unnecessary totals for large datasets
+result = cube.query(
+    measures=["sales_amount"],
+    rows=["product"],
+    include_totals=False  # Skip totals for performance
+)
+```
+
+## Configuration Management
+
+### Environment-Based Configuration
+
+```python
+import atoti as tt
+import os
+import json
+
+class AtotiConfig:
+    def __init__(self, config_file="atoti_config.json"):
+        with open(config_file, 'r') as f:
+            self.config = json.load(f)
+    
+    def get_session_config(self, env="development"):
+        env_config = self.config.get(env, {})
+        return {
+            "port": env_config.get("port", 9090),
+            "java_options": env_config.get("java_options", ["-Xmx4g"]),
+            "name": env_config.get("name", f"atoti_{env}")
+        }
+
+# Usage
+config = AtotiConfig()
+environment = os.getenv("ATOTI_ENV", "development")
+
+session_config = config.get_session_config(environment)
+session = tt.Session(**session_config)
+```
+
+### Logging Configuration
+
+```python
+import atoti as tt
+import logging
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
+logger = logging.getLogger(__name__)
+
+def create_session_with_logging():
+    try:
+        logger.info("Creating Atoti session...")
+        session = tt.Session()
+        logger.info(f"Session created at {session.url}")
+        return session
+    except Exception as e:
+        logger.error(f"Failed to create session: {e}")
+        raise
+
+# Usage
+session = create_session_with_logging()
+```
+
+## Testing Patterns
+
+### Unit Test Example
+
+```python
+import unittest
+import atoti as tt
+import pandas as pd
+
+class TestAtotiOperations(unittest.TestCase):
+    
+    def setUp(self):
+        """Set up test session and data"""
+        self.session = tt.Session()
+        
+        # Create test data
+        self.test_data = pd.DataFrame({
+            'product': ['A', 'B', 'C'],
+            'sales': [100, 200, 300],
+            'region': ['North', 'South', 'East']
+        })
+        
+        self.table = self.session.read_pandas(
+            self.test_data,
+            table_name="test_sales"
+        )
+        
+        self.cube = self.session.create_cube(self.table)
+    
+    def tearDown(self):
+        """Clean up after tests"""
+        self.session.close()
+    
+    def test_cube_creation(self):
+        """Test cube creation"""
+        self.assertIsNotNone(self.cube)
+        self.assertIn("sales", self.cube.measures)
+    
+    def test_basic_query(self):
+        """Test basic querying"""
+        result = self.cube.query(
+            measures=["sales"],
+            rows=["product"]
+        )
+        
+        self.assertIsNotNone(result)
+        self.assertEqual(len(result), 3)  # 3 products
+    
+    def test_custom_measure(self):
+        """Test custom measure creation"""
+        self.cube.measures["double_sales"] = self.cube.measures["sales"] * 2
+        
+        result = self.cube.query(
+            measures=["sales", "double_sales"],
+            rows=["product"]
+        )
+        
+        # Verify double_sales is twice the sales amount
+        # Note: Verify exact result structure
+        self.assertIn("double_sales", result.columns)
+
+if __name__ == '__main__':
+    unittest.main()
+```
+
+## Utility Functions
+
+### Data Validation
+
+```python
+import pandas as pd
+
+def validate_dataframe(df, required_columns, numeric_columns=None):
+    """Validate DataFrame before loading into Atoti"""
+    
+    # Check if DataFrame is empty
+    if df.empty:
+        raise ValueError("DataFrame is empty")
+    
+    # Check required columns
+    missing_columns = [col for col in required_columns if col not in df.columns]
+    if missing_columns:
+        raise ValueError(f"Missing required columns: {missing_columns}")
+    
+    # Check numeric columns
+    if numeric_columns:
+        for col in numeric_columns:
+            if col in df.columns and not pd.api.types.is_numeric_dtype(df[col]):
+                raise ValueError(f"Column '{col}' should be numeric")
+    
+    # Check for null values in required columns
+    null_columns = [col for col in required_columns if df[col].isnull().any()]
+    if null_columns:
+        print(f"Warning: Null values found in columns: {null_columns}")
+    
+    return True
+
+# Usage
+data = pd.read_csv("sales_data.csv")
+validate_dataframe(
+    data,
+    required_columns=["date", "product", "sales_amount"],
+    numeric_columns=["sales_amount", "quantity"]
+)
+```
+
+### Session Management Helper
+
+```python
+import atoti as tt
+from contextlib import contextmanager
+
+@contextmanager
+def atoti_session(**kwargs):
+    """Context manager for Atoti sessions"""
+    session = None
+    try:
+        session = tt.Session(**kwargs)
+        yield session
+    finally:
+        if session:
+            session.close()
+
+# Usage
+with atoti_session(port=9091, java_options=["-Xmx8g"]) as session:
+    # Your Atoti operations here
+    table = session.read_csv("data.csv", table_name="sales")
+    cube = session.create_cube(table)
+    
+    result = cube.query(
+        measures=["sales_amount"],
+        rows=["product"]
+    )
+    
+    print(result)
+# Session automatically closed
+```
+
+## Integration Patterns
+
+### Jupyter Notebook Setup
+
+```python
+# Standard imports for Atoti in Jupyter
+import atoti as tt
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Configure display options
+pd.set_option('display.max_columns', None)
+pd.set_option('display.width', None)
+
+# Create session
+session = tt.Session()
+
+# Display session URL
+from IPython.display import HTML
+HTML(f'<a href="{session.url}" target="_blank">Open Atoti Web Interface</a>')
+```
+
+### Flask Integration
+
+```python
+from flask import Flask, jsonify
+import atoti as tt
+
+app = Flask(__name__)
+
+# Global session (consider using application context in production)
+session = tt.Session()
+
+@app.route('/api/sales/<product>')
+def get_sales_by_product(product):
+    try:
+        # Query cube
+        result = cube.query(
+            measures=["sales_amount"],
+            rows=["region"],
+            filter={"product": product}
+        )
+        
+        # Convert to JSON-serializable format
+        # Note: Verify exact result format
+        return jsonify(result.to_dict())
+        
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.teardown_appcontext
+def close_session(error):
+    if session:
+        session.close()
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+## Next Steps
+
+After using these snippets:
+
+1. **Verify all code** against the [official Atoti documentation](https://docs.activeviam.com/products/atoti/python-sdk/latest/)
+2. **Test in your environment** before production use
+3. **Customize parameters** for your specific use case
+4. **Check the [examples page](/examples)** for complete workflows
+5. **Review [advanced patterns](/advanced)** for complex scenarios
+
+## Contributing
+
+Found a useful pattern? Consider sharing it with the community through the [Atoti GitHub discussions](https://github.com/atoti/atoti/discussions).

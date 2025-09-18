@@ -1,0 +1,14 @@
+```python
+import atoti as tt
+
+# Session with custom configuration
+session = tt.Session(
+    port={port or "9091"},
+    java_options=["-Xmx{memory or "8g"}"],
+    name="{name or "MyAnalytics"}"
+)
+
+# Verify session is active
+if session.is_alive():
+    print("Session is running")
+```

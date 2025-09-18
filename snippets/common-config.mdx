@@ -1,0 +1,28 @@
+export const defaultPort = 9090;
+
+export const memoryConfigs = {
+  small: ["-Xmx4g"],
+  medium: ["-Xmx8g"],
+  large: ["-Xmx16g"],
+  production: [
+    "-Xmx16g",
+    "-Xms4g", 
+    "-XX:+UseG1GC",
+    "-XX:MaxGCPauseMillis=200"
+  ]
+};
+
+export const commonDataTypes = {
+  date: "DATETIME",
+  sales_amount: "DOUBLE",
+  quantity: "INT",
+  product: "STRING",
+  region: "STRING",
+  customer_id: "STRING"
+};
+
+export const sampleData = {
+  products: ["Product A", "Product B", "Product C"],
+  regions: ["North", "South", "East", "West"],
+  salesAmounts: [100, 150, 200, 250, 300]
+};
