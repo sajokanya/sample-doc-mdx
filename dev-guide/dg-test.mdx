@@ -15,15 +15,6 @@ export const DataTable = () => {
                 <th>Email</th>
             </tr>
             </thead>
-            <tbody>
-            {sampleData.map((item) => (
-                <tr key={item.id}>
-                    <td>{item.id}</td>
-                    <td>{item.name}</td>
-                    <td>{item.email}</td>
-                </tr>
-            ))}
-            </tbody>
         </table>
     );
 };
