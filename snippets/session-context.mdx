@@ -1,0 +1,29 @@
+```python
+import atoti as tt
+from contextlib import contextmanager
+
+@contextmanager
+def atoti_session(**kwargs):
+    """Context manager for Atoti sessions"""
+    session = None
+    try:
+        session = tt.Session(**kwargs)
+        yield session
+    finally:
+        if session:
+            session.close()
+
+# Usage
+with atoti_session(port={port or "9091"}, java_options=["-Xmx{memory or "8g"}"]) as session:
+    # Your Atoti operations here
+    table = session.read_csv("{file_path or "data.csv"}", table_name="{table_name or "sales"}")
+    cube = session.create_cube(table)
+    
+    result = cube.query(
+        measures=["{measure or "sales_amount"}"],
+        rows=["{dimension or "product"}"]
+    )
+    
+    print(result)
+# Session automatically closed
+```
