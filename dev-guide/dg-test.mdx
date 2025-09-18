@@ -3,12 +3,29 @@ title: "David testing"
 description: "Testing page for David."
 ---
 
-## David testing
+import sampleData from '/data/sample-data.json';
 
-| This | is    |
-| ---- | ----- |
-| a    | table |
+export const DataTable = () => {
+    return (
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            {sampleData.map((item) => (
+                <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.name}</td>
+                    <td>{item.email}</td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
+    );
+};
 
-<Info>
-  This is a callout
-</Info>
+<DataTable />
