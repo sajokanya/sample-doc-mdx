@@ -1,0 +1,22 @@
+```python
+import atoti as tt
+import pandas as pd
+
+session = tt.Session()
+
+# Create sample data
+data = pd.DataFrame({
+    'date': pd.date_range('{start_date or "2023-01-01"}', periods={periods or "100"}),
+    'product': ['{product_a or "A"}', '{product_b or "B"}', '{product_c or "C"}'] * {repeat or "34"},
+    'sales': [{sales_a or "100"}, {sales_b or "150"}, {sales_c or "200"}] * {repeat or "34"}
+})
+
+# Load into Atoti
+# Note: Verify exact method signature
+table = session.read_pandas(
+    data,
+    table_name="{table_name or "sales"}"
+)
+
+print(f"Loaded {{len(table)}} rows")
+```
