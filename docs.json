@@ -13,8 +13,12 @@
     "href": "https://www.activeviam.com/"
   },
   "api": {
+    "baseUrl": "https://api.example.com/v1",
+    "auth": {
+      "method": "bearer"
+    },
     "playground": {
-      "display": "interactive"
+      "mode": "show"
     }
   },
   "navigation": {
@@ -33,6 +37,7 @@
                     {
             "group": "General",
             "pages": [
+              "api-overview",
               "changelog",
               "release-notes",
               "getting-started",
@@ -56,10 +61,7 @@
       },
       {
         "tab": "API Reference",
-        "openapi": "/openapi.yaml",
-        "pages": [
-          "api-overview"
-        ]
+        "openapi": "/openapi.yaml"
       }
     ]
   },
