@@ -1,0 +1,33 @@
+```python
+import atoti.widgets as widgets
+
+# Bar chart
+# Note: Verify exact widget names and parameters
+bar_chart = widgets.bar_chart(
+    cube=cube,
+    measures=["{measure or "sales_amount"}"],
+    rows=["{dimension or "product"}"],
+    title="{title or "Sales by Product"}"
+)
+
+# Line chart for time series
+line_chart = widgets.line_chart(
+    cube=cube,
+    measures=["{measure or "sales_amount"}"],
+    rows=["{time_dim or "date"}"],
+    title="{title or "Sales Trend"}"
+)
+
+# Pie chart
+pie_chart = widgets.pie_chart(
+    cube=cube,
+    measures=["{measure or "sales_amount"}"],
+    rows=["{dimension or "region"}"],
+    title="{title or "Regional Distribution"}"
+)
+
+# Display widgets
+display(bar_chart)
+display(line_chart)
+display(pie_chart)
+```
