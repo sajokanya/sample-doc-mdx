@@ -35,7 +35,6 @@
           {
             "group": "General",
             "pages": [
-              "changelog",
               "getting-started"
             ]
           },
