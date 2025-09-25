@@ -28,8 +28,8 @@
           {
             "group": "Release and upgrades",
             "pages": [
-              "changelog",
-              "migration-guide"
+              "release-and-upgrades/changelog",
+              "release-and-upgrades/migration-guide"
             ]
           },
           {
