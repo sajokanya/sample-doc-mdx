@@ -26,9 +26,15 @@
         "tab": "Guides",
         "groups": [
           {
+            "group": "Release and upgrades",
+            "pages": [
+              "release-and-upgrades/changelog",
+              "release-and-upgrades/migration-guide"
+            ]
+          },
+          {
             "group": "General",
             "pages": [
-              "changelog",
               "getting-started"
             ]
           },
