@@ -13,46 +13,64 @@
     "href": "https://www.activeviam.com/"
   },
   "navigation": {
-    "tabs": [
+    "dropdowns": [
       {
-        "tab": "Home",
-        "icon": "house",
-        "groups": "",
-        "pages": [
-          "index"
+        "dropdown": "Cirrus Sync",
+        "versions": [
+          {
+            "version": "v1.0",
+            "groups": [
+              {
+                "group": "General",
+                "pages": [
+                  "cirrus-sync/changelog",
+                  "cirrus-sync/getting-started"
+                ]
+              },
+              {
+                "group": "Users",
+                "pages": [
+                  "cirrus-sync/user-guide/user-guide"
+                ]
+              },
+              {
+                "group": "Developers",
+                "pages": [
+                  "cirrus-sync/dev-guide/introduction",
+                  "cirrus-sync/dev-guide/what-is-a-database",
+                  "cirrus-sync/dev-guide/api-reference",
+                  "cirrus-sync/dev-guide/configuration",
+                  "cirrus-sync/dev-guide/troubleshooting",
+                  "cirrus-sync/dev-guide/conclusion"
+                ]
+              }
+            ]
+          }
         ]
       },
-      {
-        "tab": "Guides",
-        "groups": [
+            {
+        "dropdown": "Product B",
+        "versions": [
           {
-            "group": "General",
-            "pages": [
-              "changelog",
-              "getting-started"
-            ]
-          },
-          {
-            "group": "Users",
-            "pages": [
-              "user-guide/user-guide"
-            ]
-          },
-          {
-            "group": "Developers",
-            "pages": [
-              "dev-guide/introduction",
-              "dev-guide/what-is-a-database",
-              "dev-guide/api-reference",
-              "dev-guide/configuration",
-              "dev-guide/troubleshooting",
-              "dev-guide/conclusion"
+            "version": "v1.0",
+            "groups": [
+              {
+                "group": "Release and upgrades",
+                "pages": [
+                  "product-b/release-and-upgrades/changelog"
+                ]
+              },
+              {
+                "group": "Guides",
+                "pages": [
+                  "product-b/user/user-guide"
+                ]
+              }
             ]
           }
         ]
       }
-    ]
-  },
+    ],
   "navbar": {
     "links": [
       {
@@ -84,4 +102,5 @@
       "linkedin": "https://linkedin.com/company/mintlify"
     }
   }
+}
 }
