@@ -1,0 +1,1049 @@
+{
+  "groups": [
+    {
+      "name": "application.datasource",
+      "type": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties",
+      "sourceType": "com.activeviam.limits.workflow.service.instance.jpa.LimitsProcessJpaConfig",
+      "sourceMethod": "workflowProcessDataSourceProperties()"
+    },
+    {
+      "name": "application.datasource.hikari",
+      "type": "com.zaxxer.hikari.HikariDataSource",
+      "sourceType": "com.activeviam.limits.workflow.service.instance.jpa.LimitsProcessJpaConfig",
+      "sourceMethod": "workflowProcessDataSource()"
+    },
+    {
+      "name": "application.datasource.hikari.health-check-registry",
+      "type": "java.lang.Object",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource",
+      "sourceMethod": "getHealthCheckRegistry()"
+    },
+    {
+      "name": "application.datasource.hikari.metric-registry",
+      "type": "java.lang.Object",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource",
+      "sourceMethod": "getMetricRegistry()"
+    },
+    {
+      "name": "application.datasource.properties",
+      "type": "java.util.Properties",
+      "sourceType": "com.activeviam.limits.workflow.service.instance.jpa.LimitsProcessJpaConfig",
+      "sourceMethod": "workflowProcessJpaProperties()"
+    },
+    {
+      "name": "application.datasource.xa",
+      "type": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$Xa",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties",
+      "sourceMethod": "getXa()"
+    },
+    {
+      "name": "limits.activiti.mail",
+      "type": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties"
+    },
+    {
+      "name": "limits.alert-task",
+      "type": "com.activeviam.limits.utils.alerts.evaluation.LimitsAlertTaskProperties",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsAlertTaskProperties"
+    },
+    {
+      "name": "limits.application.datasource",
+      "type": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.data.jpa.LimitsJpaConfig",
+      "sourceMethod": "limitsDataSourceProperties()"
+    },
+    {
+      "name": "limits.application.datasource.hikari",
+      "type": "com.zaxxer.hikari.HikariDataSource",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.data.jpa.LimitsJpaConfig",
+      "sourceMethod": "limitsHikariDataSource()"
+    },
+    {
+      "name": "limits.application.datasource.hikari.health-check-registry",
+      "type": "java.lang.Object",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource",
+      "sourceMethod": "getHealthCheckRegistry()"
+    },
+    {
+      "name": "limits.application.datasource.hikari.metric-registry",
+      "type": "java.lang.Object",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource",
+      "sourceMethod": "getMetricRegistry()"
+    },
+    {
+      "name": "limits.application.datasource.properties",
+      "type": "java.util.Properties",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.data.jpa.LimitsJpaConfig",
+      "sourceMethod": "limitsJpaProperties()"
+    },
+    {
+      "name": "limits.application.datasource.xa",
+      "type": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$Xa",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties",
+      "sourceMethod": "getXa()"
+    },
+    {
+      "name": "limits.autoconfiguration",
+      "type": "com.activeviam.limits.cfg.LimitsAutoconfigurationProperties",
+      "sourceType": "com.activeviam.limits.cfg.LimitsAutoconfigurationProperties"
+    },
+    {
+      "name": "limits.cube",
+      "type": "com.activeviam.limits.pivot.measure.LimitsCubeProperties",
+      "sourceType": "com.activeviam.limits.pivot.measure.LimitsCubeProperties"
+    },
+    {
+      "name": "limits.cube.format",
+      "type": "com.activeviam.limits.pivot.measure.LimitsCubeProperties$LimitsCubeFormatProperties",
+      "sourceType": "com.activeviam.limits.pivot.measure.LimitsCubeProperties",
+      "sourceMethod": "getFormat()"
+    },
+    {
+      "name": "limits.data",
+      "type": "com.activeviam.limits.cache.cube.cfg.data.properties.LimitsDataProperties",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.data.properties.LimitsDataProperties"
+    },
+    {
+      "name": "limits.data-access-control",
+      "type": "com.activeviam.limits.cfg.roles.LimitsRolePermissionsConfigurationProperties",
+      "sourceType": "com.activeviam.limits.cfg.roles.LimitsRolePermissionsConfigurationProperties"
+    },
+    {
+      "name": "limits.data.jpa.repository",
+      "type": "com.activeviam.limits.cache.cube.cfg.data.jpa.LimitsJpaRepoConfigurationProperties",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.data.jpa.LimitsJpaRepoConfigurationProperties"
+    },
+    {
+      "name": "limits.discovery-manager",
+      "type": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDiscoveryManagerProperties",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDiscoveryManagerProperties"
+    },
+    {
+      "name": "limits.dlc",
+      "type": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDlcConfigurationProperties",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDlcConfigurationProperties"
+    },
+    {
+      "name": "limits.incident",
+      "type": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties"
+    },
+    {
+      "name": "limits.incident.evaluation",
+      "type": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties$EvaluationProperties",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties",
+      "sourceMethod": "getEvaluation()"
+    },
+    {
+      "name": "limits.incident.evaluation.error",
+      "type": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties$EvaluationProperties$ErrorProperties",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties$EvaluationProperties",
+      "sourceMethod": "getError()"
+    },
+    {
+      "name": "limits.notification",
+      "type": "com.activeviam.limits.notification.properties.LimitsNotificationConfigurationProperties",
+      "sourceType": "com.activeviam.limits.notification.properties.LimitsNotificationConfigurationProperties"
+    },
+    {
+      "name": "limits.realtime",
+      "type": "com.activeviam.limits.service.rest.incident.sse.properties.LimitsRealtimeConfigurationProperties",
+      "sourceType": "com.activeviam.limits.service.rest.incident.sse.properties.LimitsRealtimeConfigurationProperties"
+    },
+    {
+      "name": "limits.scope",
+      "type": "com.activeviam.limits.cache.cube.cfg.properties.LimitsScopeConfigurationProperties",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsScopeConfigurationProperties"
+    },
+    {
+      "name": "limits.structure",
+      "type": "com.activeviam.limits.model.template.LimitStructureTemplateConfigurationProperties",
+      "sourceType": "com.activeviam.limits.model.template.LimitStructureTemplateConfigurationProperties"
+    },
+    {
+      "name": "limits.task-scheduler",
+      "type": "com.activeviam.limits.utils.alerts.evaluation.ThreadPoolTaskSchedulerConfig",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.ThreadPoolTaskSchedulerConfig"
+    },
+    {
+      "name": "limits.topic.csv",
+      "type": "com.activeviam.limits.cache.cube.cfg.properties.LimitsCsvTopicConfigurationProperties",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsCsvTopicConfigurationProperties"
+    },
+    {
+      "name": "limits.workflow",
+      "type": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties"
+    },
+    {
+      "name": "limits.workflow.workflow-rules",
+      "type": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties$WorkflowRulesProperties",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties",
+      "sourceMethod": "getWorkflowRules()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "application.datasource.driver-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.embedded-database-connection",
+      "type": "org.springframework.boot.jdbc.EmbeddedDatabaseConnection",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.generate-unique-name",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.hikari.allow-pool-suspension",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.auto-commit",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.catalog",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.connection-init-sql",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.connection-test-query",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.connection-timeout",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.data-source-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.data-source-j-n-d-i",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.data-source-properties",
+      "type": "java.util.Properties",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.driver-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.exception-override-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.health-check-properties",
+      "type": "java.util.Properties",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.idle-timeout",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.initialization-fail-timeout",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.isolate-internal-queries",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.jdbc-url",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.keepalive-time",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.leak-detection-threshold",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.login-timeout",
+      "type": "java.lang.Integer",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.max-lifetime",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.maximum-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.metrics-tracker-factory",
+      "type": "com.zaxxer.hikari.metrics.MetricsTrackerFactory",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.minimum-idle",
+      "type": "java.lang.Integer",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.password",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.pool-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.read-only",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.register-mbeans",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.scheduled-executor",
+      "type": "java.util.concurrent.ScheduledExecutorService",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.schema",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.transaction-isolation",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.username",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.hikari.validation-timeout",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "application.datasource.jndi-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.password",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.type",
+      "type": "java.lang.Class<? extends javax.sql.DataSource>",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.url",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.username",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "application.datasource.xa.data-source-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$Xa"
+    },
+    {
+      "name": "application.datasource.xa.properties",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "Spring inherited property used when configuring the Atoti Limits workflow datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$Xa"
+    },
+    {
+      "name": "limits.activiti.mail.breach-url",
+      "type": "java.lang.String",
+      "description": "The URL to link when configuring the mail server for breach notifications.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties"
+    },
+    {
+      "name": "limits.activiti.mail.from",
+      "type": "java.lang.String",
+      "description": "The email address to use when configuring the mail server for breach notifications.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties"
+    },
+    {
+      "name": "limits.activiti.mail.host",
+      "type": "java.lang.String",
+      "description": "The host to use when configuring the mail server for breach notifications.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties"
+    },
+    {
+      "name": "limits.activiti.mail.password",
+      "type": "java.lang.String",
+      "description": "The password to use when configuring the mail server for breach notifications.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties"
+    },
+    {
+      "name": "limits.activiti.mail.port",
+      "type": "java.lang.Integer",
+      "description": "The port to use when configuring the mail server for breach notifications.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties",
+      "defaultValue": 0
+    },
+    {
+      "name": "limits.activiti.mail.ssl",
+      "type": "java.lang.Boolean",
+      "description": "True if using SSL when configuring the mail server for breach notifications.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "limits.activiti.mail.tls",
+      "type": "java.lang.Boolean",
+      "description": "True if using TLS when configuring the mail server for breach notifications.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "limits.activiti.mail.username",
+      "type": "java.lang.String",
+      "description": "The username to use when configuring the mail server for breach notifications.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsActivitiProperties"
+    },
+    {
+      "name": "limits.alert-task.sample-rate-cron",
+      "type": "java.lang.String",
+      "description": "Cron expression for the Intraday Alert task's cron job.",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsAlertTaskProperties"
+    },
+    {
+      "name": "limits.application.datasource.driver-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.embedded-database-connection",
+      "type": "org.springframework.boot.jdbc.EmbeddedDatabaseConnection",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.generate-unique-name",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.hikari.allow-pool-suspension",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.auto-commit",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.catalog",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.connection-init-sql",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.connection-test-query",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.connection-timeout",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.data-source-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.data-source-j-n-d-i",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.data-source-properties",
+      "type": "java.util.Properties",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.driver-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.exception-override-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.health-check-properties",
+      "type": "java.util.Properties",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.idle-timeout",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.initialization-fail-timeout",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.isolate-internal-queries",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.jdbc-url",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.keepalive-time",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.leak-detection-threshold",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.login-timeout",
+      "type": "java.lang.Integer",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.max-lifetime",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.maximum-pool-size",
+      "type": "java.lang.Integer",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.metrics-tracker-factory",
+      "type": "com.zaxxer.hikari.metrics.MetricsTrackerFactory",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.minimum-idle",
+      "type": "java.lang.Integer",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.password",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.pool-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.read-only",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.register-mbeans",
+      "type": "java.lang.Boolean",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.scheduled-executor",
+      "type": "java.util.concurrent.ScheduledExecutorService",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.schema",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.transaction-isolation",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.username",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.hikari.validation-timeout",
+      "type": "java.lang.Long",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "com.zaxxer.hikari.HikariDataSource"
+    },
+    {
+      "name": "limits.application.datasource.jndi-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.password",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.type",
+      "type": "java.lang.Class<? extends javax.sql.DataSource>",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.url",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.username",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties"
+    },
+    {
+      "name": "limits.application.datasource.xa.data-source-class-name",
+      "type": "java.lang.String",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$Xa"
+    },
+    {
+      "name": "limits.application.datasource.xa.properties",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "Spring inherited property used when configuring the Atoti Limits application datasource.",
+      "sourceType": "org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$Xa"
+    },
+    {
+      "name": "limits.autoconfiguration.service-principal",
+      "type": "java.lang.String",
+      "description": "The name of the user authenticated to perform machine-to-machine requests from Atoti Limits to the connected Atoti Servers, if using JWT Authentication.",
+      "sourceType": "com.activeviam.limits.cfg.LimitsAutoconfigurationProperties"
+    },
+    {
+      "name": "limits.cube.format.double-format",
+      "type": "java.lang.String",
+      "description": "Format value for double measures.",
+      "sourceType": "com.activeviam.limits.pivot.measure.LimitsCubeProperties$LimitsCubeFormatProperties",
+      "defaultValue": "DOUBLE[#,##0.00]"
+    },
+    {
+      "name": "limits.cube.format.integer-format",
+      "type": "java.lang.String",
+      "description": "Format value for integer measures.",
+      "sourceType": "com.activeviam.limits.pivot.measure.LimitsCubeProperties$LimitsCubeFormatProperties",
+      "defaultValue": "INT[#,###]"
+    },
+    {
+      "name": "limits.cube.format.kpi-goal",
+      "type": "java.lang.String",
+      "description": "Format value for KPI Goal values",
+      "sourceType": "com.activeviam.limits.pivot.measure.LimitsCubeProperties$LimitsCubeFormatProperties",
+      "defaultValue": "#,##0.#"
+    },
+    {
+      "name": "limits.cube.kpi-filters-enabled",
+      "type": "java.lang.Boolean",
+      "description": "True if cube filters are enabled for Limits KPIs, false otherwise.",
+      "sourceType": "com.activeviam.limits.pivot.measure.LimitsCubeProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "limits.cube.scope-hierarchies-enabled",
+      "type": "java.lang.Boolean",
+      "description": "True if the scope hierarchies are enabled in the Limits cube, false otherwise. This may be disabled to improve performance for clients with large numbers of limits and in particular a high cardinality of scopes.",
+      "sourceType": "com.activeviam.limits.pivot.measure.LimitsCubeProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "limits.data-access-control.servers",
+      "type": "java.util.Map<java.lang.String,com.activeviam.limits.cfg.roles.LimitsRolePermissionsConfigurationProperties$ServerRolePermissions>",
+      "description": "Stores the permissions available to each role, per server",
+      "sourceType": "com.activeviam.limits.cfg.roles.LimitsRolePermissionsConfigurationProperties"
+    },
+    {
+      "name": "limits.data.jpa.repository.packages-to-scan",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of packages to scan for Entity classes to be managed by the JPA repositories.",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.data.jpa.LimitsJpaRepoConfigurationProperties"
+    },
+    {
+      "name": "limits.data.mode",
+      "type": "com.activeviam.limits.cache.cube.cfg.data.properties.LimitsDataMode",
+      "description": "The mode used to load data into Atoti Limits.",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.data.properties.LimitsDataProperties"
+    },
+    {
+      "name": "limits.discovery-manager.polling-delay",
+      "type": "java.lang.Long",
+      "description": "How long a Discovery's refresh is valid for.",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDiscoveryManagerProperties",
+      "defaultValue": 30000
+    },
+    {
+      "name": "limits.dlc.buffer-size",
+      "type": "java.lang.Integer",
+      "description": "The CSV buffer size in KB.",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDlcConfigurationProperties",
+      "defaultValue": 1024
+    },
+    {
+      "name": "limits.dlc.parser-threads",
+      "type": "java.lang.Integer",
+      "description": "The number of threads to be used for data loading.",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDlcConfigurationProperties",
+      "defaultValue": 4
+    },
+    {
+      "name": "limits.dlc.path-matchers",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "Map of topic name to regular expression to match the CSV file name",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDlcConfigurationProperties"
+    },
+    {
+      "name": "limits.dlc.root-dir",
+      "type": "java.lang.String",
+      "description": "The root directory for Limits data. A default will be created if not set or does not exist.",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDlcConfigurationProperties"
+    },
+    {
+      "name": "limits.dlc.sub-directory-paths",
+      "type": "java.util.Map<java.lang.String,java.lang.String>",
+      "description": "Map of subdirectory paths which would be appended to the root directory.",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsDlcConfigurationProperties"
+    },
+    {
+      "name": "limits.incident.evaluation.error.include-stacktrace",
+      "type": "java.lang.Boolean",
+      "description": "If true, the stack trace will be available in the evaluation response to the UI.",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties$EvaluationProperties$ErrorProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "limits.incident.evaluation.include-passes",
+      "type": "java.lang.Boolean",
+      "description": "If true, evaluations resulting in a pass will be persisted to the datastore.",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties$EvaluationProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "limits.incident.evaluation.parallel-tasks",
+      "type": "java.lang.Integer",
+      "description": "Thread pool size for the evaluation task executors.",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties$EvaluationProperties",
+      "defaultValue": 10
+    },
+    {
+      "name": "limits.incident.output-data-dir",
+      "type": "java.lang.String",
+      "description": "The directory where the alert data is written to.",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.LimitsIncidentProperties"
+    },
+    {
+      "name": "limits.notification.evaluation-completed-notification-user-role",
+      "type": "java.lang.String",
+      "description": "The role required to receive the evaluation completed notification.",
+      "sourceType": "com.activeviam.limits.notification.properties.LimitsNotificationConfigurationProperties"
+    },
+    {
+      "name": "limits.notification.server-started-notification-user-role",
+      "type": "java.lang.String",
+      "description": "The role required to receive the server started notification.",
+      "sourceType": "com.activeviam.limits.notification.properties.LimitsNotificationConfigurationProperties",
+      "defaultValue": "ROLE_ADMIN"
+    },
+    {
+      "name": "limits.realtime.emitter-timeout",
+      "type": "java.time.Duration",
+      "description": "The timeout on each Event Source that a client opens to receive real-time updates on Limits statuses.",
+      "sourceType": "com.activeviam.limits.service.rest.incident.sse.properties.LimitsRealtimeConfigurationProperties",
+      "defaultValue": "8h"
+    },
+    {
+      "name": "limits.scope.auto-fill-unambiguous-level-paths",
+      "type": "java.lang.Boolean",
+      "description": "If true, allows Limits to automatically fill in missing parent levels with Wildcards",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsScopeConfigurationProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "limits.scope.force-unambiguous-level-paths",
+      "type": "java.lang.Boolean",
+      "description": "If true, this forces that a level be [Unambiguous](#ambiguous-level-path) at load time",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsScopeConfigurationProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "limits.scope.using-explicit-scope-matching",
+      "type": "java.lang.Boolean",
+      "description": "If true, limits will only be shown and applied to the exact location their Scope is defined on",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsScopeConfigurationProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "limits.structure.templates",
+      "type": "java.util.Map<java.lang.String,com.activeviam.limits.model.template.LimitStructureTemplate>",
+      "description": "Stores the LimitStructureTemplates by templateName to ensure each one is unique",
+      "sourceType": "com.activeviam.limits.model.template.LimitStructureTemplateConfigurationProperties"
+    },
+    {
+      "name": "limits.task-scheduler.thread-pool-size",
+      "type": "java.lang.Integer",
+      "description": "The quantity of threads allotted to the TaskScheduler",
+      "sourceType": "com.activeviam.limits.utils.alerts.evaluation.ThreadPoolTaskSchedulerConfig",
+      "defaultValue": 4
+    },
+    {
+      "name": "limits.topic.csv.column-separator",
+      "type": "java.lang.Character",
+      "description": "The character used to separate columns in a file",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsCsvTopicConfigurationProperties",
+      "defaultValue": ","
+    },
+    {
+      "name": "limits.topic.csv.incomplete-lines",
+      "type": "java.lang.Boolean",
+      "description": "If true, parser will attempt to parse lines with missing columns",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsCsvTopicConfigurationProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "limits.topic.csv.overflow-lines",
+      "type": "java.lang.Boolean",
+      "description": "If true, parser will attempt to parse lines with too many columns",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsCsvTopicConfigurationProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "limits.topic.csv.process-quotes",
+      "type": "java.lang.Boolean",
+      "description": "If true, the parser will parse values in double quotes",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsCsvTopicConfigurationProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "limits.topic.csv.skipped-lines",
+      "type": "java.lang.Integer",
+      "description": "The number of lines to skip when parsing a file",
+      "sourceType": "com.activeviam.limits.cache.cube.cfg.properties.LimitsCsvTopicConfigurationProperties",
+      "defaultValue": 1
+    },
+    {
+      "name": "limits.workflow.allowed-file-upload-extensions",
+      "type": "java.util.List<java.lang.String>",
+      "description": "The file types allowed to be uploaded as attachments in the workflow.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties",
+      "defaultValue": [
+        "pdf",
+        "jpeg",
+        "png",
+        "csv",
+        "xls",
+        "xlsx",
+        "doc",
+        "docx",
+        "txt",
+        "ppt",
+        "pptx",
+        "eml",
+        "msg"
+      ]
+    },
+    {
+      "name": "limits.workflow.enable-bulk-activiti-transactions",
+      "type": "java.lang.Boolean",
+      "description": "True when users want to execute activiti transactions in bulk, false when they should be executed sequentially",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "limits.workflow.exception-workflows",
+      "type": "java.util.Map<java.lang.String,com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperty>",
+      "description": "A Map of the exception workflow name to the workflow configuration properties.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties"
+    },
+    {
+      "name": "limits.workflow.file-attachments-are-read-only",
+      "type": "java.lang.Boolean",
+      "description": "When set to true, the file attachments in the workflow are set to read-only on the file system.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties",
+      "defaultValue": true
+    },
+    {
+      "name": "limits.workflow.file-storage-path",
+      "type": "java.lang.String",
+      "description": "The path where the workflow attachment files are stored. Please ensure users have access to this folder.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties",
+      "defaultValue": "limits\/workflow\/attachments"
+    },
+    {
+      "name": "limits.workflow.limit-workflows",
+      "type": "java.util.Map<java.lang.String,com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperty>",
+      "description": "A Map of the limit workflow name to the workflow configuration properties.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties"
+    },
+    {
+      "name": "limits.workflow.roles",
+      "type": "java.util.List<java.lang.String>",
+      "description": "List of roles for a given workflow.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties"
+    },
+    {
+      "name": "limits.workflow.workflow-rules.can-approver-be-same-as-creator",
+      "type": "java.lang.Boolean",
+      "description": "If true, the creator of a limit may also approve it.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties$WorkflowRulesProperties",
+      "defaultValue": false
+    },
+    {
+      "name": "limits.workflow.workflow-status-fetched-with-limit",
+      "type": "java.lang.Boolean",
+      "description": "When set to true, retrieving limit structures also updates the limit status with the current workflow status.",
+      "sourceType": "com.activeviam.limits.workflow.cfg.properties.LimitsWorkflowConfigurationProperties",
+      "defaultValue": true
+    }
+  ],
+  "hints": []
+}
