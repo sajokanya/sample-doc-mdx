@@ -1,0 +1,3 @@
+[submodule "sample-doc-md"]
+	path = sample-doc-md
+	url = https://github.com/sajokanya/sample-doc-md
