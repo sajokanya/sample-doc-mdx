@@ -1,0 +1,232 @@
+---
+title: "User guide"
+description: "Complete guide to using Product B effectively."
+---
+
+import { productName } from '/snippets/custom-variables.mdx';
+import MyPythonInteractiveExample from '/snippets/python-interactive-example.mdx';
+import ApiAuthentication from '/snippets/api-authentication.mdx';
+import TestConnectionQuery from '/snippets/test-connection-query.mdx';
+import DataQualityRule from '/snippets/data-quality-rule.mdx';
+
+## Overview
+
+{productName} is a cloud-native data analytics platform that helps organizations process, analyze, and visualize large datasets in real-time. The platform combines machine learning capabilities with interactive dashboards to deliver actionable insights from your data.
+
+This guide covers the essential features and workflows you need to effectively use {productName}. You'll learn how to connect data sources, create analyses, and share results with your team.
+
+**Prerequisites**: Basic understanding of data analysis concepts and familiarity with SQL queries.
+
+## What is {productName}?
+
+{productName} is designed to bridge the gap between raw data and business insights. The platform provides:
+
+- **Real-time data processing**: Stream and batch processing capabilities for datasets of any size
+- **Interactive analytics**: Drag-and-drop interface for creating complex analyses without coding
+- **Collaborative workspaces**: Share dashboards and insights across teams
+- **Extensible architecture**: Custom integrations and API access for advanced use cases
+
+The platform is built for analysts, data scientists, and business users who need to work with data but may not have extensive programming experience.
+
+## How to access {productName}
+
+You can access {productName} through the web application or programmatic APIs.
+
+### Web application access
+
+1. Navigate to your organization's {productName} instance URL
+2. Sign in using your corporate credentials or SSO provider
+3. Select your default workspace from the dashboard
+
+The web interface provides full access to all platform features including data connections, analysis tools, and collaboration features.
+
+### API access
+
+For programmatic access, {productName} provides REST APIs and Python/R client libraries.
+
+To authenticate with the API:
+
+<ApiAuthentication />
+
+API keys can be generated from your user profile settings in the web application.
+
+## How to connect your first data source
+
+Before creating analyses, you need to connect {productName} to your data sources.
+
+### Step 1: Navigate to data connections
+
+1. From the main dashboard, click **Data Sources** in the left navigation
+2. Click **Add New Connection** in the top right
+3. Select your data source type from the available connectors
+
+### Step 2: Configure connection settings
+
+The configuration steps vary by data source type. For a database connection:
+
+1. Enter your database hostname and port
+2. Provide authentication credentials
+3. Specify the database name and schema
+4. Test the connection using the **Test Connection** button
+
+<TestConnectionQuery />
+
+### Step 3: Define data refresh settings
+
+1. Choose your refresh frequency (real-time, hourly, daily, or manual)
+2. Set up any data transformation rules if needed
+3. Save the connection configuration
+
+Once configured, {productName} will begin syncing your data according to the refresh schedule you specified.
+
+## How to create your first analysis
+
+With data sources connected, you can create interactive analyses and visualizations.
+
+### Step 1: Create a new analysis
+
+1. Click **New Analysis** from the main dashboard
+2. Select your data source from the available connections
+3. Choose **Interactive Analysis** for drag-and-drop functionality
+
+### Step 2: Build your query
+
+The query builder provides three approaches:
+
+**Visual query builder**: Drag fields from your data source to create filters, groupings, and aggregations without writing code.
+
+**SQL editor**: Write custom SQL queries for complex analysis requirements.
+
+<MyPythonInteractiveExample />
+
+**Natural language**: Describe your analysis goal in plain English and let {productName} generate the appropriate query.
+
+### Step 3: Create visualizations
+
+1. Select your chart type from the visualization panel
+2. Map data fields to chart axes and properties
+3. Customize colors, labels, and formatting options
+4. Preview your visualization in real-time
+
+Common visualization types include:
+- Line charts for time series data
+- Bar charts for categorical comparisons  
+- Scatter plots for correlation analysis
+- Heat maps for geographic or matrix data
+
+### Step 4: Save and share your analysis
+
+1. Click **Save Analysis** and provide a descriptive name
+2. Add tags and description for future reference
+3. Set sharing permissions for team members
+4. Publish to dashboards if needed
+
+## How to collaborate with team members
+
+{productName} provides several collaboration features to share insights across your organization.
+
+### Workspace management
+
+Workspaces organize related analyses, data sources, and team members:
+
+1. Create workspaces for different projects or departments
+2. Invite team members with appropriate permission levels
+3. Set up shared data connections within workspaces
+
+### Comments and annotations
+
+Add context to your analyses using the commenting system:
+
+1. Click anywhere on a chart or data table
+2. Add comments with @mentions to notify specific team members
+3. Reply to comments to maintain discussion threads
+4. Mark comments as resolved when addressed
+
+### Dashboard sharing
+
+Share collections of analyses through interactive dashboards:
+
+1. Create a new dashboard from the main menu
+2. Add relevant analyses using the **Add Widget** button
+3. Arrange and resize widgets for optimal viewing
+4. Share dashboard links or embed in other applications
+
+## How to monitor data quality
+
+{productName} includes built-in data quality monitoring to ensure reliable analyses.
+
+### Automated quality checks
+
+The platform automatically monitors:
+- Data freshness and update frequency
+- Schema changes in source systems
+- Null values and data completeness
+- Statistical anomalies in key metrics
+
+### Custom quality rules
+
+Define business-specific quality rules:
+
+1. Navigate to **Data Quality** in your workspace settings
+2. Click **Add Quality Rule** for your data source
+3. Define conditions using SQL expressions or visual rules
+4. Set up alerts for quality rule violations
+
+<DataQualityRule />
+
+### Quality alerts
+
+Configure notifications when data quality issues occur:
+
+1. Set up email or Slack notifications for quality rule failures
+2. Define escalation procedures for critical data issues
+3. Create automated reports for data quality metrics
+
+## Troubleshooting common issues
+
+### Connection failures
+
+If your data source connection fails:
+
+1. Verify network connectivity between {productName} and your data source
+2. Check authentication credentials and permissions
+3. Confirm firewall rules allow access on required ports
+4. Review connection logs in the **Data Sources** settings
+
+### Slow query performance
+
+To improve analysis performance:
+
+1. Add appropriate indexes to your source database tables
+2. Use filters to reduce the amount of data processed
+3. Consider creating materialized views for frequently accessed aggregations
+4. Contact support for query optimization assistance
+
+### Visualization errors
+
+Common visualization issues and solutions:
+
+- **Missing data points**: Check for null values or date range filters
+- **Incorrect aggregations**: Verify grouping and aggregation settings
+- **Formatting problems**: Review data types and formatting options
+- **Performance issues**: Reduce data volume or simplify calculations
+
+### Getting help
+
+Access support resources:
+
+1. **Documentation**: Comprehensive guides and API references
+2. **Community forum**: User discussions and solutions
+3. **Support tickets**: Direct assistance from the {productName} team
+4. **Training sessions**: Live and recorded training materials
+
+## Next steps
+
+Now that you understand the core features of {productName}, explore these advanced capabilities:
+
+- **API integrations**: Automate workflows using the REST API
+- **Custom connectors**: Build integrations with proprietary data sources
+- **Advanced analytics**: Machine learning models and predictive analytics
+- **Enterprise features**: Single sign-on, audit logging, and governance controls
+
+For detailed information on any of these topics, see the specific documentation sections or contact your system administrator.
